@@ -61,8 +61,8 @@
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-            <li><a class="active" href="manage_applications.php">Manage Application</a></li>
-            <li><a href="">####</a></li>
+            <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
+            <li><a href="manage_announcements.php">Manage Announcements</a></li>
             <li><a  href="">###</a></li>
             <li><a href="">####</a></li>
             <li><a href="">####</a></li>
@@ -73,7 +73,7 @@
         <div class="about_nav">
           <ul>
             <li><a href="show_applications.php">Show All Applications</a></li>
-            <li><a href="search_applications.php">Search Applications</a></li>
+            <li><a class="active" href="search_applications.php">Search Applications</a></li>
             <li><a href="delete_applications.php">Delete Applications</a></li>
             <li><a href="">####</a></li>
           </ul>
