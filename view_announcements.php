@@ -29,6 +29,7 @@ $conn->close();
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
    <style>
     .view {
     background-color: #f1f1f1; /* Light grey background for contrast */
@@ -109,16 +110,19 @@ $conn->close();
             
           </ul>
         </div>
-        <div class="widget"> <div class="view">
-        <h2>Announcements</h2>
-    <ul>
-        <?php while ($row = $result->fetch_assoc()) { ?>
-            <li>
-                <a href="download.php?id=<?php echo $row['id']; ?>" target="_blank"><?php echo $row['id'] ," : ",$row['name']; ?></a>
-            </li>
-        <?php } ?>
-    </ul>
-    </div>
+        <div class="widget"> <div class="announcements">
+            <h2>Announcements</h2>
+            <div class="box"> <ul>
+            <?php while ($row = $result->fetch_assoc()) { ?>
+               <li>
+                    <a href="download.php?id=<?php echo $row['id']; ?>" target="_blank"><?php echo $row['id'] ," : ",$row['name']; ?></a>
+                    
+                </li>
+                
+            <?php } ?>
+        </ul></div>
+        </div>
+    
         </div>
     </div>
 </div>

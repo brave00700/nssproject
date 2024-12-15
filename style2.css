@@ -1,0 +1,83 @@
+.announcements {
+    background: linear-gradient(145deg, #ffffff, #f0f0f5); /* Soft gradient for modern look */
+    border: 3px solid #303983; /* Bold thematic border */
+    border-radius: 12px; /* Smooth rounded corners */
+    padding: 25px; /* Space around the content */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* Elevated shadow for depth */
+    margin: 30px auto; /* Centering with auto margins */
+    max-width: 650px; /* Restrict width for readability */
+    text-align: left; /* Center-align text in the container */
+  }
+  
+  .announcements h2 {
+    font-size: 2.2rem; /* Prominent heading size */
+    color: #303983; /* Dark blue for emphasis */
+    font-weight: bold; /* Bold for hierarchy */
+    margin-bottom: 20px; /* Space below the heading */
+    text-transform: uppercase; /* Uppercase for style */
+    letter-spacing: 1.2px; /* Add spacing between letters */
+  }
+  
+  .announcements .box {
+    max-height: 400px; /* Limit height for the box */
+    overflow-y: auto; /* Enable vertical scrolling for long content */
+    background-color: #ffffff; /* Clean white background for contrast */
+    border: 2px solid #ccc; /* Subtle border to define the box */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Padding inside the box */
+  }
+  
+  .announcements ul {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+  }
+  
+  .announcements ul li {
+    padding: 10px 0; /* Space between items */
+    font-size: 1.1rem; /* Readable font size */
+    border-bottom: 1px solid #e0e0e0; /* Light divider between items */
+  }
+  
+  .announcements ul li:last-child {
+    border-bottom: none; /* Remove border for the last item */
+  }
+  
+  .announcements ul li a {
+    text-decoration: none; /* Remove underline */
+    color: #303983; /* Thematic link color */
+    font-weight: bold; /* Emphasize links */
+    transition: all 0.3s ease; /* Smooth hover transition */
+  }
+  
+  .announcements ul li a:hover {
+    color: #ff0000; /* Change color on hover */
+    text-decoration: underline; /* Underline effect on hover */
+    transform: translateX(5px); /* Subtle animation on hover */
+  }
+  
+  .announcements ul li::before {
+    content: "• "; /* Add bullet points */
+    color: #ff0000; /* Accent color for bullet */
+    font-size: 1.2rem; /* Slightly larger bullet */
+    margin-right: 10px; /* Space between bullet and text */
+  }
+  
+  @media (max-width: 768px) {
+    .announcements {
+      padding: 15px; /* Adjust padding for smaller screens */
+    }
+  
+    .announcements h2 {
+      font-size: 1.8rem; /* Adjust heading size for mobile */
+    }
+  
+    .announcements .box {
+      max-height: 300px; /* Reduce height on smaller screens */
+    }
+  
+    .announcements ul li {
+      font-size: 1rem; /* Adjust font size */
+    }
+  }
+  
