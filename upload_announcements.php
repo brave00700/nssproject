@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['pdf_file'])) {
 
         $stmt->close();
     } else {
-        echo "Please upload a PDF file.";
+        echo " <script>alert('Please upload a PDF file.')</script>";
     }
 }
 

@@ -1,9 +1,9 @@
 <?php
 // Database connection
 $servername = "localhost";
-$username = "root"; // Default XAMPP username
-$password = ""; // Default XAMPP password
-$dbname = "nss_application"; // Database name
+$username = "root";
+$password = "";
+$dbname = "nss_application";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -15,34 +15,101 @@ if ($conn->connect_error) {
 
 // Collect form data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-$name = $_POST['name'];
-$register_no = $_POST['register_no'];
-$phone = $_POST['phone'];
-$email = $_POST['email'];
-$dob = $_POST['dob'];
-$age = $_POST['age'];
-$bloodgroup = $_POST['bloodgroup'];
-$shift = $_POST['shift'];
-$gender = $_POST['gender'];
-$medical = $_POST['medical'];
-$reason = $_POST['reason'];
+    $name = $_POST['name'];
+    $register_no = $_POST['register_no'];
+    $mother_name = $_POST['mother_name'];
+    $father_name = $_POST['father_name'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $dob = $_POST['dob'];
+    $age = $_POST['age'];
+    $category = $_POST['category'];
+    $bloodgroup = $_POST['bloodgroup'];
+    $shift = $_POST['shift'];
+    $gender = $_POST['gender'];
+    $course = $_POST['course'];
+    $address = $_POST['address'];
+    $profilePhoto = null;
 
-// Prepare SQL statement
-$sql = "INSERT INTO applications (Name, Register_no, Phone, Email, DoB, Age, Bloodgroup, Shift, Gender, Medical, Reason) 
-        VALUES ('$name', '$register_no', '$phone', '$email', '$dob', '$age', '$bloodgroup', '$shift', '$gender', '$medical', '$reason')";
+    // Handle file upload
+    if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
+        $fileTmpPath = $_FILES['profile_photo']['tmp_name'];
+        $fileName = $_FILES['profile_photo']['name'];
+        $fileSize = $_FILES['profile_photo']['size'];
+        $fileType = mime_content_type($fileTmpPath);
+        $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        $maxFileSize = 2 * 1024 * 1024; // 2MB
 
+        // Validate file size
+        if ($fileSize > $maxFileSize) {
+            echo "<script>alert('Error: File size exceeds 2MB limit.');</script>";
+            exit;
+        }
 
+        // Validate file type
+        if (!in_array($fileType, $allowedFileTypes)) {
+            echo "<script>alert('Error: Invalid file type. Only JPEG, PNG, JPG are allowed.');</script>";
+            exit;
+        }
 
-if ($conn->query($sql) === TRUE) {
-    echo "<script>alert('Application submitted successfully!');</script>";
-} else {
-    echo "<script>alert('Error: Unable to submit application. Please try again later.');</script>";
-}
+        // Define the upload directory
+        $uploadDir = 'uploads/profile_photos/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true); // Create directory if not exists
+        }
+
+        // Define the path where the photo will be saved
+        $filePath = $uploadDir . basename($fileName);
+
+        // Move the uploaded file to the specified directory
+        if (move_uploaded_file($fileTmpPath, $filePath)) {
+            $profilePhoto = $filePath;
+        } else {
+            echo "<script>alert('Error: Failed to upload the profile photo. Please try again.');</script>";
+            exit;
+        }
+    }
+
+    // Prepare SQL statement to insert data
+    $sql = "INSERT INTO applications 
+            (Name, Register_no, Phone, Email, DoB, Age, Bloodgroup, Shift, Gender, Course, Address, Mother_name, Father_name, Category, ProfilePhoto) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(
+        "sssssisisssssss",
+        $name,
+        $register_no,
+        $phone,
+        $email,
+        $dob,
+        $age,
+        $bloodgroup,
+        $shift,
+        $gender,
+        $course,
+        $address,
+        $mother_name,
+        $father_name,
+        $category,
+        $profilePhoto
+    );
+
+    // Execute query
+    if ($stmt->execute()) {
+        echo "<script>alert('Application submitted successfully!');</script>";
+    } else {
+        echo "<script>alert('Error: " . $stmt->error . "');</script>";
+    }
+
+    // Close statement
+    $stmt->close();
 }
 
 // Close connection
 $conn->close();
 ?>
+
+    
 
 <!DOCTYPE html>
 <html lang="en">
@@ -86,26 +153,60 @@ $conn->close();
     </div>
     <div class="mainapply">
       <h2>Application Form</h2>
-      <form action="" method="post" class="nss-form">
+      <form action="" method="post" class="nss-form" enctype="multipart/form-data">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required />
+        <input type="text" id="name" name="name"  />
 
         <label for="register_no">Register Number:</label>
-        <input type="text" id="register_no" name="register_no" required />
+        <input type="text" id="register_no" name="register_no"  />
+
+        <label for="mother_name">Mother's Name:</label>
+        <input type="text" id="mother_name" name="mother_name"  />
+
+        <label for="name">Father's Name:</label>
+        <input type="text" id="father_name" name="father_name"  />
 
         <label for="phone">Phone Number:</label>
-        <input type="number" id="phone" name="phone" required />
+        <input type="number" id="phone" name="phone"  />
 
         <label for="email">Email ID:</label>
-        <input type="email" id="email" name="email" required />
+        <input type="email" id="email" name="email"  />
 
         <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" name="dob" required />
+        <input type="date" id="dob" name="dob"  />
+
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" >
+          <option value="" disabled selected>Select </option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" ></input>
+
+        <label for="category">Select Category:</label>
+        <select id="category" name="category" >
+          <option value="" disabled selected>Select </option>
+          <option value="General">General</option>
+          <option value="OBC">OBC</option>
+          <option value="SC"> SC</option>
+          <option value="ST"> ST</option>
+        </select>
+
+        <label for="shift">Select Shift:</label>
+        <select id="shift" name="shift" >
+          <option value="" disabled selected>Select </option>
+          <option value="1">Shift 1</option>
+          <option value="2">Shift 2</option>
+          <option value="3">Shift 3</option>
+        </select>
 
         <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required />
+        <input type="number" id="age" name="age"  />
+
         <label for="bloodgroup">Select Blood group:</label>
-        <select id="bloodgroup" name="bloodgroup" required>
+        <select id="bloodgroup" name="bloodgroup" >
           <option value="" disabled selected>Select </option>
           <option value="A+">A+</option>
           <option value="A-">A-</option>
@@ -116,25 +217,18 @@ $conn->close();
           <option value="O+">O+</option>
           <option value="O-">O-</option>
         </select>
-        <label for="shift">Select Shift:</label>
-        <select id="shift" name="shift" required>
-          <option value="" disabled selected>Select </option>
-          <option value="shift1">Shift 1</option>
-          <option value="shift2">Shift 2</option>
-          <option value="shift3">Shift 3</option>
-        </select>
-        <label for="gender">Gender:</label>
-        <select id="gender" name="gender" required>
-          <option value="" disabled selected>Select </option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
 
-        <label for="medical">Medical Condition (if any):</label>
-        <textarea id="medical" name="medical" rows="3"></textarea>
+        
+        
 
-        <label for="reason">Why do you want to join NSS?</label>
-        <textarea id="reason" name="reason" rows="4" required></textarea>
+        <label for="course">Course Name:</label>
+        <input id="course" name="course" rows="3" ></input>
+
+        
+
+        <label for="profile_photo">Profile Photo (JPEG, PNG, JPG, max size: 2MB):</label>
+    <input type="file" id="profile_photo" name="profile_photo" accept="image/jpeg, image/png, image/jpg"  />
+
 
         <div class="form-buttons">
           <button type="submit">Submit</button>

@@ -30,20 +30,40 @@
         .search-container button:hover {
             background-color: #0056b3;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        table th, table td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-        table th {
-            background-color: #007bff;
-            color: white;
-        }
+        <style>
+    /* Table styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    table th, table td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+    table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    /* Add scroll for long content */
+    .table-container {
+        overflow-x: auto; /* Enable horizontal scrolling */
+        max-width: 100%; /* Ensure it fits within the screen */
+    }
+    table td:last-child {
+        max-width: 200px; /* Set width for the Address column */
+        white-space: nowrap; /* Prevent wrapping */
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Add ellipsis (...) for long text */
+    }
+    table td:hover:last-child {
+        overflow: visible; /* Show full text on hover */
+        white-space: normal; /* Allow wrapping on hover */
+    }
+</style>
+
     </style>
 </head>
 <body>
@@ -85,6 +105,8 @@
                 <button type="submit">Search</button>
             </form>
         </div>
+        <div class="table-container">
+
         <table>
             <thead>
                 <tr>
@@ -96,6 +118,8 @@
                     <th>Blood Group</th>
                     <th>Shift</th>
                     <th>Gender</th>
+                    <th>Course</th>
+                    <th>Address</th>
                 </tr>
             </thead>
             <tbody>
@@ -128,6 +152,8 @@
                                     <td>{$row['Bloodgroup']}</td>
                                     <td>{$row['Shift']}</td>
                                     <td>{$row['Gender']}</td>
+                                    <td>{$row['Course']}</td>
+                                    <td>{$row['Address']}</td>
                                   </tr>";
                         }
                     } else {
@@ -137,11 +163,11 @@
                     $conn->close();
                 } else {
                     // If no search input, don't display any rows
-                    echo "<tr><td colspan='8'>Please enter a register number to search.</td></tr>";
+                    echo "<tr><td colspan='10'>Please enter a register number to search.</td></tr>";
                 }
                 ?>
             </tbody>
-        </table>
+        </table>  </div>
     </div>
     </div>
     </div>

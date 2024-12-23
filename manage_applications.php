@@ -38,7 +38,7 @@
             <li><a href="show_applications.php">Show All Applications</a></li>
             <li><a href="search_applications.php">Search Applications</a></li>
             <li><a href="delete_applications.php">Delete Applications</a></li>
-            <li><a href="">####</a></li>
+            <li><a href="admit_student.php">Admit Students</a></li>
           </ul>
         </div>
         <div class="widget">

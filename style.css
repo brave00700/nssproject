@@ -44,7 +44,7 @@
 }
 .ham-icon:hover {
   color: #ffa200;
-  transform: translateX(5px);
+  
 }
 
 .ham-menu {
@@ -56,11 +56,11 @@
 
 .nav > ul li a:hover {
   background-color: #ffa200;
-  transform: translateX(5px);
+  
 }
 .nav > ul li a.active {
   background-color: #ffa200;
-  transform: translateX(5px);
+ 
 }
 .nav > ul li a {
   background-color: #303983;
@@ -181,14 +181,14 @@ td img {
 }
 .about_nav {
   display: block;
-  width: 30%;
+  width: 20%;
   background-color: #303983;
   border-radius: 5px;
   margin-right: 20px;
 }
 .widget {
   display: block;
-  width: 70%;
+  width: 80%;
   /* flex-grow: 1; */
 }
 .about_main_divide {
