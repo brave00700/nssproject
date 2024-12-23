@@ -155,38 +155,38 @@ $conn->close();
       <h2>Application Form</h2>
       <form action="" method="post" class="nss-form" enctype="multipart/form-data">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name"  />
+        <input type="text" id="name" name="name" required />
 
         <label for="register_no">Register Number:</label>
-        <input type="text" id="register_no" name="register_no"  />
+        <input type="text" id="register_no" name="register_no" required  />
 
         <label for="mother_name">Mother's Name:</label>
-        <input type="text" id="mother_name" name="mother_name"  />
+        <input type="text" id="mother_name" name="mother_name" required />
 
         <label for="name">Father's Name:</label>
-        <input type="text" id="father_name" name="father_name"  />
+        <input type="text" id="father_name" name="father_name" required />
 
         <label for="phone">Phone Number:</label>
-        <input type="number" id="phone" name="phone"  />
+        <input type="number" id="phone" name="phone" required />
 
         <label for="email">Email ID:</label>
-        <input type="email" id="email" name="email"  />
+        <input type="email" id="email" name="email" required />
 
         <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" name="dob"  />
+        <input type="date" id="dob" name="dob"  required/>
 
         <label for="gender">Gender:</label>
-        <select id="gender" name="gender" >
+        <select id="gender" name="gender" required >
           <option value="" disabled selected>Select </option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
         </select>
 
         <label for="address">Address:</label>
-        <input type="text" id="address" name="address" ></input>
+        <input type="text" id="address" name="address" required/>
 
         <label for="category">Select Category:</label>
-        <select id="category" name="category" >
+        <select id="category" name="category"  required>
           <option value="" disabled selected>Select </option>
           <option value="General">General</option>
           <option value="OBC">OBC</option>
@@ -195,7 +195,7 @@ $conn->close();
         </select>
 
         <label for="shift">Select Shift:</label>
-        <select id="shift" name="shift" >
+        <select id="shift" name="shift" required >
           <option value="" disabled selected>Select </option>
           <option value="1">Shift 1</option>
           <option value="2">Shift 2</option>
@@ -203,10 +203,10 @@ $conn->close();
         </select>
 
         <label for="age">Age:</label>
-        <input type="number" id="age" name="age"  />
+        <input type="number" id="age" name="age" required />
 
         <label for="bloodgroup">Select Blood group:</label>
-        <select id="bloodgroup" name="bloodgroup" >
+        <select id="bloodgroup" name="bloodgroup" required >
           <option value="" disabled selected>Select </option>
           <option value="A+">A+</option>
           <option value="A-">A-</option>
@@ -222,12 +222,12 @@ $conn->close();
         
 
         <label for="course">Course Name:</label>
-        <input id="course" name="course" rows="3" ></input>
+        <input id="course" name="course" rows="3" required />
 
         
 
         <label for="profile_photo">Profile Photo (JPEG, PNG, JPG, max size: 2MB):</label>
-    <input type="file" id="profile_photo" name="profile_photo" accept="image/jpeg, image/png, image/jpg"  />
+    <input type="file" id="profile_photo" name="profile_photo" accept="image/jpeg, image/png, image/jpg" required  />
 
 
         <div class="form-buttons">
