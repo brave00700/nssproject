@@ -6,35 +6,9 @@
     <title>NSS Delete</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="adminportal.css">
     <style>
-        .delete-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .delete-container input[type="text"] {
-            width: 300px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .delete-container button {
-            padding: 10px 15px;
-            margin-left: 10px;
-            border: none;
-            background-color: #dc3545;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .delete-container button:hover {
-            background-color: #c82333;
-        }
-        .message {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
+        
     </style>
 </head>
 <body>
@@ -53,7 +27,7 @@
         <ul>
             <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_announcements.php">Manage Announcements</a></li>
-            <li><a  href="">###</a></li>
+            <li><a   href="manage_passwords.php">Manage Passwords</a></li>
             <li><a href="">####</a></li>
             <li><a href="">####</a></li>
         </ul>
@@ -65,7 +39,7 @@
             <li><a href="show_applications.php">Show All Applications</a></li>
             <li><a href="search_applications.php">Search Applications</a></li>
             <li><a class="active" href="delete_applications.php">Delete Applications</a></li>
-            <li><a href="">####</a></li>
+            <li><a href="admit_student.php">Admit Students</a></li>
           </ul>
         </div>
         <div class="widget">

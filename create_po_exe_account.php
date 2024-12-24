@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nss_application";
+$dbname = "staff_db";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -71,26 +71,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare SQL statement to insert data
-    $sql = "INSERT INTO applications 
-            (Name, Register_no, Phone, Email, DoB, Age, Bloodgroup, Shift, Gender, Course, Address, Mother_name, Father_name, Category, ProfilePhoto) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+    $sql = "INSERT INTO staff_details 
+            (Name, Register_no, Phone, Email, DoB, Gender, Address,role ,User_id,Password, ProfilePhoto) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
-        "sssssisssssssss",
+        "sssssssssss",
         $name,
         $register_no,
         $phone,
         $email,
         $dob,
-        $age,
-        $bloodgroup,
-        $shift,
         $gender,
-        $course,
         $address,
-        $mother_name,
-        $father_name,
-        $category,
+        $role,
+        $user_id,
+        $password,
         $profilePhoto
     );
 
@@ -113,58 +109,56 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NSS Apply</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
-      integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="logo-container">
-      <img class="sjulogo" src="sjulogo.png" alt="sjulogo" />
-      <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-          <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-          <b style="font-size: 1.3rem">ಸೇಂಟ್ ಜೋಸೆಫ್ ವಿಶ್ವವಿದ್ಯಾಲಯ</b><br>
-          <div style="font-size: 0.9rem;color: black;">#36 Lalbagh Road, Bengaluru 560027, Karnataka, India <br>
-          </div> 
-      </h1> 
-      <img class="nsslogo" src="nss_logo.png" alt="logo" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSS Home</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<body>
+<div class="logo-container">
+        <img class="sjulogo" src="sjulogo.png" alt="sjulogo" />
+        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
+            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
+            <b style="font-size: 1.3rem">Admin Portal</b><br>
+        </h1> 
+        <img class="nsslogo" src="nss_logo.png" alt="logo" />
+</div>
+   
+<div class="nav">
+        <div class="ham-menu">
+            <a><i class="fa-solid fa-bars ham-icon"></i></a>
+        </div>
+        <ul>
+            <li><a href="manage_applications.php">Manage Applications</a></li>
+            <li><a href="manage_announcements.php">Manage Announcements</a></li>
+            <li><a class="active"  href="manage_passwords.php"> Accounts & Passwords</a></li>
+            <li><a href="">####</a></li>
+            <li><a href="">####</a></li>
+        </ul>
     </div>
-    <marquee behavior="" direction="">Public - Private- Partnership University under RUSA 2.0 of MHRD (GOI) and Karnataka Act No. 24 of 2021</marquee>
-    <div class="nav">
-      <div class="ham-menu">
-        <a><i class="fa-solid fa-bars ham-icon"></i></a>
-      </div>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a class="active" href="apply.html">Apply</a></li>
-        <li><a href="login.html">Login</a></li>
-        <li><a href="website_announcements.php">Announcements</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </div>
+
+    <div class="main">
+    <div class="about_main_divide">
+        <div class="about_nav">
+          <ul>
+            <li><a href="change_student_password.php">Change Student Password</a></li>
+            <li><a href="change_EXE_PO_password.php">Change Executive & Program Officer Password</a></li>
+            
+          </ul>
+        </div>
+
+        <div class="widget">
     <div class="mainapply">
       <h2>Application Form</h2>
       <form action="" method="post" class="nss-form" enctype="multipart/form-data">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required />
 
-        <label for="register_no">Register Number:</label>
-        <input type="text" id="register_no" name="register_no" required  />
-
-        <label for="mother_name">Mother's Name:</label>
-        <input type="text" id="mother_name" name="mother_name" required />
-
-        <label for="name">Father's Name:</label>
-        <input type="text" id="father_name" name="father_name" required />
+        <label for="register_no">Register Number: (if executive account)</label>
+        <input type="text" id="register_no" name="register_no"   />
 
         <label for="phone">Phone Number:</label>
         <input type="number" id="phone" name="phone" required />
@@ -185,46 +179,17 @@ $conn->close();
         <label for="address">Address:</label>
         <input type="text" id="address" name="address" required/>
 
-        <label for="category">Select Category:</label>
-        <select id="category" name="category"  required>
+        <label for="role">Role:</label>
+        <select id="role" name="role" required >
           <option value="" disabled selected>Select </option>
-          <option value="General">General</option>
-          <option value="OBC">OBC</option>
-          <option value="SC"> SC</option>
-          <option value="ST"> ST</option>
+          <option value="Executive">Executive</option>
+          <option value="Program_Officer">Program Officer</option>
         </select>
 
-        <label for="shift">Select Shift:</label>
-        <select id="shift" name="shift" required >
-          <option value="" disabled selected>Select </option>
-          <option value="Shift-1">Shift 1</option>
-          <option value="Shift-2">Shift 2</option>
-          <option value="Shift-3">Shift 3</option>
-        </select>
-
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required />
-
-        <label for="bloodgroup">Select Blood group:</label>
-        <select id="bloodgroup" name="bloodgroup" required >
-          <option value="" disabled selected>Select </option>
-          <option value="A+">A+</option>
-          <option value="A-">A-</option>
-          <option value="B+">B+</option>
-          <option value="B-">B-</option>
-          <option value="AB+">AB+</option>
-          <option value="AB-">AB-</option>
-          <option value="O+">O+</option>
-          <option value="O-">O-</option>
-        </select>
-
-        
-        
-
-        <label for="course">Course Name:</label>
-        <input id="course" name="course" rows="3" required />
-
-        
+        <label for="user_id">User ID:</label>
+        <input type="text" id="user_id" name="user_id" required/>
+        <label for="Password">Password:</label>
+        <input type="text" id="Password" name="Password" required/>
 
         <label for="profile_photo">Profile Photo (JPEG, PNG, JPG, max size: 2MB):</label>
     <input type="file" id="profile_photo" name="profile_photo" accept="image/jpeg, image/png, image/jpg" required  />
@@ -235,8 +200,9 @@ $conn->close();
           <button type="reset">Reset</button>
         </div>
       </form>
+      </div>
     </div>
-    <script src="script.js"></script>
-    
-  </body>
+</div>
+</body>
 </html>
++

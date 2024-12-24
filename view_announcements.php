@@ -29,52 +29,9 @@ $conn->close();
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="adminportal.css">
    <style>
-    .view {
-    background-color: #f1f1f1; /* Light grey background for contrast */
-    border: 1px solid #ccc; /* Subtle border for separation */
-    border-radius: 8px; /* Rounded corners */
-    padding: 20px; /* Spacing inside the box */
-    max-width: 600px; /* Restrict width for neat layout */
-    margin: 20px auto; /* Center align with margin */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
-}
-
-.view h2 {
-    font-size: 1.8rem; /* Slightly larger font for emphasis */
-    font-weight: bold; /* Make the title bold */
-    color: #333; /* Dark grey for good readability */
-    margin-bottom: 20px; /* Spacing below the title */
-    text-align: center; /* Center-align the title */
-    text-transform: uppercase; /* Make the title all caps */
-    border-bottom: 2px solid #007bff; /* Add a blue underline for styling */
-    padding-bottom: 5px; /* Space between text and underline */
-}
-
-.view ul {
-    list-style-type: none; /* Remove default bullet points */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
-}
-
-.view ul li {
-    margin: 10px 0; /* Add spacing between list items */
-    font-size: 1rem; /* Normal font size for items */
-    font-weight: 500; /* Slightly bold text for clarity */
-}
-
-.view ul li a {
-    text-decoration: none; /* Remove underline from links */
-    color: #007bff; /* Blue color for links */
-    transition: color 0.3s ease; /* Smooth color transition on hover */
-}
-
-.view ul li a:hover {
-    color: #0056b3; /* Darker blue on hover */
-    text-decoration: underline; /* Add underline on hover for clarity */
-}
-
+   
    </style>
 </head>
 <body>
@@ -94,7 +51,7 @@ $conn->close();
         <ul>
             <li><a  href="manage_applications.php">Manage Applications</a></li>
             <li><a class="active" href="manage_upload.php">Manage Announcements</a></li>
-            <li><a  href="">###</a></li>
+            <li><a   href="manage_passwords.php">Manage Passwords</a></li>
             <li><a href="">####</a></li>
             <li><a href="">####</a></li>
         </ul>

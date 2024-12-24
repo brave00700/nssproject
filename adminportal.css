@@ -1,0 +1,399 @@
+.announcements {
+    background: linear-gradient(145deg, #ffffff, #f0f0f5); /* Soft gradient for modern look */
+    border: 3px solid #303983; /* Bold thematic border */
+    border-radius: 12px; /* Smooth rounded corners */
+    padding: 25px; /* Space around the content */
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2); /* Elevated shadow for depth */
+    margin: 30px auto; /* Centering with auto margins */
+    max-width: 650px; /* Restrict width for readability */
+    text-align: left; /* Center-align text in the container */
+  }
+  
+  .announcements h2 {
+    font-size: 2.2rem; /* Prominent heading size */
+    color: #303983; /* Dark blue for emphasis */
+    font-weight: bold; /* Bold for hierarchy */
+    margin-bottom: 20px; /* Space below the heading */
+    text-transform: uppercase; /* Uppercase for style */
+    letter-spacing: 1.2px; /* Add spacing between letters */
+  }
+  
+  .announcements .box {
+    max-height: 400px; /* Limit height for the box */
+    overflow-y: auto; /* Enable vertical scrolling for long content */
+    background-color: #ffffff; /* Clean white background for contrast */
+    border: 2px solid #ccc; /* Subtle border to define the box */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Padding inside the box */
+  }
+  
+  .announcements ul {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margins */
+  }
+  
+  .announcements ul li {
+    padding: 10px 0; /* Space between items */
+    font-size: 1.1rem; /* Readable font size */
+    border-bottom: 1px solid #e0e0e0; /* Light divider between items */
+  }
+  
+  .announcements ul li:last-child {
+    border-bottom: none; /* Remove border for the last item */
+  }
+  
+  .announcements ul li a {
+    text-decoration: none; /* Remove underline */
+    color: #303983; /* Thematic link color */
+    font-weight: bold; /* Emphasize links */
+    transition: all 0.3s ease; /* Smooth hover transition */
+  }
+  
+  .announcements ul li a:hover {
+    color: #ff0000; /* Change color on hover */
+    text-decoration: underline; /* Underline effect on hover */
+    transform: translateX(5px); /* Subtle animation on hover */
+  }
+  
+  .announcements ul li::before {
+    content: "• "; /* Add bullet points */
+    color: #ff0000; /* Accent color for bullet */
+    font-size: 1.2rem; /* Slightly larger bullet */
+    margin-right: 10px; /* Space between bullet and text */
+  }
+  
+  @media (max-width: 768px) {
+    .announcements {
+      padding: 15px; /* Adjust padding for smaller screens */
+    }
+  
+    .announcements h2 {
+      font-size: 1.8rem; /* Adjust heading size for mobile */
+    }
+  
+    .announcements .box {
+      max-height: 300px; /* Reduce height on smaller screens */
+    }
+  
+    .announcements ul li {
+      font-size: 1rem; /* Adjust font size */
+    }
+  }
+  /*show_application*/
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Add scroll for long content */
+.table-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    max-width: 100%; /* Ensure it fits within the screen */
+}
+table td:last-child {
+    max-width: 200px; /* Set width for the Address column */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis (...) for long text */
+}
+table td:hover:last-child {
+    overflow: visible; /* Show full text on hover */
+    white-space: normal; /* Allow wrapping on hover */
+}
+/*search applications*/
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.search-container input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.search-container button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.search-container button:hover {
+    background-color: #0056b3;
+}
+
+/* Table styling */
+table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
+}
+table th, table td {
+padding: 10px;
+border: 1px solid #ccc;
+text-align: center;
+}
+table th {
+background-color: #007bff;
+color: white;
+}
+
+/* Add scroll for long content */
+.table-container {
+overflow-x: auto; /* Enable horizontal scrolling */
+max-width: 100%; /* Ensure it fits within the screen */
+}
+table td:last-child {
+max-width: 200px; /* Set width for the Address column */
+white-space: nowrap; /* Prevent wrapping */
+overflow: hidden; /* Hide overflow */
+text-overflow: ellipsis; /* Add ellipsis (...) for long text */
+}
+table td:hover:last-child {
+overflow: visible; /* Show full text on hover */
+white-space: normal; /* Allow wrapping on hover */
+}
+/*delete_applications*/
+.delete-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.delete-container input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.delete-container button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.delete-container button:hover {
+    background-color: #c82333;
+}
+.message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+/*upload announcements*/
+.upload {
+    background-color: #f9f9f9; /* Light grey background for contrast */
+    border: 1px solid #ccc; /* Subtle border for separation */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Spacing inside the box */
+    max-width: 400px; /* Restrict width for neat layout */
+    margin: 20px auto; /* Center align with margin */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.upload h2 {
+    font-size: 1.5rem; /* Larger font for title */
+    font-weight: bold; /* Make title bold */
+    color: #333; /* Dark grey text for better readability */
+    margin-bottom: 20px; /* Spacing below the title */
+    text-align: center; /* Center the title */
+}
+
+.upload form {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+    gap: 15px; /* Add spacing between form elements */
+}
+
+.upload label {
+    font-size: 1rem; /* Normal font size for the label */
+    color: #555; /* Slightly lighter text color */
+    font-weight: 500; /* Medium weight for better visibility */
+}
+
+.upload input[type="file"] {
+    padding: 5px; /* Space around the text in the input */
+    border: 1px solid #ccc; /* Light border around the input */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #fff; /* White background */
+    font-size: 1rem; /* Consistent font size */
+}
+
+.upload button {
+    padding: 10px 15px; /* Space inside the button */
+    font-size: 1rem; /* Normal font size */
+    font-weight: bold; /* Bold text for the button */
+    color: #fff; /* White text */
+    background-color: #007bff; /* Blue background */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+.upload button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+/*view_announcements*/
+.view {
+    background-color: #f1f1f1; /* Light grey background for contrast */
+    border: 1px solid #ccc; /* Subtle border for separation */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Spacing inside the box */
+    max-width: 600px; /* Restrict width for neat layout */
+    margin: 20px auto; /* Center align with margin */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.view h2 {
+    font-size: 1.8rem; /* Slightly larger font for emphasis */
+    font-weight: bold; /* Make the title bold */
+    color: #333; /* Dark grey for good readability */
+    margin-bottom: 20px; /* Spacing below the title */
+    text-align: center; /* Center-align the title */
+    text-transform: uppercase; /* Make the title all caps */
+    border-bottom: 2px solid #007bff; /* Add a blue underline for styling */
+    padding-bottom: 5px; /* Space between text and underline */
+}
+
+.view ul {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.view ul li {
+    margin: 10px 0; /* Add spacing between list items */
+    font-size: 1rem; /* Normal font size for items */
+    font-weight: 500; /* Slightly bold text for clarity */
+}
+
+.view ul li a {
+    text-decoration: none; /* Remove underline from links */
+    color: #007bff; /* Blue color for links */
+    transition: color 0.3s ease; /* Smooth color transition on hover */
+}
+
+.view ul li a:hover {
+    color: #0056b3; /* Darker blue on hover */
+    text-decoration: underline; /* Add underline on hover for clarity */
+}
+/*delete announcements*/
+.delete {
+    background-color: #fef8f8; /* Light pink background */
+    border: 1px solid #f5c6cb; /* Red border for warning */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Spacing inside the box */
+    max-width: 400px; /* Restrict width for neat layout */
+    margin: 20px auto; /* Center align with margin */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.delete h2 {
+    font-size: 1.5rem; /* Larger font for title */
+    font-weight: bold; /* Make title bold */
+    color: #b71c1c; /* Dark red text for emphasis */
+    margin-bottom: 20px; /* Spacing below the title */
+    text-align: center; /* Center the title */
+}
+
+.delete form {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+    gap: 15px; /* Add spacing between form elements */
+}
+
+.delete label {
+    font-size: 1rem; /* Normal font size for the label */
+    color: #555; /* Slightly lighter text color */
+    font-weight: 500; /* Medium weight for better visibility */
+}
+
+.delete input[type="number"] {
+    padding: 5px; /* Space around the text in the input */
+    border: 1px solid #ccc; /* Light border around the input */
+    border-radius: 4px; /* Rounded corners */
+    background-color: #fff; /* White background */
+    font-size: 1rem; /* Consistent font size */
+}
+
+.delete button {
+    padding: 10px 15px; /* Space inside the button */
+    font-size: 1rem; /* Normal font size */
+    font-weight: bold; /* Bold text for the button */
+    color: #fff; /* White text */
+    background-color: #dc3545; /* Red background */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+.delete button:hover {
+    background-color: #b71c1c; /* Darker red on hover */
+}
+/*CHANGESTUDENT PASSWORD*/
+#change_password {
+    background-color: #f9f9f9; /* Light gray background */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    max-width: 400px; /* Limit width for better readability */
+    margin: 20px auto; /* Center the form */
+    font-family: 'Arial', sans-serif;
+}
+
+#change_password h2 {
+    text-align: center;
+    color: #333; /* Dark text color */
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+#change_password label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555; /* Slightly lighter text */
+}
+
+#change_password input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc; /* Subtle border */
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+#change_password button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Blue button */
+    color: #fff; /* White text */
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#change_password button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}

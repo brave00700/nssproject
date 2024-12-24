@@ -6,63 +6,9 @@
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="adminportal.css">
    <style>
-        .search-container {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .search-container input[type="text"] {
-            width: 300px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .search-container button {
-            padding: 10px 15px;
-            margin-left: 10px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .search-container button:hover {
-            background-color: #0056b3;
-        }
-        <style>
-    /* Table styling */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-    table th, table td {
-        padding: 10px;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-    table th {
-        background-color: #007bff;
-        color: white;
-    }
-
-    /* Add scroll for long content */
-    .table-container {
-        overflow-x: auto; /* Enable horizontal scrolling */
-        max-width: 100%; /* Ensure it fits within the screen */
-    }
-    table td:last-child {
-        max-width: 200px; /* Set width for the Address column */
-        white-space: nowrap; /* Prevent wrapping */
-        overflow: hidden; /* Hide overflow */
-        text-overflow: ellipsis; /* Add ellipsis (...) for long text */
-    }
-    table td:hover:last-child {
-        overflow: visible; /* Show full text on hover */
-        white-space: normal; /* Allow wrapping on hover */
-    }
-</style>
+        
 
     </style>
 </head>
@@ -83,7 +29,7 @@
         <ul>
             <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_announcements.php">Manage Announcements</a></li>
-            <li><a  href="">###</a></li>
+            <li><a  href="manage_passwords.php">Manage Passwords</a></li>
             <li><a href="">####</a></li>
             <li><a href="">####</a></li>
         </ul>
@@ -95,7 +41,7 @@
             <li><a href="show_applications.php">Show All Applications</a></li>
             <li><a class="active" href="search_applications.php">Search Applications</a></li>
             <li><a href="delete_applications.php">Delete Applications</a></li>
-            <li><a href="">####</a></li>
+            <li><a href="admit_student.php">Admit Students</a></li>
           </ul>
         </div>
         <div class="widget">
