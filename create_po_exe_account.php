@@ -17,17 +17,13 @@ if ($conn->connect_error) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
     $register_no = $_POST['register_no'];
-    $mother_name = $_POST['mother_name'];
-    $father_name = $_POST['father_name'];
     $phone = $_POST['phone'];
     $email = $_POST['email'];
     $dob = $_POST['dob'];
-    $age = $_POST['age'];
-    $category = $_POST['category'];
-    $bloodgroup = $_POST['bloodgroup'];
-    $shift = $_POST['shift'];
     $gender = $_POST['gender'];
-    $course = $_POST['course'];
+    $role = $_POST['role'];
+    $user_id = $_POST['user_id'];
+    $password = $_POST['Password'];
     $address = $_POST['address'];
     $profilePhoto = null;
 
@@ -144,6 +140,7 @@ $conn->close();
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
+            <li><a class="active" href="create_po_exe_account.php">Create PO & Executive Account</a></li>
             <li><a href="change_student_password.php">Change Student Password</a></li>
             <li><a href="change_EXE_PO_password.php">Change Executive & Program Officer Password</a></li>
             

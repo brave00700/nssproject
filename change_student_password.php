@@ -73,7 +73,7 @@ $conn->close();
         <ul>
             <li><a href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_announcements.php">Manage Announcements</a></li>
-            <li><a class="active"  href="manage_passwords.php">Manage Passwords</a></li>
+            <li><a class="active"  href="manage_passwords.php">Accounts & Passwords</a></li>
             <li><a href="">####</a></li>
             <li><a href="">####</a></li>
         </ul>
@@ -83,7 +83,8 @@ $conn->close();
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
-            <li><a href="change_student_password.php">Change Student Password</a></li>
+            <li><a href="create_po_exe_account.php">Create PO & Executive Account</a></li>
+            <li><a class="active" href="change_student_password.php">Change Student Password</a></li>
             <li><a href="change_EXE_PO_password.php">Change Executive & Program Officer Password</a></li>
             
           </ul>
