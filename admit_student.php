@@ -186,7 +186,7 @@ if (isset($_POST['admit'])) {
             $student = $result->fetch_assoc();
 
             // Insert into admitted_students table
-            $insertSQL = "INSERT INTO admitted_students 
+            $insertSQL = "INSERT INTO admitted_students
                           (Register_no, Name, Father_name, Mother_name, Phone, Email, Age, Gender, Address, Category, Bloodgroup, Shift, Course, ProfilePhoto,user_id,password, Unit) 
                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
             $insertStmt = $conn->prepare($insertSQL);
