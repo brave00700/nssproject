@@ -25,7 +25,7 @@
         <ul>
             <li><a  href="manage_applications.php">Manage Applications</a></li>
             <li><a class="active"  href="manage_announcements.php">Manage Announcements</a></li>
-            <li><a  href="manage_passwords.php">Manage Passwords</a></li>
+            <li><a  href="manage_passwords.php">Accounts & Passwords</a></li>
             <li><a href="">####</a></li>
             <li><a href="">####</a></li>
         </ul>
