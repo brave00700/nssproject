@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['role'])) {
     $role = $_POST['role'];
 
     // Fetching data based on the role
-    $stmt = $conn->prepare("SELECT Name, Register_no, Phone, Email, DoB, Gender, Address, User_id, ProfilePhoto 
+    $stmt = $conn->prepare("SELECT Name, Register_no, Phone, Email, DoB, Gender, Address, User_id, ProfilePhoto,Unit 
                             FROM staff_details 
                             WHERE role = ?");
     $stmt->bind_param("s", $role);
@@ -41,43 +41,56 @@ $conn->close();
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="adminportal.css">
+    <link rel="stylesheet" href=".css">
     <style>
-     table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-    table th, table td {
-        padding: 10px;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-    table th {
-        background-color: #007bff;
-        color: white;
-    }
+    /* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
-    /* Add scroll for long content */
-    .table-container {
-        overflow-x: auto; /* Enable horizontal scrolling */
-        max-width: 100%; /* Ensure it fits within the screen */
-    }
-    table td:last-child {
-        max-width: 200px; /* Set width for the Address column */
-        white-space: nowrap; /* Prevent wrapping */
-        overflow: hidden; /* Hide overflow */
-        text-overflow: ellipsis; /* Add ellipsis (...) for long text */
-    }
-    table td:hover:last-child {
-        overflow: visible; /* Show full text on hover */
-        white-space: normal; /* Allow wrapping on hover */
-    }
+table th, table td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
 
-    .search_form {
+table th {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Add scroll for long content */
+.table-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 400px; /* Set maximum height for the table container */
+    max-width: 100%; /* Ensure it fits within the screen */
+    border: 1px solid #ccc; /* Optional: Add a border to define the scrollable area */
+    padding: 5px; /* Optional: Add padding for aesthetics */
+    background-color: #f9f9f9; /* Optional: Light background color */
+}
+
+/* Styling for the last column (Address) */
+table td:last-child {
+    max-width: 200px; /* Set width for the Address column */
+    white-space: nowrap; /* Prevent wrapping */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis (...) for long text */
+}
+
+/* Show full text on hover */
+table td:hover:last-child {
+    overflow: visible; /* Show full text on hover */
+    white-space: normal; /* Allow wrapping on hover */
+}
+
+/* Styling for the search form */
+.search_form {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Distributes space evenly */
+    justify-content: space-between; /* Distribute space evenly */
     gap: 10px; /* Space between elements */
     padding: 10px;
     border: 1px solid #ccc; /* Border around the form */
@@ -156,7 +169,9 @@ $conn->close();
             <ul>
                 <li><a href="create_po_exe_account.php">Create PO & Executive Account</a></li>
                 <li><a class="active" href="view_po_exe_account.php">View PO & Executive Account</a></li>
-                <li><a href="view_admitted_students.php">View Admitted Students</a></li>
+                <li><a  href="search_student.php">Search a Student</a></li>
+                <li><a href="view_admitted_students.php">View Admitted Students<br> (Unit-wise)</a></li>
+                <li><a href="modify_students_details.php">Modify Students Details</a></li>
                 <li><a href="change_student_password.php">Change Student Password</a></li>
                 <li><a href="change_EXE_PO_password.php">Change Executive & PO Password</a></li>
             </ul>
@@ -186,6 +201,7 @@ $conn->close();
                             <th>Date of Birth</th>
                             <th>Gender</th>
                             <th>Address</th>
+                            <th>Unit</th>
                             <th>User ID</th>
                         </tr>
                     </thead>
@@ -206,6 +222,7 @@ $conn->close();
                                 <td><?= htmlspecialchars($row['DoB']) ?></td>
                                 <td><?= htmlspecialchars($row['Gender']) ?></td>
                                 <td><?= htmlspecialchars($row['Address']) ?></td>
+                                <td><?= htmlspecialchars($row['Unit']) ?></td>
                                 <td><?= htmlspecialchars($row['User_id']) ?></td>
                             </tr>
                         <?php endforeach; ?>

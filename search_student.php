@@ -27,9 +27,9 @@
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-            <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
+            <li><a  href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_announcements.php">Manage Announcements</a></li>
-            <li><a  href="manage_passwords.php">Accounts & Passwords</a></li>
+            <li><a class="active" href="manage_passwords.php">Accounts & Passwords</a></li>
             <li><a href="">####</a></li>
             <li><a href="">####</a></li>
         </ul>
@@ -38,10 +38,14 @@
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
-            <li><a href="show_applications.php">Show All Applications</a></li>
-            <li><a class="active" href="search_applications.php">Search Applications</a></li>
-            <li><a href="delete_applications.php">Delete Applications</a></li>
-            <li><a href="admit_student.php">Admit Students</a></li>
+          <li><a href="create_po_exe_account.php">Create PO & Executive Account</a></li>
+            <li><a  href="view_po_exe_account.php">View PO & Executive Account</a></li>
+            <li><a class="active" href="search_student.php">Search a Student</a></li>
+            <li><a href="view_admitted_students.php">View Admitted Students<br> (Unit-wise)</a></li>
+            <li><a href="modify_students_details.php">Modify Students Details</a></li>
+            <li><a href="change_student_password.php">Change Student Password</a></li>
+            <li><a href="change_EXE_PO_password.php">Change Executive & Program Officer Password</a></li>
+            
           </ul>
         </div>
         <div class="widget">
@@ -56,16 +60,20 @@
         <table>
             <thead>
                 <tr>
-                    <th>Register Number</th>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Age</th>
-                    <th>Blood Group</th>
-                    <th>Shift</th>
-                    <th>Gender</th>
-                    <th>Course</th>
-                    <th>Address</th>
+                <th>Photo</th>               
+                <th>Register Number</th>
+                                <th>Unit</th>
+                                <th>Name</th>
+                                <th>Course</th>
+                                <th>Shift</th>
+                                <th>Father's Name</th>
+                                <th>Mother's Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Age</th>
+                                <th>Address</th>
+                                <th>Gender</th>
+                                <th>Category</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,32 +92,37 @@
                     $search = $conn->real_escape_string($_POST['search']);
 
                     // Fetch data
-                    $sql = "SELECT * FROM applications WHERE register_no LIKE '%$search%'";
+                    $sql = "SELECT * FROM admitted_students WHERE register_no LIKE '%$search%'";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
+                            $photoPath = $row['ProfilePhoto'];
                             echo "<tr>
+                                    <td><img src='$photoPath' alt='Profile Photo' style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'></td>
                                     <td>{$row['Register_no']}</td>
-                                    <td>{$row['Name']}</td>
-                                    <td>{$row['Phone']}</td>
-                                    <td>{$row['Email']}</td>
-                                    <td>{$row['Age']}</td>
-                                    <td>{$row['Bloodgroup']}</td>
-                                    <td>{$row['Shift']}</td>
-                                    <td>{$row['Gender']}</td>
-                                    <td>{$row['Course']}</td>
-                                    <td>{$row['Address']}</td>
+                                        <td>{$row['Unit']}</td>
+                                        <td>{$row['Name']}</td>
+                                        <td>{$row['Course']}</td>
+                                        <td>{$row['Shift']}</td>
+                                        <td>{$row['Father_name']}</td>
+                                        <td>{$row['Mother_name']}</td>
+                                        <td>{$row['Phone']}</td>
+                                        <td>{$row['Email']}</td>
+                                        <td>{$row['Age']}</td>
+                                        <td>{$row['Address']}</td>
+                                        <td>{$row['Gender']}</td>
+                                        <td>{$row['Category']}</td>
                                   </tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='10'>No results found</td></tr>";
+                        echo "<tr><td colspan='12'>No results found</td></tr>";
                     }
 
                     $conn->close();
                 } else {
                     // If no search input, don't display any rows
-                    echo "<tr><td colspan='10'>Please enter a register number to search.</td></tr>";
+                    echo "<tr><td colspan='12'>Please enter a register number to search.</td></tr>";
                 }
                 ?>
             </tbody>

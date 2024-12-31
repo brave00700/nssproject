@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = $_POST['user_id'];
     $password = $_POST['Password'];
     $address = $_POST['address'];
+    $unit=$_POST['unit'];
     $profilePhoto = null;
 
     // Handle file upload
@@ -68,11 +69,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare SQL statement to insert data
     $sql = "INSERT INTO staff_details 
-            (Name, Register_no, Phone, Email, DoB, Gender, Address,role ,User_id,Password, ProfilePhoto) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            (Name, Register_no, Phone, Email, DoB, Gender, Address,role ,User_id,Password, ProfilePhoto,Unit) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
-        "sssssssssss",
+        "sssssssssssi",
         $name,
         $register_no,
         $phone,
@@ -83,7 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $role,
         $user_id,
         $password,
-        $profilePhoto
+        $profilePhoto,
+        $unit
     );
 
     // Execute query
@@ -142,7 +144,9 @@ $conn->close();
           <ul>
             <li><a class="active" href="create_po_exe_account.php">Create PO & Executive Account</a></li>
             <li><a  href="view_po_exe_account.php">View PO & Executive Account</a></li>
-            <li><a href="view_admitted_students.php">View Admitted Students</a></li>
+            <li><a  href="search_student.php">Search a Student</a></li>
+            <li><a href="view_admitted_students.php">View Admitted Students<br> (Unit-wise)</a></li>
+            <li><a href="modify_students_details.php">Modify Students Details</a></li>
             <li><a href="change_student_password.php">Change Student Password</a></li>
             <li><a href="change_EXE_PO_password.php">Change Executive & Program Officer Password</a></li>
             
@@ -183,6 +187,16 @@ $conn->close();
           <option value="" disabled selected>Select </option>
           <option value="Executive">Executive</option>
           <option value="Program_Officer">Program Officer</option>
+        </select>
+
+        <label for="unit">Unit:</label>
+        <select id="unit" name="unit" required >
+          <option value="" disabled selected>Select </option>
+          <option value="1">1</option>
+          <option value="2">2 </option>
+          <option value="3">3 </option>
+          <option value="4">4 </option>
+          <option value="5">5 </option>
         </select>
 
         <label for="user_id">User ID:</label>

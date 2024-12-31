@@ -80,37 +80,109 @@
       font-size: 1rem; /* Adjust font size */
     }
   }
-  /*show_application*/
-  table {
+  /*show_application*  && admit student/
+    /* Table styling */
+table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
+
 table th, table td {
     padding: 10px;
     border: 1px solid #ccc;
     text-align: center;
 }
+
 table th {
     background-color: #007bff;
     color: white;
 }
 
-/* Add scroll for long content */
+/* Table container with scroll*/
 .table-container {
     overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 400px; /* Set the maximum height for the table container */
     max-width: 100%; /* Ensure it fits within the screen */
+    border: 1px solid #ccc; /* Optional: Add a border to define the scrollable area */
+    padding: 5px; /* Optional: Add padding for aesthetics */
+    background-color: #f9f9f9; /* Optional: Light background color */
 }
-table td:last-child {
-    max-width: 200px; /* Set width for the Address column */
-    white-space: nowrap; /* Prevent wrapping */
-    overflow: hidden; /* Hide overflow */
-    text-overflow: ellipsis; /* Add ellipsis (...) for long text */
+
+/* Style for both horizontal and vertical scrollbars */
+.table-container::-webkit-scrollbar {
+    width: 8px; /* Set the width for both horizontal and vertical scrollbars */
+    height: 8px; /* Set the height for horizontal scrollbar */
 }
-table td:hover:last-child {
-    overflow: visible; /* Show full text on hover */
-    white-space: normal; /* Allow wrapping on hover */
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background color of the scrollbar track */
 }
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 4px; /* Rounded corners for the thumb */
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker color on hover */
+}
+
+
+    /* Styling for the select dropdown */
+select {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding inside the dropdown */
+    margin: 10px 0; /* Space around the dropdown */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Larger font size */
+    background-color: #f9f9f9; /* Light background color */
+    color: #333; /* Text color */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: all 0.3s ease; /* Smooth transitions */
+}
+
+select:hover {
+    border-color: #007bff; /* Change border color on hover */
+    background-color: #fff; /* Slightly brighter background */
+}
+
+select:focus {
+    outline: none; /* Remove default outline */
+    border-color: #007bff; /* Highlighted border */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Blue glow */
+}
+
+/* Styling for the button */
+button[type="submit"] {
+    display: inline-block; /* Makes it behave like a button */
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 16px; /* Text size */
+    font-weight: bold; /* Bold text */
+    color: #fff; /* White text color */
+    background-color: #007bff; /* Blue background */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+button[type="submit"]:active {
+    transform: scale(0.98); /* Slightly shrink on click */
+    background-color: #003f7f; /* Even darker blue */
+}
+
+button[type="submit"]:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle blue glow */
+}
+
 /*search applications*/
 .search-container {
     display: flex;
