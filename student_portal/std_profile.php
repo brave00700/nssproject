@@ -24,7 +24,7 @@
         </div>
         <ul>
             <li><a  class="active" href="std_profile.php">Profile</a></li>
-            <li><a href="std_attendance.php">Attendance</a></li>
+            <li><a href="std_attendance_view.php">Attendance</a></li>
             <li><a  href="std_events.php">Events</a></li>
         </ul>
     </div>
@@ -51,7 +51,7 @@
             if($conn->connect_error){
                 die("Connection failed: " . $conn->connect_error);
             }
-            $stmt = $conn->prepare("SELECT Register_no, Name, Father_name, Mother_name, Phone, Email, Age, Gender, Category, Bloodgroup, Shift, Course, ProfilePhoto, Unit FROM admitted_students WHERE user_id = ?");
+            $stmt = $conn->prepare("SELECT Register_no, Name, Father_name, Mother_name, Phone, Email, Age, Gender, Category, Bloodgroup, Shift, Course, ProfilePhoto, Unit, Address FROM admitted_students WHERE user_id = ?");
             $stmt->bind_param("s", $reg);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -77,12 +77,48 @@
                             <td>{$row['Unit']}</td>
                         </tr>
                         <tr>
+                            <td>Shift</td>
+                            <td>{$row['Shift']}</td>
+                        </tr>
+                        <tr>
+                            <td>Course</td>
+                            <td>{$row['Course']}</td>
+                        </tr>
+                        <tr>
                             <td>Phone</td>
                             <td>{$row['Phone']}</td>
                         </tr>
                         <tr>
                             <td>Email</td>
                             <td>{$row['Email']}</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td>{$row['Address']}</td>
+                        </tr>
+                        <tr>
+                            <td>Father Name</td>
+                            <td>{$row['Father_name']}</td>
+                        </tr>
+                        <tr>
+                            <td>Mother Name</td>
+                            <td>{$row['Mother_name']}</td>
+                        </tr>
+                        <tr>
+                            <td>Age</td>
+                            <td>{$row['Age']}</td>
+                        </tr>
+                        <tr>
+                            <td>Gender</td>
+                            <td>{$row['Gender']}</td>
+                        </tr>
+                        <tr>
+                            <td>Category</td>
+                            <td>{$row['Email']}</td>
+                        </tr>
+                        <tr>
+                            <td>Bloodgroup</td>
+                            <td>{$row['Bloodgroup']}</td>
                         </tr>
                     </table>";
             }else {

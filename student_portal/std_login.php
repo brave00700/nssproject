@@ -54,11 +54,11 @@
                 <table>
                     <tr>
                         <td class="label">Register No/NSS-ID</td>
-                        <td><input type="text" name='id'></td>
+                        <td><input type="text" name='id' required></td>
                     </tr>
                     <tr>
                         <td class="label">Password</td>
-                        <td><input type="password" name='pass'></td>
+                        <td><input type="password" name='pass' required></td>
                     </tr>
                     <tr>
                         <td></td>
