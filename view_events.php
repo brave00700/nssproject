@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "staff_db";
+$dbname = "event_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -13,14 +13,14 @@ if ($conn->connect_error) {
 }
 
 $results = [];
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['role'])) {
-    $role = $_POST['role'];
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['event_unit'])) {
+    $event_unit = $_POST['event_unit'];
 
-    // Fetching data based on the role
-    $stmt = $conn->prepare("SELECT Name, Register_no, Phone, Email, DoB, Gender, Address, User_id, ProfilePhoto,Unit 
-                            FROM staff_details 
-                            WHERE role = ?");
-    $stmt->bind_param("s", $role);
+    // Fetch data based on selected unit
+    $stmt = $conn->prepare("SELECT event_id,event_name, event_date, event_time, event_duration, poster_path, event_type, description, teacher_incharge, student_incharge, event_venue, budget_pdf_path 
+                            FROM events 
+                            WHERE event_unit = ?");
+    $stmt->bind_param("i", $event_unit);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['role'])) {
 $conn->close();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +44,7 @@ $conn->close();
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href=".css">
     <style>
-    /* Table styling */
+     /* Table styling */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -138,7 +139,7 @@ table td:hover:last-child {
 
 </style>
    
-</style>
+
 
 </head>
 <body>
@@ -158,9 +159,9 @@ table td:hover:last-child {
         <ul>
         <li><a  href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_students.php"> Manage Students</a></li>
-            <li><a class="active" href="manage_staff.php"> Manage Staff</a></li>
+            <li><a  href="manage_staff.php"> Manage Staff</a></li>
             <li><a  href="manage_announcements.php"> Announcements</a></li>
-            <li><a  href="manage_events.php"> Events</a></li>
+            <li><a class="active" href="manage_events.php"> Events</a></li>
             <li><a href="manage_inventory.php">Inventory</a></li>
         </ul>
     </div>
@@ -168,72 +169,82 @@ table td:hover:last-child {
     <div class="about_main_divide">
         <div class="about_nav">
             <ul>
-                <li><a href="create_po_exe_account.php">Create PO & Executive Account</a></li>
-                <li><a class="active" href="view_po_exe_account.php">View PO & Executive Account</a></li>
-                <li><a href="modify_po_exe_details.php">Modify PO & Executive Details</a></li>
-                <li><a  href="search_student.php">Search a Student</a></li>
-                <li><a href="view_admitted_students.php">View Admitted Students<br> (Unit-wise)</a></li>
-                <li><a href="modify_students_details.php">Modify Students Details</a></li>
-                <li><a href="change_student_password.php">Change Student Password</a></li>
-                <li><a href="change_EXE_PO_password.php">Change Executive & PO Password</a></li>
+            <li><a  href="create_events.php">Create Events</a></li>
+            <li><a class="active" href="view_events.php">View Events</a></li>
+            <li><a  href="modify_events.php">Modify Event Details</a></li>
+            <li><a  href="delete_events.php">Delete a event</a></li>
             </ul>
         </div>
         <div class="widget">
         <div class="search_form">
-            <h1>Program Officer & Executive Accounts</h1>
-             <form method="post">
-                <label for="role">Select Role:</label>
-                <select name="role" id="role" required>
-                    <option value="" disabled selected>Choose Role</option>
-                    <option value="Executive">Executive</option>
-                    <option value="Program_Officer">Program Officer</option>
-                </select>
-                <button type="submit">View</button>
-            </form></div>
-            <div class="table-container">
-            <?php if (!empty($results)): ?>
-                <table>
-                    <thead>
+        <h1>View Events</h1>
+        <form method="post">
+        <label for="event_unit">Select Unit:</label>
+        <select name="event_unit" id="event_unit" required>
+        <option value="" disabled selected>Choose Unit</option>
+        <option value="1">Unit 1</option>
+        <option value="2">Unit 2</option>
+        <option value="3">Unit 3</option>
+        <option value="4">Unit 4</option>
+        <option value="5">Unit 5</option>
+    </select>
+    <button type="submit">View</button>
+</form> </div>
+<div class="table-container">
+<?php if (!empty($results)): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event ID</th>    
+                        <th>Event Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Duration (hrs)</th>
+                        <th>Poster</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Teacher In-Charge</th>
+                        <th>Student In-Charge</th>
+                        <th>Venue</th>
+                        <th>Budget</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($results as $row): ?>
                         <tr>
-                            <th>Profile Photo</th>
-                            <th>Name</th>
-                            <th>Register No</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Date of Birth</th>
-                            <th>Gender</th>
-                            <th>Address</th>
-                            <th>Unit</th>
-                            <th>User ID</th>
+                            <td><?= htmlspecialchars($row['event_id']) ?></td>
+                            <td><?= htmlspecialchars($row['event_name']) ?></td>
+                            <td><?= htmlspecialchars($row['event_date']) ?></td>
+                            <td><?= htmlspecialchars($row['event_time']) ?></td>
+                            <td><?= htmlspecialchars($row['event_duration']) ?></td>
+                            <td>
+                                <?php if (!empty($row['poster_path'])): ?>
+                                    <img src="<?= htmlspecialchars($row['poster_path']) ?>" alt="Poster" style="width: 50px; height: 50px; object-fit: cover; border-radius: 20%;">
+                                    <a href="<?= htmlspecialchars($row['poster_path']) ?>" target="_blank">Download</a>
+                                <?php else: ?>
+                                    No Poster
+                                <?php endif; ?>
+                            </td>
+                            <td><?= htmlspecialchars($row['event_type']) ?></td>
+                            <td><?= htmlspecialchars($row['description']) ?></td>
+                            <td><?= htmlspecialchars($row['teacher_incharge']) ?></td>
+                            <td><?= htmlspecialchars($row['student_incharge']) ?></td>
+                            <td><?= htmlspecialchars($row['event_venue']) ?></td>
+                            <td>
+                                <?php if (!empty($row['budget_pdf_path'])): ?>
+                                    <a href="<?= htmlspecialchars($row['budget_pdf_path']) ?>" target="_blank">View</a>
+                                <?php else: ?>
+                                    No Budget File
+                                <?php endif; ?>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($results as $row): ?>
-                            <tr>
-                                <td>
-                                    <?php if (!empty($row['ProfilePhoto'])): ?>
-                                        <img src="<?= htmlspecialchars($row['ProfilePhoto']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
-                                    <?php else: ?>
-                                        No Photo
-                                    <?php endif; ?>
-                                </td>
-                                <td><?= htmlspecialchars($row['Name']) ?></td>
-                                <td><?= htmlspecialchars($row['Register_no']) ?></td>
-                                <td><?= htmlspecialchars($row['Phone']) ?></td>
-                                <td><?= htmlspecialchars($row['Email']) ?></td>
-                                <td><?= htmlspecialchars($row['DoB']) ?></td>
-                                <td><?= htmlspecialchars($row['Gender']) ?></td>
-                                <td><?= htmlspecialchars($row['Address']) ?></td>
-                                <td><?= htmlspecialchars($row['Unit']) ?></td>
-                                <td><?= htmlspecialchars($row['User_id']) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php elseif ($_SERVER["REQUEST_METHOD"] === "POST"): ?>
-                <p>No results found for the selected role.</p>
-            <?php endif; ?></div>
-            </div>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php elseif ($_SERVER["REQUEST_METHOD"] === "POST"): ?>
+            <p>No events found for the selected unit.</p>
+        <?php endif; ?>
+</div>
         </div>
 </div>
 </div>

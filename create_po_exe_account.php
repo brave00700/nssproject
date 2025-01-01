@@ -130,11 +130,12 @@ $conn->close();
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-            <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="manage_announcements.php">Manage Announcements</a></li>
-            <li><a class="active"  href="manage_passwords.php"> Accounts & Passwords</a></li>
-            <li><a href="">####</a></li>
-            <li><a href="">####</a></li>
+        <li><a href="manage_applications.php">Manage Applications</a></li>
+            <li><a href="manage_students.php"> Manage Students</a></li>
+            <li><a class="active" href="manage_staff.php"> Manage Staff</a></li>
+            <li><a href="manage_announcements.php"> Announcements</a></li>
+            <li><a  href="manage_events.php"> Events</a></li>
+            <li><a href="manage_inventory.php">Inventory</a></li>
         </ul>
     </div>
 
@@ -144,18 +145,16 @@ $conn->close();
           <ul>
             <li><a class="active" href="create_po_exe_account.php">Create PO & Executive Account</a></li>
             <li><a  href="view_po_exe_account.php">View PO & Executive Account</a></li>
-            <li><a  href="search_student.php">Search a Student</a></li>
-            <li><a href="view_admitted_students.php">View Admitted Students<br> (Unit-wise)</a></li>
-            <li><a href="modify_students_details.php">Modify Students Details</a></li>
-            <li><a href="change_student_password.php">Change Student Password</a></li>
-            <li><a href="change_EXE_PO_password.php">Change Executive & Program Officer Password</a></li>
+            <li><a href="modify_po_exe_details.php">Modify PO & Executive Details</a></li>
+            
+            <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
             
           </ul>
         </div>
 
         <div class="widget">
     <div class="mainapply">
-      <h2>Application Form</h2>
+      <h2>Create PO & Executive Account</h2>
       <form action="" method="post" class="nss-form" enctype="multipart/form-data">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required />

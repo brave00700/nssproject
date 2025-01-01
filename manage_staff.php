@@ -23,11 +23,11 @@
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-        <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="manage_students.php"> Manage Students</a></li>
-            <li><a  href="manage_staff.php"> Manage Staff</a></li>
-            <li><a  href="manage_announcements.php"> Announcements</a></li>
-            <li><a  href="manage_events.php"> Events</a></li>
+            <li><a href="manage_applications.php">Manage Applications</a></li>
+            <li><a  href="manage_students.php"> Manage Students</a></li>
+            <li><a  class="active" href="manage_staff.php"> Manage Staff</a></li>
+            <li><a href="manage_announcements.php"> Announcements</a></li>
+            <li><a href="manage_events.php"> Events</a></li>
             <li><a href="manage_inventory.php">Inventory</a></li>
         </ul>
     </div>
@@ -36,13 +36,15 @@
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
-            <li><a href="show_applications.php">Show All Applications</a></li>
-            <li><a href="search_applications.php">Search Applications</a></li>
-            <li><a href="delete_applications.php">Delete Applications</a></li>
-            <li><a href="admit_student.php">Admit Students</a></li>
+            <li><a href="create_po_exe_account.php">Create PO & Executive Account</a></li>
+            <li><a  href="view_po_exe_account.php">View PO & Executive Account</a></li>
+            <li><a href="modify_po_exe_details.php">Modify PO & Executive Details</a></li>
+            <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
+            
           </ul>
         </div>
         <div class="widget">
+            
         </div>
     </div>
 </div>

@@ -25,11 +25,12 @@
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-            <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="manage_announcements.php">Manage Announcements</a></li>
-            <li><a   href="manage_passwords.php">Accounts & Passwords</a></li>
-            <li><a href="">####</a></li>
-            <li><a href="">####</a></li>
+        <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
+            <li><a href="manage_students.php"> Manage Students</a></li>
+            <li><a  href="manage_staff.php"> Manage Staff</a></li>
+            <li><a  href="manage_announcements.php"> Announcements</a></li>
+            <li><a  href="manage_events.php"> Events</a></li>
+            <li><a href="manage_inventory.php">Inventory</a></li>
         </ul>
     </div>
     <div class="main">

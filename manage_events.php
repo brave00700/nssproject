@@ -23,11 +23,11 @@
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-        <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
+        <li><a  href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_students.php"> Manage Students</a></li>
             <li><a  href="manage_staff.php"> Manage Staff</a></li>
             <li><a  href="manage_announcements.php"> Announcements</a></li>
-            <li><a  href="manage_events.php"> Events</a></li>
+            <li><a class="active" href="manage_events.php"> Events</a></li>
             <li><a href="manage_inventory.php">Inventory</a></li>
         </ul>
     </div>
@@ -36,13 +36,17 @@
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
-            <li><a href="show_applications.php">Show All Applications</a></li>
-            <li><a href="search_applications.php">Search Applications</a></li>
-            <li><a href="delete_applications.php">Delete Applications</a></li>
-            <li><a href="admit_student.php">Admit Students</a></li>
+            <li><a  href="create_events.php">Create Events</a></li>
+            <li><a href="view_events.php">View Events</a></li>
+            <li><a  href="modify_events.php">Modify Event Details</a></li>
+            <li><a  href="delete_events.php">Delete a event</a></li>
+            
+            
+            
           </ul>
         </div>
         <div class="widget">
+            
         </div>
     </div>
 </div>
