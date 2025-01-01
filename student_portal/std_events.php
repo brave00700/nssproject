@@ -89,17 +89,32 @@
             }
             $reg = $_SESSION['reg'];
 
+            // Create a connection object for retrieving student unit no
+            $conn_student = new mysqli("localhost", "root", "", "nss_application");
+            if($conn_student->connect_error){
+                die("Connection failed: " . $conn_student->connect_error);
+            }
+            $stmt1 = $conn_student->prepare("SELECT Unit FROM admitted_students WHERE Register_no = ?");
+            $stmt1->bind_param("s",$reg);
+            $stmt1->execute();
+            $result_student = $stmt1->get_result();
+            if($result_student->num_rows > 0){
+                $row = $result_student->fetch_assoc();
+                $unit = $row['Unit'];
+            }
+
             // Create a connection object for events
             $conn_events = new mysqli("localhost", "root", "", "event_db");
             if($conn_events->connect_error){
-                die("Connection failed: " . $conn->connect_error);
+                die("Connection failed: " . $conn_events->connect_error);
             }
-            $result = $conn_events->query("SELECT event_name, event_date, event_time, poster_path, event_type, description, teacher_incharge, student_incharge, event_venue FROM events");
-            $sl_no = 0;
+            $stmt2 = $conn_events->prepare("SELECT event_name, event_date, event_time, poster_path, event_type, description, teacher_incharge, student_incharge, event_venue FROM events WHERE event_unit = ?");
+            $stmt2->bind_param("i",$unit);
+            $stmt2->execute();
+            $result_event = $stmt2->get_result();
             
-            if($result->num_rows > 0){
-                $sl_no++;
-                while($row = $result->fetch_assoc()){
+            if($result_event->num_rows > 0){
+                while($row = $result_event->fetch_assoc()){
                     echo "<div class='tile'>
                 <a href='{$row['poster_path']}' target='_blank'><img src='{$row['poster_path']}'></a>
                 <div class='tile-content'>
@@ -114,11 +129,14 @@
             </div>";
                 }
             }else{
-                echo "<script>document.querySelector('.evt_list').style.display = 'none';
-                    document.querySelector('.widget').innerHTML += 'No Events Found';</script>";
+                echo "<script>document.querySelector('.widget').innerHTML += 'No Events Found';</script>";
             }
+
+            $stmt1->close();
+            $stmt2->close();
+            $conn_events->close();
+            $conn_student->close();
             ?>
-            </table>
         </div>
     </div>
 </div>
