@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+// Storing session variable
+if(!$_SESSION['admin_id']){
+    header("Location: login.html");
+}            ?>
+<?php
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -73,7 +80,7 @@ $conn->close();
             <li><a href="manage_staff.php"> Manage Staff</a></li>
             <li><a class="active" href="manage_announcements.php"> Announcements</a></li>
             <li><a href="manage_events.php"> Events</a></li>
-            <li><a href="manage_inventory.php">Inventory</a></li>
+            <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
 

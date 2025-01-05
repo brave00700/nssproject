@@ -114,7 +114,7 @@
                         </tr>
                         <tr>
                             <td>Category</td>
-                            <td>{$row['Email']}</td>
+                            <td>{$row['Category']}</td>
                         </tr>
                         <tr>
                             <td>Bloodgroup</td>
