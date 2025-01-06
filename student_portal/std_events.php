@@ -116,7 +116,7 @@
             if($result_event->num_rows > 0){
                 while($row = $result_event->fetch_assoc()){
                     echo "<div class='tile'>
-                <a href='{$row['poster_path']}' target='_blank'><img src='{$row['poster_path']}'></a>
+                <a href='../{$row['poster_path']}' target='_blank'><img src='../{$row['poster_path']}'></a>
                 <div class='tile-content'>
                     <span class='e_name'>Event Name: <span>{$row['event_name']}</span></span>
                     <span class='e_desc'>Description: {$row['description']}</span>

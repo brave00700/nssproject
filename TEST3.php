@@ -109,10 +109,7 @@ $conn->close();
 <body>
 <div class="logo-container">
     <img class="sjulogo" src="sjulogo.png" alt="sjulogo" />
-    <h1><b style="font-size: 2.9rem;">National Service Scheme</b><br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru.<br>
-        <b style="font-size: 1.3rem">Admin Portal</b><br>
-    </h1>
+    <h1><b>National Service Scheme</b><br>St Joseph's University, Bengaluru.<br><b>Admin Portal</b></h1> 
     <img class="nsslogo" src="nss_logo.png" alt="logo" />
 </div>
 

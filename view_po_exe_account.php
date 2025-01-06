@@ -178,10 +178,7 @@ table td:hover:last-child {
                 <li><a href="create_po_exe_account.php">Create PO & Executive Account</a></li>
                 <li><a class="active" href="view_po_exe_account.php">View PO & Executive Account</a></li>
                 <li><a href="modify_po_exe_details.php">Modify PO & Executive Details</a></li>
-                <li><a  href="search_student.php">Search a Student</a></li>
-                <li><a href="view_admitted_students.php">View Admitted Students<br> (Unit-wise)</a></li>
-                <li><a href="modify_students_details.php">Modify Students Details</a></li>
-                <li><a href="change_student_password.php">Change Student Password</a></li>
+               
                 <li><a href="change_EXE_PO_password.php">Change Executive & PO Password</a></li>
             </ul>
         </div>

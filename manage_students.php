@@ -44,8 +44,8 @@ if(!$_SESSION['admin_id']){
         <div class="about_nav">
           <ul>
            
-            <li><a  href="search_student.php">Search a Student</a></li>
-            <li><a href="view_admitted_students.php">View Admitted Students<br> (Unit-wise)</a></li>
+            
+            <li><a href="view_admitted_students.php">View Admitted Students</a></li>
             <li><a href="modify_students_details.php">Modify Students Details</a></li>
             <li><a href="change_student_password.php">Change Student Password</a></li>
             
