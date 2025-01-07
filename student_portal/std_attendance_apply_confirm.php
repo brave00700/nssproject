@@ -10,6 +10,21 @@
         input {
             outline: none;
         }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        form label{
+            text-transform: uppercase;
+        }
+        form input {
+            font-size: 1rem;
+            padding: 0.1rem;
+            /* backround-color: ; */
+        }
+        form button {
+            padding: 0.5rem 0;
+        }
     </style>
 </head>
 <body>

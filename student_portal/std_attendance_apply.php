@@ -10,6 +10,27 @@
         input {
             outline: none;
         }
+        table tbody > tr:first-child td{
+            background-color: #ffbf2ee0;
+            color: #FFFFFF;
+        }
+        table tbody> tr td:not(:last-child){
+            border-right: 1px solid #FFFFFF;
+        }
+        table tbody> tr:not(:first-child) td:not(:last-child) {
+            background-color: #fff1d3e0;
+        }
+        button {
+            width: 100%;
+            border: none;
+            background-color: #ffca3b;
+            border-radius: 4px;
+            padding: 2px 0;
+            color:rgb(37, 37, 37);
+        }
+        button:active {
+            background-color: #ffba00;
+        }
     </style>
 </head>
 <body>
