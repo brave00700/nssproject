@@ -1,0 +1,11 @@
+# Automatically normalize line endings for text files
+* text=auto
+
+# Enforce LF line endings for PHP files
+*.php text eol=lf
+
+# Optionally enforce LF for other files like shell scripts or config files
+*.sh text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.html text eol=lf

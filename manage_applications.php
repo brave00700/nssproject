@@ -14,6 +14,8 @@ if(!$_SESSION['admin_id']){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href=".css">
+    
+
     <style>
         /*search applications*/
 .search-container {
@@ -179,6 +181,33 @@ select:focus {
     outline: none; /* Remove default focus outline */
     box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); /* Add a subtle red glow */
 }
+/* Styling for the "Select All" button */
+.select-all-button {
+    display: inline-block; /* Makes it behave like a button */
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 16px; /* Text size */
+    font-weight: bold; /* Bold text */
+    color: #fff; /* White text color */
+    background-color: #6c757d; /* Grey background */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.select-all-button:hover {
+    background-color: #5a6268; /* Darker grey on hover */
+}
+
+.select-all-button:active {
+    transform: scale(0.98); /* Slightly shrink on click */
+    background-color: #4e555b; /* Even darker grey */
+}
+
+.select-all-button:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(108, 117, 125, 0.5); /* Add a subtle grey glow */
+}
 
         
     </style>
@@ -199,8 +228,8 @@ select:focus {
         </div>
         <ul>
         <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
-            <li><a  href="manage_students.php"> Manage Students</a></li>
-            <li><a href="manage_staff.php"> Manage Staff</a></li>
+            <li><a  href="view_admitted_students.php"> Manage Students</a></li>
+            <li><a href="view_po.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
             <li><a href="manage_events.php"> Events</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
@@ -294,6 +323,7 @@ select:focus {
                 </div>
 
                 <div >
+                    <button type="button" class="select-all-button" id="select-all-button" style="background:">Select All</button>
                     <button type="submit" name="admit" class="admit-buttons" >Admit Selected Students</button>
                     <button type="submit" name="delete" class="delete-button">Delete Selected Students</button>
                 </div>
@@ -398,5 +428,17 @@ select:focus {
         ?>
     </div>
 </div>
+<script>
+    // JavaScript to handle "Select All" functionality
+    document.getElementById("select-all-button").addEventListener("click", function () {
+        // Get all the checkboxes
+        const checkboxes = document.querySelectorAll("input[type='checkbox'][name='selected_students[]']");
+        // Toggle the selection of all checkboxes
+        const isChecked = Array.from(checkboxes).some(checkbox => !checkbox.checked);
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = isChecked;
+        });
+    });
+</script>
 </body>
 </html>

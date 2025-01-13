@@ -1,0 +1,14 @@
+{
+    "name": "suhas/email",
+    "description": "emailer",
+    "authors": [
+        {
+            "name": "SUHAS G S",
+            "email": "suhasgs1113@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

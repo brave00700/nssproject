@@ -1,18 +1,16 @@
 <?php
-session_start();
+require 'vendor/autoload.php'; // For PHPMailer
 
-// Storing session variable
-if(!$_SESSION['admin_id']){
-    header("Location: login.html");
-}            ?>
-<?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 // Database configuration
 $servername = "localhost";
 $username = "root";
 $password = ""; // Replace with your database password
 $dbname = "nss_application";
 
-// Create a connection
+// Connect to database
 $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
@@ -20,36 +18,95 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $user_id = $_POST['user_id'];
-    $new_password = $_POST['new_password'];
+    $register_no = $_POST['register_no'];
 
-    // Input validation
-    if (empty($user_id) || empty($new_password)) {
-        echo "<p style='color:red;'>User ID and Password cannot be empty.</p>";
-    } else {
-        // Update query
-        $sql = "UPDATE admitted_students SET password = ? WHERE user_id = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ss", $new_password, $user_id);
+    // Fetch student email from the database
+    $stmt = $conn->prepare("SELECT Email FROM admitted_students WHERE Register_no = ?");
+    $stmt->bind_param("s", $register_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $email = $row['Email'];
+
+        // Generate a secure password
+        $password = generatePassword();
+
+        // Update password in the database
+        $stmt = $conn->prepare("UPDATE admitted_students SET password = ? WHERE Register_no = ?");
+        $stmt->bind_param("ss", $password, $register_no);
         if ($stmt->execute()) {
-            if ($stmt->affected_rows > 0) {
-                echo "<script>alert('Password updated successfully!');</script>";
+            // Send the generated password via email
+            if (sendEmail($email, $password)) {
+                echo "<script>alert('Password generated and sent to the student's email.');</script>";
+                
             } else {
-                echo "<script>alert('User ID not found or no changes made.');</script>";
+                
+                echo "<script>alert('Failed to send email.');</script>";
             }
         } else {
-            echo "<p style='color:red;'>Error updating password: " . $conn->error . "</p>";
+            
+            echo "<script>alert('Failed to update password in the database.');</script>";
         }
-
-        $stmt->close();
+    } else {
+        
+        echo "<script>alert('Register number not found.');</script>";
     }
+
+    $stmt->close();
 }
 
-// Close connection
+// Close database connection
 $conn->close();
+
+/**
+ * Function to generate a random password
+ */
+function generatePassword($length = 8) {
+    $uppercase = chr(rand(65, 90));
+    $lowercase = chr(rand(97, 122));
+    $number = chr(rand(48, 57));
+    $special = chr(rand(33, 47));
+    $remainingLength = $length - 4;
+
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+    $randomChars = substr(str_shuffle($characters), 0, $remainingLength);
+
+    return str_shuffle($uppercase . $lowercase . $number . $special . $randomChars);
+}
+
+/**
+ * Function to send email using PHPMailer
+ */
+function sendEmail($to, $password) {
+    $mail = new PHPMailer(true);
+
+    try {
+        // SMTP configuration
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'testreset1882@gmail.com'; // Replace with your email
+        $mail->Password = 'lgoykdxxwrdplacx'; // Replace with your app password
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        // Email settings
+        $mail->setFrom('testreset1882@gmail.com', 'NSS Admin');
+        $mail->addAddress($to);
+        $mail->isHTML(true);
+        $mail->Subject = 'Your New Password';
+        $mail->Body = "Dear Student,<br><br>Your new password is: <b>$password</b><br><br>Regards,<br>NSS Admin";
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log("Email Error: {$mail->ErrorInfo}");
+        return false;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -79,8 +136,8 @@ $conn->close();
         </div>
         <ul>
             <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a class="active" href="manage_students.php"> Manage Students</a></li>
-            <li><a href="manage_staff.php"> Manage Staff</a></li>
+            <li><a class="active" href="view_admitted_students.php"> Manage Students</a></li>
+            <li><a href="view_po.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
             <li><a href="manage_events.php"> Events</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
@@ -94,7 +151,7 @@ $conn->close();
            
             
             <li><a href="view_admitted_students.php">View Admitted Students</a></li>
-            <li><a href="modify_students_details.php">Modify Students Details</a></li>
+            
             <li><a class="active" href="change_student_password.php">Change Student Password</a></li>
             
             
@@ -102,13 +159,11 @@ $conn->close();
         </div>
         <div class="widget">
             <div id="change_password">
-        <h2>Change Student Password</h2>
+            <h2>Generate New Password </h2>
     <form method="POST">
-        <label for="user_id">User ID:</label>
-        <input type="text" id="user_id" name="user_id" required><br><br>
-        <label for="new_password">New Password:</label>
-        <input type="password" id="new_password" name="new_password" required><br><br>
-        <button type="submit">Change Password</button>
+        <label for="register_no">Register Number:</label>
+        <input type="text" id="register_no" name="register_no" required>
+        <button type="submit">Generate Password</button>
     </form></div>
         </div>
     </div>

@@ -138,8 +138,8 @@ $conn->close();
         </div>
         <ul>
         <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="manage_students.php"> Manage Students</a></li>
-            <li><a class="active" href="manage_staff.php"> Manage Staff</a></li>
+            <li><a href="view_admitted_students.php"> Manage Students</a></li>
+            <li><a class="active" href="view_po.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
             <li><a  href="manage_events.php"> Events</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
@@ -150,9 +150,9 @@ $conn->close();
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
-            <li><a class="active" href="create_po_exe_account.php">Create PO & Executive Account</a></li>
-            <li><a  href="view_po_exe_account.php">View PO & Executive Account</a></li>
-            <li><a href="modify_po_exe_details.php">Modify PO & Executive Details</a></li>
+            
+            <li><a class="active" href="view_po.php">View PO & Executive Account</a></li>
+            
             
             <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
             

@@ -34,6 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['search'])) {
         while ($row = $searchResult->fetch_assoc()) {
             $searchResults[] = $row;
         }
+    } else {
+        echo "<script>alert('No results found.');</script>";
     }
 }
 
@@ -61,11 +63,9 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Admin Portal</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href=".css">
     <style>
-        <style>
     /* Table styling */
 table {
     width: 100%;
@@ -181,7 +181,33 @@ table td:hover:last-child {
         width: 100%; /* Make forms full width */
     }
 }
+/* Styling for the button */
+.admit-buttons{
+    display: inline-block; /* Makes it behave like a button */
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 16px; /* Text size */
+    font-weight: bold; /* Bold text */
+    color: #fff; /* White text color */
+    background-color: #007bff; /* Blue background */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
 
+.admit-buttons:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.admit-buttons:active {
+    transform: scale(0.98); /* Slightly shrink on click */
+    background-color: #003f7f; /* Even darker blue */
+}
+
+.admit-buttons:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle blue glow */
+}
 
 
     </style>
@@ -196,43 +222,39 @@ table td:hover:last-child {
     <img class="nsslogo" src="nss_logo.png" alt="logo" />
 </div>
 
-    <div class="nav">
+<div class="nav">
         <div class="ham-menu">
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-            <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a class="active"  href="manage_students.php"> Manage Students</a></li>
-            <li><a href="manage_staff.php"> Manage Staff</a></li>
+        <li><a  href="manage_applications.php">Manage Applications</a></li>
+            <li><a class="active" href="view_admitted_students.php"> Manage Students</a></li>
+            <li><a href="view_po.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
             <li><a href="manage_events.php"> Events</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
 
-    <div class="main">
-    <div class="about_main_divide">
-        <div class="about_nav">
-          <ul>
-           
-            
-          <li><a  class="active"  href="view_admitted_students.php">View Admitted Students</a></li>
-            <li><a href="modify_students_details.php">Modify Students Details</a></li>
-            <li><a href="change_student_password.php">Change Student Password</a></li>
-            
-            
-            
-          </ul>
-        </div>
-        <div class="widget">
-        
 
+
+<div class="main">
+<div class="about_main_divide">
+        <div class="about_nav">
+            <ul>
+                <li><a  class="active" href="view_admitted_students.php">View Admitted Students</a></li>
+                
+                <li><a href="change_student_password.php">Change Student Password</a></li>
+            </ul>
+        </div><div class="widget">
+            
         <div class="search_form_container">
     <form class="search_form" method="POST">
-        <label for="search">Search  by Register No:</label>
+        <label for="search">Search by Register No:</label>
         <input type="text" id="search" name="search" placeholder="Enter Register Number" required>
         <button type="submit">Search</button>
     </form>
+
     <form class="search_form" method="POST">
         <label for="unit">View Students Unit-Wise:</label>
         <select name="unit" id="unit" required>
@@ -245,130 +267,87 @@ table td:hover:last-child {
         </select>
         <button type="submit">View</button>
     </form>
-</div>
-
-
+    </div>
+    <form action="modify_std.php" method="POST" onsubmit="return validateSelection()">
         <div class="table-container">
-            <?php if (!empty($searchResults)): ?>
-                <h3>Search Results:</h3>
+            <?php if (!empty($searchResults) || !empty($unitResults)): ?>
                 <table>
                     <thead>
                     <tr>
-                <th>Photo</th>               
-                <th>Register Number</th>
-                                <th>Unit</th>
-                                <th>Name</th>
-                                <th>Course</th>
-                                <th>Shift</th>
-                                <th>Father's Name</th>
-                                <th>Mother's Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Age</th>
-                                <th>Gender</th>
-                                <th>Blood Group</th>
-                                <th>Category</th>
-                                <th>Address</th>
-                                
-                               
-                </tr>
+                        <th>Select</th>
+                        <th>ProfilePhoto</th>
+                        <th>Register Number</th>
+                        <th>Unit</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Shift</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Father Name</th>
+                        <th>Mother Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                        <th>Category</th>
+                        <th>Bloodgroup</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($searchResults as $row): ?>
-                            <tr>
-                    <td>
-                        <?php if (!empty($row['ProfilePhoto'])): ?>
-                            <img src="<?= htmlspecialchars($row['ProfilePhoto']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
-                        <?php else: ?>
-                            No Photo
-                        <?php endif; ?>
-                    </td>
-                    <td><?= htmlspecialchars($row['Register_no']) ?></td>
-                    <td><?= htmlspecialchars($row['Unit']) ?></td>
-                    <td><?= htmlspecialchars($row['Name']) ?></td>
-                    <td><?= htmlspecialchars($row['Course']) ?></td>
-                    <td><?= htmlspecialchars($row['Shift']) ?></td>
-                    <td><?= htmlspecialchars($row['Father_name']) ?></td>
-                    <td><?= htmlspecialchars($row['Mother_name']) ?></td>
-                    <td><?= htmlspecialchars($row['Phone']) ?></td>
-                    <td><?= htmlspecialchars($row['Email']) ?></td>
-                    <td><?= htmlspecialchars($row['Age']) ?></td>
-                    <td><?= htmlspecialchars($row['Gender']) ?></td>
-                    <td><?= htmlspecialchars($row['Bloodgroup']) ?></td>
-                    <td><?= htmlspecialchars($row['Category']) ?></td>
-                    <td><?= htmlspecialchars($row['Address']) ?></td>
-                    
-                    
-                    
-                    
-                </tr>
-            <?php endforeach; ?>
-                        
+                    <?php foreach (array_merge($searchResults, $unitResults) as $row): ?>
+                        <tr>
+                            <td><input type="checkbox" name="register_no" value="<?= htmlspecialchars($row['Register_no']) ?>" ></td>
+                            <td>
+                                <?php if (!empty($row['ProfilePhoto'])): ?>
+                                    <img src="<?= htmlspecialchars($row['ProfilePhoto']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
+                                <?php else: ?>
+                                    No Photo
+                                <?php endif; ?>
+                            </td>
+                            
+                            <td><?= htmlspecialchars($row['Register_no']) ?></td>
+                            <td><?= htmlspecialchars($row['Unit']) ?></td>
+                            <td><?= htmlspecialchars($row['Name']) ?></td>
+                            <td><?= htmlspecialchars($row['Course']) ?></td>
+                            <td><?= htmlspecialchars($row['Shift']) ?></td>
+                            <td><?= htmlspecialchars($row['Email']) ?></td>
+                            <td><?= htmlspecialchars($row['Phone']) ?></td>
+                            <td><?= htmlspecialchars($row['Father_name']) ?></td>
+                            <td><?= htmlspecialchars($row['Mother_name']) ?></td>
+                            <td><?= htmlspecialchars($row['Age']) ?></td>
+                            <td><?= htmlspecialchars($row['Gender']) ?></td>
+                            <td><?= htmlspecialchars($row['Address']) ?></td>
+                            <td><?= htmlspecialchars($row['Category']) ?></td>
+                            <td><?= htmlspecialchars($row['Bloodgroup']) ?></td>
+                        </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
+                
+            <?php else: ?>
+                <h5>No students found.</h5>
             <?php endif; ?>
+        </div><br>
+        <button type="submit" name="modify" class="admit-buttons">Modify</button>
 
-            <?php if (!empty($unitResults)): ?>
-                <h3>Unit-Wise Results:</h3>
-                <table>
-                    <thead><tr>
-                <th>Photo</th>               
-                <th>Register Number</th>
-                                <th>Unit</th>
-                                <th>Name</th>
-                                <th>Course</th>
-                                <th>Shift</th>
-                                <th>Father's Name</th>
-                                <th>Mother's Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
-                                <th>Age</th>
-                                <th>Gender</th>
-                                <th>Blood Group</th>
-                                <th>Category</th>
-                                <th>Address</th>
-                                
-                               
-                </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($unitResults as $row): ?>
-                            <tr>
-                    <td>
-                        <?php if (!empty($row['ProfilePhoto'])): ?>
-                            <img src="<?= htmlspecialchars($row['ProfilePhoto']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
-                        <?php else: ?>
-                            No Photo
-                        <?php endif; ?>
-                    </td>
-                    <td><?= htmlspecialchars($row['Register_no']) ?></td>
-                    <td><?= htmlspecialchars($row['Unit']) ?></td>
-                    <td><?= htmlspecialchars($row['Name']) ?></td>
-                    <td><?= htmlspecialchars($row['Course']) ?></td>
-                    <td><?= htmlspecialchars($row['Shift']) ?></td>
-                    <td><?= htmlspecialchars($row['Father_name']) ?></td>
-                    <td><?= htmlspecialchars($row['Mother_name']) ?></td>
-                    <td><?= htmlspecialchars($row['Phone']) ?></td>
-                    <td><?= htmlspecialchars($row['Email']) ?></td>
-                    <td><?= htmlspecialchars($row['Age']) ?></td>
-                    <td><?= htmlspecialchars($row['Gender']) ?></td>
-                    <td><?= htmlspecialchars($row['Bloodgroup']) ?></td>
-                    <td><?= htmlspecialchars($row['Category']) ?></td>
-                    <td><?= htmlspecialchars($row['Address']) ?></td>
-                    
-                    
-                    
-                    
-                </tr>
-            <?php endforeach; ?>
-                        
-                    </tbody>
-                </table>
-            <?php elseif ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['unit'])): ?>
-                <p>No students found for the selected unit.</p>
-            <?php endif; ?>
-        </div>
-    </div>
-    </div>
+    </form>
+    <script>
+    function validateSelection() {
+        const checkboxes = document.querySelectorAll('input[name="register_no"]:checked');
+        if (checkboxes.length > 1) {
+            alert("Please select only one student to modify.");
+            return false; // Prevent form submission
+        }
+        if (checkboxes.length === 0) {
+            alert("Please select at least one student to modify.");
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+</script>
+</div>
+</div>
+</div>
+</div>
+
 </body>
 </html>

@@ -31,8 +31,8 @@ if(!$_SESSION['admin_id']){
         </div>
         <ul>
             <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a class="active"  href="manage_students.php"> Manage Students</a></li>
-            <li><a href="manage_staff.php"> Manage Staff</a></li>
+            <li><a class="active"  href="view_admitted_students.php"> Manage Students</a></li>
+            <li><a href="view_po.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
             <li><a href="manage_events.php"> Events</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
@@ -46,7 +46,7 @@ if(!$_SESSION['admin_id']){
            
             
             <li><a href="view_admitted_students.php">View Admitted Students</a></li>
-            <li><a href="modify_students_details.php">Modify Students Details</a></li>
+            
             <li><a href="change_student_password.php">Change Student Password</a></li>
             
             
