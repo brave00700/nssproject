@@ -21,25 +21,34 @@ if ($conn->connect_error) {
 
 // Initialize variables
 $student = [];
-
-// Fetch details for the given register number
 $register_no = null;
 
-// Check if register number is passed from `view_admitted_students.php`
+// Handle modify request
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modify']) && isset($_POST['register_no'])) {
-    $register_no = $_POST['register_no'];
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fetch_details'])) {
-    $register_no = $_POST['register_no'];
+    // Since `register_no` is an array, process only the first selected student
+    $register_no_array = $_POST['register_no'];
+
+    if (count($register_no_array) > 1) {
+        echo "<script>alert('Please select only one student to modify.'); window.location.href = 'view_admitted_students.php';</script>";
+        exit;
+    }
+
+    $register_no = $register_no_array[0]; // Get the selected register number
 }
 
+// Fetch details for the selected student
 if ($register_no) {
-    $sql = "SELECT * FROM admitted_students WHERE Register_no = '$register_no'";
-    $result = $conn->query($sql);
+    $sql = "SELECT * FROM admitted_students WHERE Register_no = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $register_no);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
     if ($result && $result->num_rows > 0) {
         $student = $result->fetch_assoc();
     } else {
-        echo "<script>alert('No student found with the entered register number.');</script>";
+        echo "<script>alert('No student found with the selected register number.'); window.location.href = 'view_admitted_students.php';</script>";
+        exit;
     }
 }
 
@@ -74,28 +83,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
 
     // Build the SQL query dynamically
     $updates = [];
-    if (!empty($name)) $updates[] = "Name = '$name'";
-    if (!empty($father_name)) $updates[] = "Father_name = '$father_name'";
-    if (!empty($mother_name)) $updates[] = "Mother_name = '$mother_name'";
-    if (!empty($phone)) $updates[] = "Phone = '$phone'";
-    if (!empty($email)) $updates[] = "Email = '$email'";
-    if (!is_null($age)) $updates[] = "Age = $age";
-    if (!empty($gender)) $updates[] = "Gender = '$gender'";
-    if (!empty($address)) $updates[] = "Address = '$address'";
-    if (!empty($category)) $updates[] = "Category = '$category'";
-    if (!empty($bloodgroup)) $updates[] = "Bloodgroup = '$bloodgroup'";
-    if (!is_null($shift)) $updates[] = "Shift = $shift";
-    if (!empty($course)) $updates[] = "Course = '$course'";
-    if (!is_null($unit)) $updates[] = "Unit = $unit";
-    if (!empty($profilePhoto)) $updates[] = "ProfilePhoto = '$profilePhoto'";
+    if (!empty($name)) $updates[] = "Name = ?";
+    if (!empty($father_name)) $updates[] = "Father_name = ?";
+    if (!empty($mother_name)) $updates[] = "Mother_name = ?";
+    if (!empty($phone)) $updates[] = "Phone = ?";
+    if (!empty($email)) $updates[] = "Email = ?";
+    if (!is_null($age)) $updates[] = "Age = ?";
+    if (!empty($gender)) $updates[] = "Gender = ?";
+    if (!empty($address)) $updates[] = "Address = ?";
+    if (!empty($category)) $updates[] = "Category = ?";
+    if (!empty($bloodgroup)) $updates[] = "Bloodgroup = ?";
+    if (!is_null($shift)) $updates[] = "Shift = ?";
+    if (!empty($course)) $updates[] = "Course = ?";
+    if (!is_null($unit)) $updates[] = "Unit = ?";
+    if (!empty($profilePhoto)) $updates[] = "ProfilePhoto = ?";
 
     if (count($updates) > 0) {
-        $sql = "UPDATE admitted_students SET " . implode(", ", $updates) . " WHERE Register_no = '$register_no'";
+        $sql = "UPDATE admitted_students SET " . implode(", ", $updates) . " WHERE Register_no = ?";
+        $stmt = $conn->prepare($sql);
 
-        if ($conn->query($sql) === TRUE) {
+        $params = [];
+        if (!empty($name)) $params[] = $name;
+        if (!empty($father_name)) $params[] = $father_name;
+        if (!empty($mother_name)) $params[] = $mother_name;
+        if (!empty($phone)) $params[] = $phone;
+        if (!empty($email)) $params[] = $email;
+        if (!is_null($age)) $params[] = $age;
+        if (!empty($gender)) $params[] = $gender;
+        if (!empty($address)) $params[] = $address;
+        if (!empty($category)) $params[] = $category;
+        if (!empty($bloodgroup)) $params[] = $bloodgroup;
+        if (!is_null($shift)) $params[] = $shift;
+        if (!empty($course)) $params[] = $course;
+        if (!is_null($unit)) $params[] = $unit;
+        if (!empty($profilePhoto)) $params[] = $profilePhoto;
+        $params[] = $register_no;
+
+        $stmt->bind_param(str_repeat("s", count($params)), ...$params);
+
+        if ($stmt->execute()) {
             echo "<script>alert('Student details updated successfully!'); window.location.href = 'view_admitted_students.php';</script>";
         } else {
-            echo "<script>alert('Error updating record: " . $conn->error . "');</script>";
+            echo "<script>alert('Error updating record: " . $stmt->error . "');</script>";
         }
     } else {
         echo "<script>alert('No changes were made.');</script>";

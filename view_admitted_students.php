@@ -268,7 +268,7 @@ table td:hover:last-child {
         <button type="submit">View</button>
     </form>
     </div>
-    <form action="modify_std.php" method="POST" onsubmit="return validateSelection()">
+    <form  method="POST">
         <div class="table-container">
             <?php if (!empty($searchResults) || !empty($unitResults)): ?>
                 <table>
@@ -295,7 +295,7 @@ table td:hover:last-child {
                     <tbody>
                     <?php foreach (array_merge($searchResults, $unitResults) as $row): ?>
                         <tr>
-                            <td><input type="checkbox" name="register_no" value="<?= htmlspecialchars($row['Register_no']) ?>" ></td>
+                            <td><input type="checkbox" name="register_no[]" value="<?= htmlspecialchars($row['Register_no']) ?>" ></td>
                             <td>
                                 <?php if (!empty($row['ProfilePhoto'])): ?>
                                     <img src="<?= htmlspecialchars($row['ProfilePhoto']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
@@ -327,17 +327,18 @@ table td:hover:last-child {
                 <h5>No students found.</h5>
             <?php endif; ?>
         </div><br>
-        <button type="submit" name="modify" class="admit-buttons">Modify</button>
-
+        <button type="submit" formaction="modify_std.php" name="modify" class="admit-buttons" >Modify</button>
+        <button type="submit" formaction="view_report.php" name="view" class="admit-buttons" >View Report</button>
+        <button type="submit" formaction="change_unit.php"name="change_unit" class="admit-buttons">Change Unit</button>
     </form>
     <script>
     function validateSelection() {
-        const checkboxes = document.querySelectorAll('input[name="register_no"]:checked');
+        const checkboxes = document.querySelectorAll('input[name="register_no[]"]:checked');
         if (checkboxes.length > 1) {
             alert("Please select only one student to modify.");
             return false; // Prevent form submission
         }
-        if (checkboxes.length === 0) {
+        if (checkboxes.length  === 0) {
             alert("Please select at least one student to modify.");
             return false; // Prevent form submission
         }

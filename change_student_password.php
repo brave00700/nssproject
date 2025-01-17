@@ -1,4 +1,11 @@
 <?php
+session_start();
+
+// Storing session variable
+if(!$_SESSION['admin_id']){
+    header("Location: login.html");
+}            ?>
+<?php
 require 'vendor/autoload.php'; // For PHPMailer
 
 use PHPMailer\PHPMailer\PHPMailer;

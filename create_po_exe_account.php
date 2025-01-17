@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute query
     if ($stmt->execute()) {
-        echo "<script>alert('Application submitted successfully!');</script>";
+        echo "<script>alert('Application submitted successfully!'); window.location.href = 'view_po.php';</script>";
     } else {
         echo "<script>alert('Error: " . $stmt->error . "');</script>";
     }
