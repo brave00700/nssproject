@@ -129,6 +129,8 @@
                         $cred = $result->fetch_assoc();
                         if($cred['password'] == $lpass){
                             $_SESSION['reg'] = $lreg;
+                            $_SESSION['last_seen'] = time();
+                            $_SESSION['timeout'] = 120;
                             header("Location: std_profile.php");
                             exit();
                         }

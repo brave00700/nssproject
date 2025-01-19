@@ -75,6 +75,16 @@
             // Creating a new session
             session_start();
 
+            //Checking user session timeout
+            if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
+                session_unset();
+                session_destroy();
+                header("Location: std_login.php");
+                exit();
+            }
+            //Update last activity time
+            $_SESSION['last_seen'] = time();
+
             // Storing session variable
             if(!$_SESSION['reg']){
                 header("Location: std_login.php");
