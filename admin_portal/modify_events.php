@@ -3,7 +3,7 @@ session_start();
 
 // Storing session variable
 if(!$_SESSION['admin_id']){
-    header("Location: login.html");
+    header("Location: ../login.html");
 }            ?>
 <?php
 // Database connection
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $event_date = $_POST['event_date'];
     $event_time = $_POST['event_time'];
     $event_duration = $_POST['event_duration'];
-    $event_type = $_POST['event_type'];
+    $event_type = isset($_POST['event_type']) ? $_POST['event_type'] : '';
     $description = $_POST['description'];
     $teacher_incharge = $_POST['teacher_incharge'];
     $student_incharge = $_POST['student_incharge'];
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $budgetPdfPath = '';
 
     if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = 'uploads/';
+        $uploadDir = '../uploads/event_posters/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -47,13 +47,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (isset($_FILES['budget_pdf']) && $_FILES['budget_pdf']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = 'uploads/';
+        $uploadDir = '../uploads/budget_pdfs/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
         $budgetPdfPath = $uploadDir . basename($_FILES['budget_pdf']['name']);
         move_uploaded_file($_FILES['budget_pdf']['tmp_name'], $budgetPdfPath);
     }
+
+    // Escape the file paths to prevent SQL issues
+    $posterPath = mysqli_real_escape_string($conn, $posterPath);
+    $budgetPdfPath = mysqli_real_escape_string($conn, $budgetPdfPath);
 
     // Build the SQL query dynamically
     $updates = [];
@@ -94,18 +98,18 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="adminportal.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../adminportal.css">
 
 </head>
 <body>
 <div class="logo-container">
-        <img class="sjulogo" src="sjulogo.png" alt="sjulogo" />
+        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
         <h1><b style="font-size: 2.9rem;">National Service Scheme </b><br>
             <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru.<br>
             <b style="font-size: 1.3rem">Admin Portal</b><br>
         </h1> 
-        <img class="nsslogo" src="nss_logo.png" alt="logo" />
+        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
 </div>
 
 <div class="nav">
@@ -154,7 +158,7 @@ $conn->close();
             <input type="number" id="event_duration" name="event_duration"><br><br>
 
             <label for="event_type">Event Type:</label>
-        <select id="event_type" name="event_type" required >
+        <select id="event_type" name="event_type">
           <option value="" disabled selected>Select </option>
           <option value="In-House">In-House</option>
           <option value="Out-House">Out-House</option>
@@ -173,13 +177,14 @@ $conn->close();
             <input type="text" id="event_venue" name="event_venue"><br><br>
 
             <label for="event_unit">Unit:</label>
-        <select id="event_unit" name="event_unit" required >
+        <select id="event_unit" name="event_unit" >
           <option value="" disabled selected>Select </option>
           <option value="1">1</option>
           <option value="2">2 </option>
           <option value="3">3 </option>
           <option value="4">4 </option>
           <option value="5">5 </option>
+          <option value="10">All </option>
         </select>
 
             <label for="poster">Poster:</label>

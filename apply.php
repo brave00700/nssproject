@@ -180,6 +180,7 @@ $conn->close();
           <option value="" disabled selected>Select </option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
+          <option value="Other">Other</option>
         </select>
 
         <label for="address">Address:</label>

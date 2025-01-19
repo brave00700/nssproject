@@ -3,7 +3,7 @@ session_start();
 
 // Storing session variable
 if(!$_SESSION['admin_id']){
-    header("Location: login.html");
+    header("Location: ../login.html");
 }            ?>
 
 <?php
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['event_unit'])) {
     // Fetch data based on selected unit
     $stmt = $conn->prepare("SELECT event_id,event_name, event_date, event_time, event_duration, poster_path, event_type, description, teacher_incharge, student_incharge, event_venue, budget_pdf_path 
                             FROM events 
-                            WHERE event_unit = ?");
+                            WHERE event_unit = ? OR event_unit = 10");
     $stmt->bind_param("i", $event_unit);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -49,8 +49,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href=".css">
+    <link rel="stylesheet" href="../style.css">
     <style>
      /* Table styling */
 table {
@@ -152,12 +151,12 @@ table td:hover:last-child {
 </head>
 <body>
 <div class="logo-container">
-    <img class="sjulogo" src="sjulogo.png" alt="sjulogo" />
+    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
     <h1><b style="font-size: 2.9rem;">National Service Scheme</b> <br>
         <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
         <b style="font-size: 1.3rem">Admin Portal</b><br>
     </h1> 
-    <img class="nsslogo" src="nss_logo.png" alt="logo" />
+    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
 </div>
    
 <div class="nav">

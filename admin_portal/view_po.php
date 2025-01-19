@@ -3,7 +3,7 @@ session_start();
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: login.html");
+    header("Location: ../login.html");
     exit();
 }
 
@@ -48,7 +48,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
     <style>
     /* Table styling */
 table {
@@ -175,12 +175,12 @@ table td:hover:last-child {
 </head>
 <body>
     <div class="logo-container">
-        <img class="sjulogo" src="sjulogo.png" alt="sjulogo" />
+        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
         <h1><b style="font-size: 2.9rem;">National Service Scheme</b> <br>
             <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
             <b style="font-size: 1.3rem">Admin Portal</b><br>
         </h1> 
-        <img class="nsslogo" src="nss_logo.png" alt="logo" />
+        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
     </div>
 
     <div class="nav">

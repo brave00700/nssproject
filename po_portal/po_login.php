@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Program Officer Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
     <style>
     form {
         background-color: #ffffff;
@@ -69,12 +69,12 @@
 </head>
 <body>
 <div class="logo-container">
-    <img class="sjulogo" src="sjulogo.png" alt="sjulogo" />
+    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
     <h1><b style="font-size: 2.9rem;">National Service Scheme</b> <br>
         <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
         <b style="font-size: 1.3rem">Program Officer Portal</b><br>
     </h1> 
-    <img class="nsslogo" src="nss_logo.png" alt="logo" />
+    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
 </div>
 
 <div class="nav">
@@ -110,7 +110,7 @@
     // Checking for program officer login
     if(isset($_POST['login'])){
         if (!empty($_POST['id']) && !empty($_POST['pass'])){
-            $officer_id = $_POST['id'];
+            $po_id = $_POST['id'];
             $officer_pass = $_POST['pass'];
 
             // Create a connection object
@@ -119,15 +119,16 @@
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $stmt = $conn->prepare("SELECT role, Password FROM staff_details WHERE User_id = ?");
-            $stmt->bind_param("s", $officer_id);
+            $stmt = $conn->prepare("SELECT role, Password, Unit FROM staff_details WHERE User_id = ?");
+            $stmt->bind_param("s", $po_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
             if($result->num_rows > 0) {
                 $officer_data = $result->fetch_assoc();
                 if($officer_data['Password'] == $officer_pass && strtolower($officer_data['role']) == 'program_officer'){
-                    $_SESSION['officer_id'] = $officer_id;
+                    $_SESSION['po_id'] = $po_id;
+                    $_SESSION['unit'] = intval($officer_data['Unit']);
                     
                     header("Location: po_profile.php");
                     exit();

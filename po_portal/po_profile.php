@@ -2,7 +2,7 @@
 session_start();
 
 // Storing session variable
-if(!$_SESSION['officer_id']){
+if(!$_SESSION['po_id'] || !$_SESSION['unit']){
     header("Location: login.html");
 }            
 ?>
@@ -14,17 +14,17 @@ if(!$_SESSION['officer_id']){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
    
 </head>
 <body>
 <div class="logo-container">
-        <img class="sjulogo" src="sjulogo.png" alt="sjulogo" />
+        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
         <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
             <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
             <b style="font-size: 1.3rem">Student Portal</b><br>
         </h1> 
-        <img class="nsslogo" src="nss_logo.png" alt="logo" />
+        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
 </div>
    
 <div class="nav">
@@ -33,7 +33,7 @@ if(!$_SESSION['officer_id']){
         </div>
         <ul>
             <li><a  class="active" href="po_profile.php">Profile</a></li>
-            <li><a href=".php">###</a></li>
+            <li><a href="po_approve_attendance.php">Attendance</a></li>
             <li><a  href=".php">###</a></li>
         </ul>
     </div>
@@ -50,14 +50,14 @@ if(!$_SESSION['officer_id']){
         <div class="widget">
             <?php
           
-          $officer_id=$_SESSION['officer_id'];
+            $po_id = $_SESSION['po_id'];
             // Create a connection object
             $conn = new mysqli("localhost", "root", "", "staff_db");
             if($conn->connect_error){
                 die("Connection failed: " . $conn->connect_error);
             }
             $stmt = $conn->prepare("SELECT  Name, Phone, Email,DoB, Gender, Address,role, User_id, ProfilePhoto, Unit FROM staff_details WHERE User_id = ?");
-            $stmt->bind_param("s", $officer_id);
+            $stmt->bind_param("s", $po_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
@@ -67,7 +67,7 @@ if(!$_SESSION['officer_id']){
                 echo "<table>
                         <tr>
                             <td>Profile</td>
-                            <td><img src=\"$photoPath\" style=\"width: 50px; height: 50px;\"></td>
+                            <td><img src=\"../$photoPath\" style=\"width: 50px; height: 50px;\"></td>
                         </tr>
                         
                         <tr>
@@ -107,7 +107,7 @@ if(!$_SESSION['officer_id']){
                     </table>";
             }else {
                 echo "User Not Found";
-                header("Location: login.html");
+                header("Location: ../login.html");
             }
             ?>
         </div>

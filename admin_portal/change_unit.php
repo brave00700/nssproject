@@ -3,7 +3,7 @@ session_start();
 
 // Redirect to login if not authenticated
 if (!isset($_SESSION['admin_id'])) {
-    header("Location: login.html");
+    header("Location: ../login.html");
     exit();
 }
 
@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['register_no'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Unit</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
 <div class="main-container">

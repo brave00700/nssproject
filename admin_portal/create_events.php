@@ -3,7 +3,7 @@ session_start();
 
 // Storing session variable
 if(!$_SESSION['admin_id']){
-    header("Location: login.html");
+    header("Location: ../login.html");
 }            ?>
 <?php
 // Database connection
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
 
-        $posterDir = 'uploads/event_posters/';
+        $posterDir = '../uploads/event_posters/';
         if (!is_dir($posterDir)) {
             mkdir($posterDir, 0777, true);
         }
@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
 
-        $budgetDir = 'uploads/budget_pdfs/';
+        $budgetDir = '../uploads/budget_pdfs/';
         if (!is_dir($budgetDir)) {
             mkdir($budgetDir, 0777, true);
         }
@@ -129,17 +129,17 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
    
 </head>
 <body>
 <div class="logo-container">
-        <img class="sjulogo" src="sjulogo.png" alt="sjulogo" />
+        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
         <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
             <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
             <b style="font-size: 1.3rem">Admin Portal</b><br>
         </h1> 
-        <img class="nsslogo" src="nss_logo.png" alt="logo" />
+        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
 </div>
    
 <div class="nav">
@@ -213,6 +213,7 @@ $conn->close();
           <option value="3">3 </option>
           <option value="4">4 </option>
           <option value="5">5 </option>
+          <option value="10">All </option>
         </select>
 
     <label for="poster">Event Poster (JPEG, PNG, JPG, max size: 2MB):</label>
