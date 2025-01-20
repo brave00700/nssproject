@@ -327,7 +327,7 @@ table td:hover:last-child {
                 <h5>No students found.</h5>
             <?php endif; ?>
         </div><br>
-        <button type="submit" formaction="modify_std.php" name="modify" class="admit-buttons" >Modify</button>
+        <button type="submit" formaction="modify_std.php" name="modify" class="admit-buttons" onclick="return validateSelection()" >Modify</button>
         <button type="submit" formaction="view_report.php" name="view" class="admit-buttons" >View Report</button>
         <button type="submit" formaction="change_unit.php"name="change_unit" class="admit-buttons">Change Unit</button>
     </form>
