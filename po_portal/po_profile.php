@@ -22,7 +22,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
         <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
         <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
             <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Student Portal</b><br>
+            <b style="font-size: 1.3rem">Program Officer Portal</b><br>
         </h1> 
         <img class="nsslogo" src="../nss_logo.png" alt="logo" />
 </div>
@@ -33,9 +33,14 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
         </div>
         <ul>
             <li><a  class="active" href="po_profile.php">Profile</a></li>
+            <li><a  href="po_manage_application.php">Manage Applications</a></li>
+            <li><a  href="po_view_admitted_students.php"> Manage Students</a></li>
             <li><a href="po_approve_attendance.php">Attendance</a></li>
-            <li><a  href=".php">###</a></li>
+            
+            <li><a href=".php"> ####</a></li>
+            <li><a href="po_logout.php">Logout</a></li>
         </ul>
+        
     </div>
 
     <div class="main">
@@ -44,7 +49,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
           <ul>
             <li><a class="active" href="po_profile.php">View Profile</a></li>
             <li><a href="">Change Password</a></li>
-            <li><a href="po_logout.php">Logout</a></li>
+            
           </ul>
         </div>
         <div class="widget">
