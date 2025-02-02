@@ -51,6 +51,7 @@
             <li><a href="std_profile.php">Profile</a></li>
             <li><a class="active" href="std_attendance_view.php">Attendance</a></li>
             <li><a  href="std_events.php">Events</a></li>
+            <li><a  href="std_griev.php">Grievience</a></li>
         </ul>
 </div>
 
@@ -96,7 +97,10 @@
             if($conn_event->connect_error){
                 die("Connection failed: " . $conn->connect_error);
             }
-            $result_event = $conn_event->query("SELECT event_name, event_date, event_duration FROM events");
+            $stmt3 = $conn_event->prepare("SELECT event_name, event_date, event_duration FROM events WHERE event_unit = 10 OR event_unit = ?");
+            $stmt3->bind_param("s", $_SESSION['unit']);
+            $stmt3->execute();
+            $result_event = $stmt3->get_result();
 
             // Create a connection object for attendance
             $conn_attendance = new mysqli("localhost", "root", "", "attendance_db");

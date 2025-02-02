@@ -120,7 +120,7 @@
                     if($conn->connect_error){
                         die("Connection failed: " . $conn->connect_error);
                     }
-                    $stmt = $conn->prepare("SELECT user_id, password FROM admitted_students WHERE user_id = ?");
+                    $stmt = $conn->prepare("SELECT user_id, password, Unit FROM admitted_students WHERE user_id = ?");
                     $stmt->bind_param("s", $lreg);
                     $stmt->execute();
                     $result = $stmt->get_result();
@@ -131,6 +131,7 @@
                             $_SESSION['reg'] = $lreg;
                             $_SESSION['last_seen'] = time();
                             $_SESSION['timeout'] = 120;
+                            $_SESSION['unit'] = $cred['Unit'];
                             header("Location: std_profile.php");
                             exit();
                         }

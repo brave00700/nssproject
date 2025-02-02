@@ -68,6 +68,7 @@
             <li><a href="std_profile.php">Profile</a></li>
             <li><a href="std_attendance_view.php">Attendance</a></li>
             <li><a class="active" href="std_events.php">Events</a></li>
+            <li><a  href="std_griev.php">Grievience</a></li>
         </ul>
     </div>
 
@@ -118,7 +119,7 @@
             if($conn_events->connect_error){
                 die("Connection failed: " . $conn_events->connect_error);
             }
-            $stmt2 = $conn_events->prepare("SELECT event_name, event_date, event_time, poster_path, event_type, description, teacher_incharge, student_incharge, event_venue FROM events WHERE event_unit = ?");
+            $stmt2 = $conn_events->prepare("SELECT event_name, event_date, event_time, poster_path, event_type, description, teacher_incharge, student_incharge, event_venue FROM events WHERE event_unit = ? OR event_unit = 10");
             $stmt2->bind_param("i",$unit);
             $stmt2->execute();
             $result_event = $stmt2->get_result();

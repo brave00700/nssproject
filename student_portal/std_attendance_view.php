@@ -37,6 +37,7 @@
             <li><a href="std_profile.php">Profile</a></li>
             <li><a class="active" href="std_attendance_view.php">Attendance</a></li>
             <li><a  href="std_events.php">Events</a></li>
+            <li><a  href="std_griev.php">Grievience</a></li>
         </ul>
     </div>
 
