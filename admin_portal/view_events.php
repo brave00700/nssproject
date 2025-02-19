@@ -11,7 +11,7 @@ if(!$_SESSION['admin_id']){
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "event_db";
+$dbname = "nss_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -20,25 +20,33 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+
+
 $results = [];
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['event_unit'])) {
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['event_unit']) && !empty($_POST['event_unit'])) {
     $event_unit = $_POST['event_unit'];
 
     // Fetch data based on selected unit
-    $stmt = $conn->prepare("SELECT event_id,event_name, event_date, event_time, event_duration, poster_path, event_type, description, teacher_incharge, student_incharge, event_venue, budget_pdf_path 
+    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path,event_unit
                             FROM events 
                             WHERE event_unit = ? OR event_unit = 10");
-    $stmt->bind_param("i", $event_unit);
+    $stmt->bind_param("s", $event_unit);
     $stmt->execute();
     $result = $stmt->get_result();
-
-    while ($row = $result->fetch_assoc()) {
-        $results[] = $row;
-    }
-
-    $stmt->close();
+} else {
+    // If no specific unit is selected, fetch all events
+    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path,event_unit FROM events");
+    $stmt->execute();
+    $result = $stmt->get_result();
 }
-$conn->close();
+
+while ($row = $result->fetch_assoc()) {
+    $results[] = $row;
+}
+
+$stmt->close();
+
 ?>
 
 
@@ -143,7 +151,70 @@ table td:hover:last-child {
 .search_form button:hover {
     background-color: #0056b3;
 }
+/* Styling for the button */
+.admit-buttons{
+    display: inline-block; /* Makes it behave like a button */
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 16px; /* Text size */
+    font-weight: bold; /* Bold text */
+    color: #fff; /* White text color */
+    background-color: #007bff; /* Blue background */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
 
+.admit-buttons:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.admit-buttons:active {
+    transform: scale(0.98); /* Slightly shrink on click */
+    background-color: #003f7f; /* Even darker blue */
+}
+
+.admit-buttons:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle blue glow */
+}
+.delete-button {
+            background-color: #f44336; /* Red background */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+            border-radius: 4px;
+        }
+        /* Style for the delete button */
+.delete-button {
+    display: inline-block; /* Makes it behave like a button */
+    padding: 10px 20px; /* Padding inside the button */
+    font-size: 16px; /* Text size */
+    font-weight: bold; /* Bold text */
+    color: #fff; /* White text color */
+    background-color: #dc3545; /* Red background color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effect */
+}
+
+.delete-button:hover {
+    background-color: #a71d2a; /* Darker red on hover */
+}
+
+.delete-button:active {
+    transform: scale(0.98); /* Slightly shrink on click */
+    background-color: #7f1521; /* Even darker red */
+}
+
+.delete-button:focus {
+    outline: none; /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); /* Add a subtle red glow */
+}
 </style>
    
 
@@ -165,10 +236,11 @@ table td:hover:last-child {
         </div>
         <ul>
         <li><a  href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="view_admitted_students.php"> Manage Students</a></li>
-            <li><a  href="view_po.php"> Manage Staff</a></li>
+            <li><a href="manage_students.php"> Manage Students</a></li>
+            <li><a href="manage_staff.php">Manage Staff</a></li>
             <li><a  href="manage_announcements.php"> Announcements</a></li>
-            <li><a class="active" href="manage_events.php"> Events</a></li>
+            <li><a class="active" href="manage_more.php"> More</a></li>
+
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
@@ -176,10 +248,11 @@ table td:hover:last-child {
     <div class="about_main_divide">
         <div class="about_nav">
             <ul>
-            <li><a  href="create_events.php">Create Events</a></li>
+            
             <li><a class="active" href="view_events.php">View Events</a></li>
-            <li><a  href="modify_events.php">Modify Event Details</a></li>
-            <li><a  href="delete_events.php">Delete a event</a></li>
+            <li><a  href="view_grievances.php">View Grievances</a></li>
+            <li><a  href="po_leave.php">View PO leave</a></li>
+
             </ul>
         </div>
         <div class="widget">
@@ -194,16 +267,21 @@ table td:hover:last-child {
         <option value="3">Unit 3</option>
         <option value="4">Unit 4</option>
         <option value="5">Unit 5</option>
+        <option value="ALL">ALL</option>
     </select>
     <button type="submit">View</button>
 </form> </div>
+<form  method="POST" onsubmit="return validateSelection()">
 <div class="table-container">
 <?php if (!empty($results)): ?>
             <table>
                 <thead>
                     <tr>
-                        <th>Event ID</th>    
+                        
+                    <th>Select</th>  
+                    <th>Event ID</th>    
                         <th>Event Name</th>
+                        <th>Event Unit</th>
                         <th>Date</th>
                         <th>Time</th>
                         <th>Duration (hrs)</th>
@@ -219,8 +297,10 @@ table td:hover:last-child {
                 <tbody>
                     <?php foreach ($results as $row): ?>
                         <tr>
+                        <td><input type="checkbox" name="event_id" value="<?= htmlspecialchars($row['event_id']) ?>"></td>
                             <td><?= htmlspecialchars($row['event_id']) ?></td>
                             <td><?= htmlspecialchars($row['event_name']) ?></td>
+                            <td><?= htmlspecialchars($row['event_unit']) ?></td>
                             <td><?= htmlspecialchars($row['event_date']) ?></td>
                             <td><?= htmlspecialchars($row['event_time']) ?></td>
                             <td><?= htmlspecialchars($row['event_duration']) ?></td>
@@ -233,7 +313,7 @@ table td:hover:last-child {
                                 <?php endif; ?>
                             </td>
                             <td><?= htmlspecialchars($row['event_type']) ?></td>
-                            <td><?= htmlspecialchars($row['description']) ?></td>
+                            <td><?= htmlspecialchars($row['event_desc']) ?></td>
                             <td><?= htmlspecialchars($row['teacher_incharge']) ?></td>
                             <td><?= htmlspecialchars($row['student_incharge']) ?></td>
                             <td><?= htmlspecialchars($row['event_venue']) ?></td>
@@ -251,10 +331,75 @@ table td:hover:last-child {
         <?php elseif ($_SERVER["REQUEST_METHOD"] === "POST"): ?>
             <p>No events found for the selected unit.</p>
         <?php endif; ?>
-</div>
+</div><br>
+                    <button type="submit" formaction="modify_events.php" name="modify" class="admit-buttons">Modify</button>
+               
+                <button type="button" class="admit-buttons" onclick="redirectToPage()">Create New Event</button>
+                <button type="submit" name="delete" class="delete-button"  >Delete Selected Events</button>
+                </form>
+                <?php
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['delete'])) {
+    if (!empty($_POST['event_id'])) {
+        // Ensure $_POST['event_id'] is always an array
+        $event_ids = (array) $_POST['event_id']; // Convert string to array if needed
+
+        // Database connection
+        $conn = new mysqli("localhost", "root", "", "nss_db");
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Prepare the DELETE statement
+        $placeholders = implode(',', array_fill(0, count($event_ids), '?'));
+        $stmt = $conn->prepare("DELETE FROM events WHERE event_id IN ($placeholders)");
+
+        // Convert all event IDs to integers and bind them dynamically
+        $event_ids = array_map('intval', $event_ids); 
+        $stmt->bind_param(str_repeat('i', count($event_ids)), ...$event_ids);
+
+        if ($stmt->execute()) {
+            echo "<script>alert('Selected events deleted successfully.'); window.location.href='view_events.php';</script>";
+        } else {
+            echo "<script>alert('Error deleting events. Please try again.'); window.location.href='view_events.php';</script>";
+        }
+
+        $stmt->close();
+        $conn->close();
+    } else {
+        echo "<script>alert('Please select at least one event to delete.');</script>";
+    }
+}
+
+?>
+
+<script>
+    function redirectToPage() {
+        window.location.href = "create_events.php";
+    }
+    function redirectToDelete() {
+        window.location.href = "delete_events.php";
+    }
+</script> 
         </div>
 </div>
 </div>
+<script>
+        function validateSelection() {
+            const checkboxes = document.querySelectorAll('input[name="event_id"]:checked');
+            if (checkboxes.length > 1) {
+                alert("Please select only one event .");
+                return false; // Prevent form submission
+            }
+            if (checkboxes.length === 0) {
+                alert("Please select at least one event .");
+                return false; // Prevent form submission
+            }
+            return true; // Allow form submission
+        }
+
+        
+
+    </script>
 </body>
 </html>
 

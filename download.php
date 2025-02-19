@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "pdf_database";
+$dbname = "nss_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
 
-    $stmt = $conn->prepare("SELECT name, file FROM pdf_files WHERE id = ?");
+    $stmt = $conn->prepare("SELECT name, file FROM announcements WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->store_result();

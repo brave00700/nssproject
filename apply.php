@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nss_application";
+$dbname = "nss_db";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -22,7 +22,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phone = $_POST['phone'];
     $email = $_POST['email'];
     $dob = $_POST['dob'];
-    $age = $_POST['age'];
+    // Calculate age in PHP
+    $dob_date = new DateTime($dob);
+    $today = new DateTime();
+    $age = $today->diff($dob_date)->y; // Calculate age from DOB
+
     $category = $_POST['category'];
     $bloodgroup = $_POST['bloodgroup'];
     $shift = $_POST['shift'];
@@ -53,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Define the upload directory
-        $uploadDir = 'uploads/profile_photos/';
+        $uploadDir = '../uploads/profile_photos/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true); // Create directory if not exists
         }
@@ -72,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare SQL statement to insert data
     $sql = "INSERT INTO applications 
-            (Name, Register_no, Phone, Email, DoB, Age, Bloodgroup, Shift, Gender, Course, Address, Mother_name, Father_name, Category, ProfilePhoto) 
+            (Name, Register_no, Phone, Email, DoB, Age, Bloodgroup, Shift, Gender, Course, Address, Mother_name, Father_name, Category,  profile_photo) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
@@ -153,7 +157,7 @@ $conn->close();
     </div>
     <div class="mainapply">
       <h2>Application Form</h2>
-      <form action="" method="post" class="nss-form" enctype="multipart/form-data">
+      <form action="" method="post" class="nss-form" enctype="multipart/form-data"  onsubmit="calculateAge();return validateForm();">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required />
 
@@ -173,7 +177,7 @@ $conn->close();
         <input type="email" id="email" name="email" required />
 
         <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" name="dob"  required/>
+        <input type="date" id="dob" name="dob" onchange="calculateAge()" required/>
 
         <label for="gender">Gender:</label>
         <select id="gender" name="gender" required >
@@ -198,13 +202,13 @@ $conn->close();
         <label for="shift">Select Shift:</label>
         <select id="shift" name="shift" required >
           <option value="" disabled selected>Select </option>
-          <option value="Shift-1">Shift 1</option>
-          <option value="Shift-2">Shift 2</option>
-          <option value="Shift-3">Shift 3</option>
+          <option value="1">Shift 1</option>
+          <option value="2">Shift 2</option>
+          <option value="3">Shift 3</option>
         </select>
 
         <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required />
+        <input type="number" id="age" name="age" required readonly />
 
         <label for="bloodgroup">Select Blood group:</label>
         <select id="bloodgroup" name="bloodgroup" required >
@@ -238,6 +242,65 @@ $conn->close();
       </form>
     </div>
     <script src="script.js"></script>
-    
+    <script>
+        function validateForm() {
+            const nameRegex = /^[A-Za-z\s]+$/;
+            const phoneRegex = /^[0-9]{10}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            let name = document.getElementById("name").value;
+            let phone = document.getElementById("phone").value;
+            let email = document.getElementById("email").value;
+            let dob = document.getElementById("dob").value;
+            let course = document.getElementById("course").value;
+            let age = document.getElementById("age").value;
+
+            // Validate Name
+            if (!nameRegex.test(name)) {
+                alert("Name should contain only letters and spaces.");
+                return false;
+            }
+
+            // Validate Phone Number
+            if (!phoneRegex.test(phone)) {
+                alert("Phone number must be exactly 10 digits.");
+                return false;
+            }
+
+            // Validate Email
+            if (!emailRegex.test(email)) {
+                alert("Enter a valid email address.");
+                return false;
+            }
+
+            // Validate Course Name
+            if (!nameRegex.test(course)) {
+                alert("Course name should contain only letters and spaces.");
+                return false;
+            }
+
+            // Validate Age
+            if (age < 17 || age > 35) {
+                alert("Enter proper DoB details.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function calculateAge() {
+            let dob = document.getElementById("dob").value;
+            let dobDate = new Date(dob);
+            let today = new Date();
+            let age = today.getFullYear() - dobDate.getFullYear();
+            let monthDiff = today.getMonth() - dobDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+                age--;
+            }
+
+            document.getElementById("age").value = age;
+        }
+    </script>
   </body>
 </html>

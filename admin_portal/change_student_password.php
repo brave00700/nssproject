@@ -15,7 +15,7 @@ use PHPMailer\PHPMailer\Exception;
 $servername = "localhost";
 $username = "root";
 $password = ""; // Replace with your database password
-$dbname = "nss_application";
+$dbname = "nss_db";
 
 // Connect to database
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -29,20 +29,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $register_no = $_POST['register_no'];
 
     // Fetch student email from the database
-    $stmt = $conn->prepare("SELECT Email FROM admitted_students WHERE Register_no = ?");
+    $stmt = $conn->prepare("SELECT email FROM students WHERE Register_no = ?");
     $stmt->bind_param("s", $register_no);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $email = $row['Email'];
+        $email = $row['email'];
 
         // Generate a secure password
         $password = generatePassword();
 
         // Update password in the database
-        $stmt = $conn->prepare("UPDATE admitted_students SET password = ? WHERE Register_no = ?");
+        $stmt = $conn->prepare("UPDATE students SET password = ? WHERE register_no = ?");
         $stmt->bind_param("ss", $password, $register_no);
         if ($stmt->execute()) {
             // Send the generated password via email
@@ -143,10 +143,11 @@ function sendEmail($to, $password) {
         </div>
         <ul>
             <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a class="active" href="view_admitted_students.php"> Manage Students</a></li>
-            <li><a href="view_po.php"> Manage Staff</a></li>
+            <li><a class="active" href="manage_students.php"> Manage Students</a></li>
+            <li><a  href="manage_staff.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
-            <li><a href="manage_events.php"> Events</a></li>
+                        <li><a href="manage_more.php"> More</a></li>
+
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>

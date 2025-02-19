@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin_id'])) {
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "staff_db";
+$dbname = "nss_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modify']) && isset($_
 }
 
 if ($user_id) {
-    $sql = "SELECT * FROM staff_details WHERE User_id = '$user_id'";
+    $sql = "SELECT * FROM staff WHERE user_id = '$user_id'";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows > 0) {
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
     // Fetch and validate input fields
     $user_id = $_POST['user_id'];
     $name = $_POST['name'];
-    $register_no = $_POST['register_no'];
+    
     $phone = $_POST['phone'];
     $email = $_POST['email'];
     $dob = $_POST['dob'];
@@ -67,27 +67,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
 
     // Build the SQL query dynamically
     $updates = [];
-    if (!empty($name)) $updates[] = "Name = '$name'";
-    if (!empty($register_no)) $updates[] = "Register_no = '$register_no'";
-    if (!empty($phone)) $updates[] = "Phone = '$phone'";
-    if (!empty($email)) $updates[] = "Email = '$email'";
-    if (!empty($dob)) $updates[] = "DoB = '$dob'";
-    if (!empty($gender)) $updates[] = "Gender = '$gender'";
-    if (!empty($address)) $updates[] = "Address = '$address'";
-    if (!empty($role)) $updates[] = "Role = '$role'";
-    if (!is_null($unit)) $updates[] = "Unit = $unit";
-    if (!empty($profilePhoto)) $updates[] = "ProfilePhoto = '$profilePhoto'";
+    if (!empty($name)) $updates[] = "name = '$name'";
+    
+    if (!empty($phone)) $updates[] = "phone = '$phone'";
+    if (!empty($email)) $updates[] = "email = '$email'";
+    if (!empty($dob)) $updates[] = "dob = '$dob'";
+    if (!empty($gender)) $updates[] = "gender = '$gender'";
+    if (!empty($address)) $updates[] = "address = '$address'";
+    if (!empty($role)) $updates[] = "role = '$role'";
+    if (!is_null($unit)) $updates[] = "unit = $unit";
+    if (!empty($profilePhoto)) $updates[] = "profile_photo = '$profilePhoto'";
 
     if (count($updates) > 0) {
-        $sql = "UPDATE staff_details SET " . implode(", ", $updates) . " WHERE User_id = '$user_id'";
+        $sql = "UPDATE staff SET " . implode(", ", $updates) . " WHERE user_id = '$user_id'";
 
         if ($conn->query($sql) === TRUE) {
-            echo "<script>alert('Staff details updated successfully!'); window.location.href = 'view_po.php';</script>";
+            echo "<script>alert('Staff details updated successfully!'); window.location.href = 'manage_staff.php';</script>";
         } else {
-            echo "<script>alert('Error updating record: " . $conn->error . "'); window.location.href = 'view_po.php';</script>";
+            echo "<script>alert('Error updating record: " . $conn->error . "'); window.location.href = 'manage_staff.php';</script>";
         }
     } else {
-        echo "<script>alert('No changes were made.'); window.location.href = 'view_po.php';</script>";
+        echo "<script>alert('No changes were made.'); window.location.href = 'manage_staff.php';</script>";
     }
 }
 
@@ -119,8 +119,8 @@ $conn->close();
         </div>
         <ul>
             <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="view_admitted_students.php">Manage Students</a></li>
-            <li><a class="active" href="view_po.php">Manage Staff</a></li>
+            <li><a href="manage_students.php">Manage Students</a></li>
+            <li><a class="active" href="manage_staff.php">Manage Staff</a></li>
             <li><a href="manage_announcements.php">Announcements</a></li>
             <li><a href="manage_events.php">Events</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
@@ -142,48 +142,49 @@ $conn->close();
     <h2>Modify PO & Executive Details</h2>
     <form action="" method="POST" enctype="multipart/form-data"  class="nss-form">
         <label for="user_id">User ID:</label>
-        <input type="text" id="user_id" name="user_id" value="<?= $staff['User_id'] ?? '' ?>" required readonly><br><br>
+        <input type="text" id="user_id" name="user_id" value="<?= $staff['user_id'] ?? '' ?>" required readonly><br><br>
 
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="<?= $staff['Name'] ?? '' ?>"><br><br>
+        <input type="text" id="name" name="name" value="<?= $staff['name'] ?? '' ?>"><br><br>
 
         <label for="register_no">Register Number:</label>
-        <input type="text" id="register_no" name="register_no" value="<?= $staff['Register_no'] ?? '' ?>"><br><br>
+        <input type="text" id="register_no" name="register_no" value="<?= $staff['register_no'] ?? '' ?>"><br><br>
 
         <label for="phone">Phone:</label>
-        <input type="text" id="phone" name="phone" value="<?= $staff['Phone'] ?? '' ?>"><br><br>
+        <input type="text" id="phone" name="phone" value="<?= $staff['phone'] ?? '' ?>"><br><br>
 
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<?= $staff['Email'] ?? '' ?>"><br><br>
+        <input type="email" id="email" name="email" value="<?= $staff['email'] ?? '' ?>"><br><br>
 
         <label for="dob">Date of Birth:</label>
-        <input type="date" id="dob" name="dob" value="<?= $staff['DoB'] ?? '' ?>"><br><br>
+        <input type="date" id="dob" name="dob" value="<?= $staff['dob'] ?? '' ?>"><br><br>
 
         <label for="gender">Gender:</label>
         <select id="gender" name="gender">
             <option value="" disabled>Select</option>
-            <option value="Male" <?= ($staff['Gender'] === 'Male') ? 'selected' : '' ?>>Male</option>
-            <option value="Female" <?= ($staff['Gender'] === 'Female') ? 'selected' : '' ?>>Female</option>
+            <option value="Male" <?= ($staff['gender'] === 'Male') ? 'selected' : '' ?>>Male</option>
+            <option value="Female" <?= ($staff['gender'] === 'Female') ? 'selected' : '' ?>>Female</option>
         </select><br><br>
 
         <label for="address">Address:</label>
-        <textarea id="address" name="address"><?= $staff['Address'] ?? '' ?></textarea><br><br>
+        <textarea id="address" name="address"><?= $staff['address'] ?? '' ?></textarea><br><br>
 
         <label for="role">Role:</label>
         <select id="role" name="role" required>
             <option value="" disabled selected>Select</option>
-            <option value="Executive" <?= ($staff['role'] === 'Executive') ? 'selected' : '' ?>>Executive</option>
-            <option value="Program_Officer" <?= ($staff['role'] === 'Program_Officer') ? 'selected' : '' ?>>Program Officer</option>
+            <option value="EXECUTIVE" <?= ($staff['role'] === 'EXECUTIVE') ? 'selected' : '' ?>>Executive</option>
+            <option value="PO" <?= ($staff['role'] === 'PO') ? 'selected' : '' ?>>Program Officer</option>
+            <option value="ADMIN" <?= ($staff['role'] === 'ADMIN') ? 'selected' : '' ?>>Admin</option>
         </select><br><br>
 
         <label for="unit">Unit:</label>
         <select id="unit" name="unit" required>
             <option value="" disabled selected>Select Unit</option>
-            <option value="1" <?= ($staff['Unit'] === '1') ? 'selected' : '' ?>>Unit 1</option>
-            <option value="2" <?= ($staff['Unit'] === '2') ? 'selected' : '' ?>>Unit 2</option>
-            <option value="3" <?= ($staff['Unit'] === '3') ? 'selected' : '' ?>>Unit 3</option>
-            <option value="4" <?= ($staff['Unit'] === '4') ? 'selected' : '' ?>>Unit 4</option>
-            <option value="5" <?= ($staff['Unit'] === '5') ? 'selected' : '' ?>>Unit 5</option>
+            <option value="1" <?= ($staff['unit'] === '1') ? 'selected' : '' ?>>Unit 1</option>
+            <option value="2" <?= ($staff['unit'] === '2') ? 'selected' : '' ?>>Unit 2</option>
+            <option value="3" <?= ($staff['unit'] === '3') ? 'selected' : '' ?>>Unit 3</option>
+            <option value="4" <?= ($staff['unit'] === '4') ? 'selected' : '' ?>>Unit 4</option>
+            <option value="5" <?= ($staff['unit'] === '5') ? 'selected' : '' ?>>Unit 5</option>
         </select><br><br>
 
         <label for="profile_photo">Profile Photo:</label>

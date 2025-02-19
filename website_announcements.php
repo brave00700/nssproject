@@ -3,7 +3,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "pdf_database";
+$dbname = "nss_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 // Fetch PDFs
-$sql = "SELECT id, name FROM pdf_files";
+$sql = "SELECT id, name FROM announcements";
 $result = $conn->query($sql);
 
 $conn->close();

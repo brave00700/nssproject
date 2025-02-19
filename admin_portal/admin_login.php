@@ -116,12 +116,12 @@
             $admin_pass = $_POST['pass'];
 
             // Create a connection object
-            $conn = new mysqli("localhost", "root", "", "staff_db");
+            $conn = new mysqli("localhost", "root", "", "nss_db");
             if($conn->connect_error){
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $stmt = $conn->prepare("SELECT role, Password FROM staff_details WHERE User_id = ?");
+            $stmt = $conn->prepare("SELECT role, Password FROM staff WHERE User_id = ?");
             $stmt->bind_param("s", $admin_id);
             $stmt->execute();
             $result = $stmt->get_result();

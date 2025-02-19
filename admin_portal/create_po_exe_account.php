@@ -10,7 +10,7 @@ if(!$_SESSION['admin_id']){
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "staff_db";
+$dbname = "nss_db";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -23,14 +23,14 @@ if ($conn->connect_error) {
 // Collect form data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST['name'];
-    $register_no = $_POST['register_no'];
+    
     $phone = $_POST['phone'];
     $email = $_POST['email'];
     $dob = $_POST['dob'];
     $gender = $_POST['gender'];
     $role = $_POST['role'];
     $user_id = $_POST['user_id'];
-    $password = $_POST['Password'];
+    $password = $_POST['password'];
     $address = $_POST['address'];
     $unit=$_POST['unit'];
     $profilePhoto = null;
@@ -75,14 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare SQL statement to insert data
-    $sql = "INSERT INTO staff_details 
-            (Name, Register_no, Phone, Email, DoB, Gender, Address,role ,User_id,Password, ProfilePhoto,Unit) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+    $sql = "INSERT INTO staff
+            (name, phone, email, dob, gender, address,role ,user_id,password, profile_photo,unit) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
-        "sssssssssssi",
+        "ssssssssssi",
         $name,
-        $register_no,
+       
         $phone,
         $email,
         $dob,
@@ -138,8 +138,8 @@ $conn->close();
         </div>
         <ul>
         <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="view_admitted_students.php"> Manage Students</a></li>
-            <li><a class="active" href="view_po.php"> Manage Staff</a></li>
+            <li><a href="manage_students.php"> Manage Students</a></li>
+            <li><a class="active" href="manage_staff.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
             <li><a  href="manage_events.php"> Events</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
@@ -166,8 +166,7 @@ $conn->close();
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required />
 
-        <label for="register_no">Register Number: (if executive account)</label>
-        <input type="text" id="register_no" name="register_no"   />
+        
 
         <label for="phone">Phone Number:</label>
         <input type="number" id="phone" name="phone" required />
@@ -207,8 +206,8 @@ $conn->close();
 
         <label for="user_id">User ID:</label>
         <input type="text" id="user_id" name="user_id" required/>
-        <label for="Password">Password:</label>
-        <input type="text" id="Password" name="Password" required/>
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="password" required/>
 
         <label for="profile_photo">Profile Photo (JPEG, PNG, JPG, max size: 2MB):</label>
     <input type="file" id="profile_photo" name="profile_photo" accept="image/jpeg, image/png, image/jpg" required  />

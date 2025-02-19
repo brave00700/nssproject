@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin_id'])) {
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "pdf_database";
+$dbname = "nss_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['pdf_file'])) {
     if ($fileType == "application/pdf") {
         $fileData = file_get_contents($fileTmpName);
 
-        $stmt = $conn->prepare("INSERT INTO pdf_files (name, file) VALUES (?, ?)");
+        $stmt = $conn->prepare("INSERT INTO announcements (name, file) VALUES (?, ?)");
         $stmt->bind_param("sb", $fileName, $null);
 
         $stmt->send_long_data(1, $fileData);
@@ -51,14 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['pdf_id'])) {
     $pdfId = intval($_POST['pdf_id']);
 
     // Check if the PDF exists in the database
-    $stmt = $conn->prepare("SELECT id FROM pdf_files WHERE id = ?");
+    $stmt = $conn->prepare("SELECT id FROM announcements WHERE id = ?");
     $stmt->bind_param("i", $pdfId);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         // PDF exists, proceed to delete
-        $deleteStmt = $conn->prepare("DELETE FROM pdf_files WHERE id = ?");
+        $deleteStmt = $conn->prepare("DELETE FROM announcements WHERE id = ?");
         $deleteStmt->bind_param("i", $pdfId);
 
         if ($deleteStmt->execute()) {
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['pdf_id'])) {
 
 
 // Fetch PDFs for viewing
-$sql = "SELECT id, name FROM pdf_files";
+$sql = "SELECT id, name FROM announcements";
 $result = $conn->query($sql);
 ?>
 
@@ -131,10 +131,10 @@ flexviewcol{
 <div class="nav">
     <ul>
         <li><a href="manage_applications.php">Manage Applications</a></li>
-        <li><a href="view_admitted_students.php">Manage Students</a></li>
-        <li><a href="view_po.php">Manage Staff</a></li>
+        <li><a href="manage_students.php">Manage Students</a></li>
+        <li><a href="manage_staff.php">Manage Staff</a></li>
         <li><a class="active" href="manage_announcements.php">Announcements</a></li>
-        <li><a href="manage_events.php">Events</a></li>
+        <li><a  href="manage_more.php"> More</a></li>
         <li><a href="admin_logout.php">Logout</a></li>
     </ul>
 </div>

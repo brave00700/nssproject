@@ -10,7 +10,7 @@ if(!$_SESSION['admin_id']){
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "event_db";
+$dbname = "nss_db";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $maxPosterSize = 2 * 1024 * 1024; // 2MB
 
         if ($posterSize > $maxPosterSize || !in_array($posterType, $allowedPosterTypes)) {
-            echo "<script>alert('Error: Invalid poster file type or size exceeds 2MB.');</script>";
+            echo "<script>alert('Error: Invalid poster file type or size exceeds 2MB.'); window.location.href = 'view_events.php';</script>";
             exit;
         }
 
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $poster_path = $posterDir . basename($posterName);
         if (!move_uploaded_file($posterTmpPath, $poster_path)) {
-            echo "<script>alert('Error: Failed to upload the poster. Please try again.');</script>";
+            echo "<script>alert('Error: Failed to upload the poster. Please try again.'); window.location.href = 'view_events.php';</script>";
             exit;
         }
     }
@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $maxBudgetSize = 2 * 1024 * 1024; // 2MB
 
         if ($budgetSize > $maxBudgetSize || !in_array($budgetType, $allowedBudgetTypes)) {
-            echo "<script>alert('Error: Invalid PDF file type or size exceeds 2MB.');</script>";
+            echo "<script>alert('Error: Invalid PDF file type or size exceeds 2MB.'); window.location.href = 'view_events.php';</script>";
             exit;
         }
 
@@ -83,18 +83,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $budget_pdf_path = $budgetDir . basename($budgetName);
         if (!move_uploaded_file($budgetTmpPath, $budget_pdf_path)) {
-            echo "<script>alert('Error: Failed to upload the budget PDF. Please try again.');</script>";
+            echo "<script>alert('Error: Failed to upload the budget PDF. Please try again.'); window.location.href = 'view_events.php';</script>";
             exit;
         }
     }
 
     // Prepare SQL statement to insert data
     $sql = "INSERT INTO events 
-            (event_name, event_date, event_time, event_duration, poster_path, event_type, description, teacher_incharge, student_incharge, event_venue, budget_pdf_path, event_unit) 
+            (event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path, event_unit) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
-        "sssisssssssi",
+        "sssissssssss",
         $event_name,
         $event_date,
         $event_time,
@@ -110,9 +110,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     );
 
     if ($stmt->execute()) {
-        echo "<script>alert('Event created successfully!');</script>";
+        echo "<script>alert('Event created successfully!'); window.location.href = 'view_events.php';</script>";
     } else {
-        echo "<script>alert('Error: " . $stmt->error . "');</script>";
+        echo "<script>alert('Error: " . $stmt->error . "'); window.location.href = 'view_events.php';</script>";
     }
 
     $stmt->close();
@@ -148,10 +148,11 @@ $conn->close();
         </div>
         <ul>
         <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="view_admitted_students.php"> Manage Students</a></li>
-            <li><a href="view_po.php"> Manage Staff</a></li>
+            <li><a href="manage_students.php"> Manage Students</a></li>
+            <li><a href="manage_staff.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
-            <li><a class="active" href="manage_events.php"> Events</a></li>
+                        <li><a class="active" href="manage_more.php"> More</a></li>
+
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
@@ -160,10 +161,8 @@ $conn->close();
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
-          <li><a class="active" href="create_events.php">Create Events</a></li>
-            <li><a href="view_events.php">View Events</a></li>
-            <li><a  href="modify_events.php">Modify Event Details</a></li>
-            <li><a  href="delete_events.php">Delete a event</a></li>
+            <li><a class="active"  href="view_events.php">View Events</a></li>
+            
             
             
           </ul>
@@ -213,7 +212,7 @@ $conn->close();
           <option value="3">3 </option>
           <option value="4">4 </option>
           <option value="5">5 </option>
-          <option value="10">All </option>
+          <option value="All">All </option>
         </select>
 
     <label for="poster">Event Poster (JPEG, PNG, JPG, max size: 2MB):</label>

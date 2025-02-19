@@ -11,7 +11,7 @@ if (!isset($_SESSION['admin_id'])) {
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nss_application";
+$dbname = "nss_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['new_unit'], $_POST['r
 
     // Update units for selected students
     $placeholders = implode(',', array_fill(0, count($selectedStudents), '?'));
-    $sql = "UPDATE admitted_students SET Unit = ? WHERE Register_no IN ($placeholders)";
+    $sql = "UPDATE students SET Unit = ? WHERE register_no IN ($placeholders)";
     $stmt = $conn->prepare($sql);
 
     // Dynamically bind parameters
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['register_no'])) {
 
     // Get details of selected students
     $placeholders = implode(',', array_fill(0, count($selectedStudents), '?'));
-    $sql = "SELECT Register_no, Name, Unit FROM admitted_students WHERE Register_no IN ($placeholders)";
+    $sql = "SELECT register_no, name, unit FROM students WHERE register_no IN ($placeholders)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(str_repeat('s', count($selectedStudents)), ...$selectedStudents);
     $stmt->execute();
@@ -96,12 +96,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['register_no'])) {
             <tbody>
             <?php foreach ($students as $student): ?>
                 <tr>
-                    <td><?= htmlspecialchars($student['Register_no']) ?></td>
-                    <td><?= htmlspecialchars($student['Name']) ?></td>
-                    <td><?= htmlspecialchars($student['Unit']) ?></td>
+                    <td><?= htmlspecialchars($student['register_no']) ?></td>
+                    <td><?= htmlspecialchars($student['name']) ?></td>
+                    <td><?= htmlspecialchars($student['unit']) ?></td>
                 </tr>
                 <!-- Hidden input to pass student register numbers -->
-                <input type="hidden" name="register_no[]" value="<?= htmlspecialchars($student['Register_no']) ?>">
+                <input type="hidden" name="register_no[]" value="<?= htmlspecialchars($student['register_no']) ?>">
             <?php endforeach; ?>
             </tbody>
         </table>

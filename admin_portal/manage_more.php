@@ -24,10 +24,11 @@
         </div>
         <ul>
         <li><a  href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="view_admitted_students.php"> Manage Students</a></li>
-            <li><a  href="view_po.php"> Manage Staff</a></li>
+            <li><a href="manage_students.php"> Manage Students</a></li>
+           <li><a href="manage_staff.php">Manage Staff</a></li>
             <li><a  href="manage_announcements.php"> Announcements</a></li>
-            <li><a class="active" href="manage_events.php"> Events</a></li>
+            <li><a class="active" href="manage_more.php"> More</a></li>
+
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
@@ -36,12 +37,11 @@
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
-            <li><a  href="create_events.php">Create Events</a></li>
+            
             <li><a href="view_events.php">View Events</a></li>
-            <li><a  href="modify_events.php">Modify Event Details</a></li>
-            <li><a  href="delete_events.php">Delete a event</a></li>
-            
-            
+            <li><a href="view_grievances.php">View Grievances</a></li>
+            <li><a  href="po_leave.php">View PO leave</a></li>
+
             
           </ul>
         </div>

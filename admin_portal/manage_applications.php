@@ -227,10 +227,11 @@ select:focus {
         </div>
         <ul>
         <li><a class="active" href="manage_applications.php">Manage Applications</a></li>
-            <li><a  href="view_admitted_students.php"> Manage Students</a></li>
-            <li><a href="view_po.php"> Manage Staff</a></li>
+            <li><a  href="manage_students.php"> Manage Students</a></li>
+            <li><a href="manage_staff.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
-            <li><a href="manage_events.php"> Events</a></li>
+                        <li><a href="manage_more.php"> More</a></li>
+
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
@@ -269,7 +270,7 @@ select:focus {
                         </thead>
                         <tbody>
                         <?php
-                        $conn = new mysqli("localhost", "root", "", "nss_application");
+                        $conn = new mysqli("localhost", "root", "", "nss_db");
 
                         if ($conn->connect_error) {
                             die("Connection failed: " . $conn->connect_error);
@@ -286,17 +287,17 @@ select:focus {
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
-                                    <td><input type='checkbox' name='selected_students[]' value='{$row['Register_no']}'></td>
-                                    <td>{$row['Register_no']}</td>
-                                    <td>{$row['Name']}</td>
-                                    <td>{$row['Phone']}</td>
-                                    <td>{$row['Email']}</td>
-                                    <td>{$row['Age']}</td>
-                                    <td>{$row['Bloodgroup']}</td>
-                                    <td>{$row['Shift']}</td>
-                                    <td>{$row['Gender']}</td>
-                                    <td>{$row['Course']}</td>
-                                    <td>{$row['Address']}</td>
+                                    <td><input type='checkbox' name='selected_students[]' value='{$row['register_no']}'></td>
+                                    <td>{$row['register_no']}</td>
+                                    <td>{$row['name']}</td>
+                                    <td>{$row['phone']}</td>
+                                    <td>{$row['email']}</td>
+                                    <td>{$row['age']}</td>
+                                    <td>{$row['bloodgroup']}</td>
+                                    <td>{$row['shift']}</td>
+                                    <td>{$row['gender']}</td>
+                                    <td>{$row['course']}</td>
+                                    <td>{$row['address']}</td>
                                 </tr>";
                             }
                         } else {
@@ -344,13 +345,13 @@ select:focus {
                 exit;
             }
 
-            $conn = new mysqli("localhost", "root", "", "nss_application");
+            $conn = new mysqli("localhost", "root", "", "nss_db");
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
             foreach ($selectedStudents as $register_no) {
-                $sql = "SELECT * FROM applications WHERE Register_no = ?";
+                $sql = "SELECT * FROM applications WHERE register_no = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("s", $register_no);
                 $stmt->execute();
@@ -358,33 +359,33 @@ select:focus {
 
                 if ($result->num_rows > 0) {
                     $student = $result->fetch_assoc();
-                    $insertSQL = "INSERT INTO admitted_students
-                                  (Register_no, Name, Father_name, Mother_name, Phone, Email, Age, Gender, Address, Category, Bloodgroup, Shift, Course, ProfilePhoto, user_id, password, Unit) 
+                    $insertSQL = "INSERT INTO students
+                                  (register_no, name, father_name, mother_name, phone, email, age, gender, address, category, bloodgroup, shift, course, profile_photo, user_id, password, unit) 
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $insertStmt = $conn->prepare($insertSQL);
                     $insertStmt->bind_param(
                         "ssssssisssssssssi",
-                        $student['Register_no'],
-                        $student['Name'],
-                        $student['Father_name'],
-                        $student['Mother_name'],
-                        $student['Phone'],
-                        $student['Email'],
-                        $student['Age'],
-                        $student['Gender'],
-                        $student['Address'],
-                        $student['Category'],
-                        $student['Bloodgroup'],
-                        $student['Shift'],
-                        $student['Course'],
-                        $student['ProfilePhoto'],
-                        $student['Register_no'], 
-                        $student['Register_no'], 
+                        $student['register_no'],
+                        $student['name'],
+                        $student['father_name'],
+                        $student['mother_name'],
+                        $student['phone'],
+                        $student['email'],
+                        $student['age'],
+                        $student['gender'],
+                        $student['address'],
+                        $student['category'],
+                        $student['bloodgroup'],
+                        $student['shift'],
+                        $student['course'],
+                        $student['profile_photo'],
+                        $student['register_no'], 
+                        $student['register_no'], 
                         $commonUnit
                     );
 
                     if ($insertStmt->execute()) {
-                        $deleteSQL = "DELETE FROM applications WHERE Register_no = ?";
+                        $deleteSQL = "DELETE FROM applications WHERE register_no = ?";
                         $deleteStmt = $conn->prepare($deleteSQL);
                         $deleteStmt->bind_param("s", $register_no);
                         $deleteStmt->execute();
@@ -408,13 +409,13 @@ select:focus {
                 exit;
             }
 
-            $conn = new mysqli("localhost", "root", "", "nss_application");
+            $conn = new mysqli("localhost", "root", "", "nss_db");
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
             foreach ($selectedStudents as $register_no) {
-                $deleteSQL = "DELETE FROM applications WHERE Register_no = ?";
+                $deleteSQL = "DELETE FROM applications WHERE register_no = ?";
                 $deleteStmt = $conn->prepare($deleteSQL);
                 $deleteStmt->bind_param("s", $register_no);
                 $deleteStmt->execute();

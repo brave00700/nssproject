@@ -15,7 +15,7 @@ use PHPMailer\PHPMailer\Exception;
 $servername = "localhost";
 $username = "root";
 $password = ""; // Replace with your database password
-$dbname = "staff_db";
+$dbname = "nss_db";
 
 // Connect to database
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -30,20 +30,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_id = $_POST['user_id'];
 
     // Fetch staff email from the database
-    $stmt = $conn->prepare("SELECT Email FROM staff_details WHERE User_id = ?");
+    $stmt = $conn->prepare("SELECT email FROM staff WHERE user_id = ?");
     $stmt->bind_param("s", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $email = $row['Email'];
+        $email = $row['email'];
 
         // Generate a secure password
         $new_password = generatePassword();
 
         // Update password in the database
-        $stmt = $conn->prepare("UPDATE staff_details SET Password = ? WHERE User_id = ?");
+        $stmt = $conn->prepare("UPDATE staff SET password = ? WHERE user_id = ?");
         $stmt->bind_param("ss", $new_password, $user_id);
         if ($stmt->execute()) {
             // Send the new password via email
@@ -140,10 +140,11 @@ function sendEmail($to, $password) {
         </div>
         <ul>
         <li><a href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="view_admitted_students.php"> Manage Students</a></li>
-            <li><a  class="active"  href="view_po.php"> Manage Staff</a></li>
+            <li><a href="manage_students.php"> Manage Students</a></li>
+            <li><a  class="active"  href="manage_staff.php"> Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
-            <li><a href="manage_events.php"> Events</a></li>
+            <li><a href="manage_more.php"> More</a></li>
+
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
