@@ -129,15 +129,19 @@ flexviewcol{
 </div>
 
 <div class="nav">
-    <ul>
-        <li><a href="manage_applications.php">Manage Applications</a></li>
-        <li><a href="manage_students.php">Manage Students</a></li>
-        <li><a href="manage_staff.php">Manage Staff</a></li>
-        <li><a class="active" href="manage_announcements.php">Announcements</a></li>
-        <li><a  href="manage_more.php"> More</a></li>
-        <li><a href="admin_logout.php">Logout</a></li>
-    </ul>
-</div>
+        <div class="ham-menu">
+            <a><i class="fa-solid fa-bars ham-icon"></i></a>
+        </div>
+        <ul>
+        <li><a  href="manage_applications.php">Manage Applications</a></li>
+            <li><a href="manage_students.php"> Manage Students</a></li>
+            <li><a href="manage_staff.php">Manage Staff</a></li>
+            <li><a class="active" href="manage_announcements.php"> Announcements</a></li>
+            <li><a  href="manage_more.php"> More</a></li>
+
+            <li><a href="admin_logout.php">Logout</a></li>
+        </ul>
+    </div>
 
 <div class="main">
 <div class="special_widget">
@@ -179,6 +183,7 @@ flexviewcol{
         
     </div>
 </div>
+<script src="script.js"></script>
 </body>
 </html>
 

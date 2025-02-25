@@ -153,7 +153,7 @@ $conn->close();
             
             <li><a class="active" href="view_po.php">View PO & Executive Account</a></li>
             
-            
+            <li><a href="po_leave.php">View PO leave</a></li> 
             <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
             
           </ul>
@@ -221,5 +221,6 @@ $conn->close();
       </div>
     </div>
 </div>
+<script src="script.js"></script>
 </body>
 </html>

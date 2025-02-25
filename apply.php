@@ -302,5 +302,6 @@ $conn->close();
             document.getElementById("age").value = age;
         }
     </script>
-  </body>
+  <script src="script.js"></script>
+</body>
 </html>

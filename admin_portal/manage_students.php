@@ -53,7 +53,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['unit'])) {
 
     $stmt->close();
 }
+//Fetch all students if no search or filter is applied
 
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    $allStudentsQuery = "SELECT * FROM students";
+    $allStudentsResult = $conn->query($allStudentsQuery);
+
+    if ($allStudentsResult->num_rows > 0) {
+        while ($row = $allStudentsResult->fetch_assoc()) {
+            $searchResults[] = $row;
+        }
+    }
+}
 $conn->close();
 ?>
 
@@ -243,8 +254,9 @@ table td:hover:last-child {
 <div class="about_main_divide">
         <div class="about_nav">
             <ul>
-                <li><a  class="active" href="view_admitted_students.php">View Admitted Students</a></li>
-                
+                <li><a  class="active" href="manage_students.php">View Admitted Students</a></li>
+                <li><a  href="view_credit_application.php">View Credits Application</a></li>
+
                 <li><a href="change_student_password.php">Change Student Password</a></li>
             </ul>
         </div><div class="widget">
@@ -359,5 +371,6 @@ table td:hover:last-child {
 </div>
 </div>
 
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,10 +1,10 @@
 <?php
 session_start();
-
 // Storing session variable
-if(!$_SESSION['admin_id']){
+if(!$_SESSION['po_id'] || !$_SESSION['unit']){
     header("Location: ../login.html");
-}            ?>
+}            
+?>       
 
 <?php
 // Database connection
@@ -24,19 +24,19 @@ if ($conn->connect_error) {
 
 $results = [];
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['event_unit']) && !empty($_POST['event_unit'])) {
-    $event_unit = $_POST['event_unit'];
+if (isset($_SESSION['unit']) && !empty($_SESSION['unit'])) {
+    $officer_unit = $_SESSION['unit']; // Extract officer's unit
 
-    // Fetch data based on selected unit
-    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path,event_unit
+    // Fetch events related to officer's unit or events open to all (event_unit = 'All')
+    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path, event_unit
                             FROM events 
-                            WHERE event_unit = ? OR event_unit = 10");
-    $stmt->bind_param("s", $event_unit);
+                            WHERE event_unit = ? OR event_unit = 'All'");
+    $stmt->bind_param("s", $officer_unit);
     $stmt->execute();
     $result = $stmt->get_result();
 } else {
-    // If no specific unit is selected, fetch all events
-    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path,event_unit FROM events");
+    // If no session unit is set, fetch all events as fallback
+    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path, event_unit FROM events");
     $stmt->execute();
     $result = $stmt->get_result();
 }
@@ -46,6 +46,7 @@ while ($row = $result->fetch_assoc()) {
 }
 
 $stmt->close();
+
 
 ?>
 
@@ -223,54 +224,41 @@ table td:hover:last-child {
 <body>
 <div class="logo-container">
     <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-    <h1><b style="font-size: 2.9rem;">National Service Scheme</b> <br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-        <b style="font-size: 1.3rem">Admin Portal</b><br>
-    </h1> 
+    <h1><b style="font-size: 2.9rem;">National Service Scheme</b><br>
+        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru.<br>
+        <b style="font-size: 1.3rem">Program Officer Portal</b><br>
+    </h1>
     <img class="nsslogo" src="../nss_logo.png" alt="logo" />
 </div>
-   
+
 <div class="nav">
         <div class="ham-menu">
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-        <li><a  href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="manage_students.php"> Manage Students</a></li>
-            <li><a href="manage_staff.php">Manage Staff</a></li>
-            <li><a  href="manage_announcements.php"> Announcements</a></li>
-            <li><a class="active" href="manage_more.php"> More</a></li>
-
-            <li><a href="admin_logout.php">Logout</a></li>
+            <li><a   href="po_profile.php">Profile</a></li>
+            <li><a   href="po_manage_application.php">Manage Applications</a></li>
+            <li><a  href="po_view_admitted_students.php"> Manage Students</a></li>
+            <li><a href="po_approve_attendance.php">Attendance</a></li>
+            
+            <li><a class="active" href="po_view_events.php"> More</a></li>
+            <li><a href="po_logout.php">Logout</a></li>
         </ul>
     </div>
-<div class="main">
+    <div class="main">
     <div class="about_main_divide">
         <div class="about_nav">
             <ul>
-            
-            <li><a class="active" href="view_events.php">View Events</a></li>
-            <li><a  href="view_grievances.php">View Grievances</a></li>
-            
-            
+            <li><a class="active" href="po_view_events.php"> View Events</a></li>
+
             </ul>
         </div>
+
+    
         <div class="widget">
-        <div class="search_form">
+        
         <h1>View Events</h1>
-        <form method="post">
-        <label for="event_unit">Select Unit:</label>
-        <select name="event_unit" id="event_unit" required>
-        <option value="" disabled selected>Choose Unit</option>
-        <option value="1">Unit 1</option>
-        <option value="2">Unit 2</option>
-        <option value="3">Unit 3</option>
-        <option value="4">Unit 4</option>
-        <option value="5">Unit 5</option>
-        <option value="ALL">ALL</option>
-    </select>
-    <button type="submit">View</button>
-</form> </div>
+        
 <form  method="POST" onsubmit="return validateSelection()">
 <div class="table-container">
 <?php if (!empty($results)): ?>
@@ -332,7 +320,7 @@ table td:hover:last-child {
             <p>No events found for the selected unit.</p>
         <?php endif; ?>
 </div><br>
-                    <button type="submit" formaction="modify_events.php" name="modify" class="admit-buttons">Modify</button>
+                    <button type="submit" formaction="po_modify_events.php" name="modify" class="admit-buttons">Modify</button>
                
                 <button type="button" class="admit-buttons" onclick="redirectToPage()">Create New Event</button>
                 <button type="submit" name="delete" class="delete-button"  >Delete Selected Events</button>
@@ -358,9 +346,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['delete'])) {
         $stmt->bind_param(str_repeat('i', count($event_ids)), ...$event_ids);
 
         if ($stmt->execute()) {
-            echo "<script>alert('Selected events deleted successfully.'); window.location.href='view_events.php';</script>";
+            echo "<script>alert('Selected events deleted successfully.'); window.location.href='po_view_events.php';</script>";
         } else {
-            echo "<script>alert('Error deleting events. Please try again.'); window.location.href='view_events.php';</script>";
+            echo "<script>alert('Error deleting events. Please try again.'); window.location.href='po_view_events.php';</script>";
         }
 
         $stmt->close();
@@ -374,10 +362,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['delete'])) {
 
 <script>
     function redirectToPage() {
-        window.location.href = "create_events.php";
+        window.location.href = "po_create_events.php";
     }
     function redirectToDelete() {
-        window.location.href = "delete_events.php";
+        window.location.href = "po_delete_events.php";
     }
 </script> 
         </div>

@@ -117,8 +117,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['register_no'])) {
         </select>
         <br><br>
         <button type="submit" class="submit-button">Update Unit</button>
-        <a href="view_admitted_students.php" class="cancel-button">Cancel</a>
+        <a href="manage_students.php" class="cancel-button">Cancel</a>
     </form>
 </div>
+<script src="script.js"></script>
 </body>
 </html>

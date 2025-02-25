@@ -1,11 +1,10 @@
 <?php
 session_start();
 
-// Redirect to login if not authenticated
-if (!isset($_SESSION['admin_id'])) {
+// Storing session variable
+if(!$_SESSION['po_id'] || !$_SESSION['unit']){
     header("Location: ../login.html");
-    exit();
-}
+}            
 
 // Database connection
 $servername = "localhost";
@@ -100,24 +99,28 @@ $conn->close();
 </div>
 
 <div class="nav">
-    <div class="ham-menu">
-        <a><i class="fa-solid fa-bars ham-icon"></i></a>
-    </div>
-    <ul>
-        <li><a href="manage_applications.php">Manage Applications</a></li>
-        <li><a class="active" href="manage_students.php">Manage Students</a></li>
-        <li><a href="manage_staff.php">Manage Staff</a></li>
-        <li><a href="manage_announcements.php">Announcements</a></li>
-        <li><a href="manage_more.php"> More</a></li>
-        <li><a href="admin_logout.php">Logout</a></li>
-    </ul>
-</div>
+        <div class="ham-menu">
+            <a><i class="fa-solid fa-bars ham-icon"></i></a>
+        </div>
+        <ul>
+            <li><a   href="po_profile.php">Profile</a></li>
+            <li><a  href="po_manage_application.php">Manage Applications</a></li>
+            <li><a class="active" href="po_view_admitted_students.php"> Manage Students</a></li>
+            <li><a href="po_approve_attendance.php">Attendance</a></li>
+            
+            <li><a  href="po_view_events.php"> More</a></li>
 
-<div class="main">
+            <li><a href="po_logout.php">Logout</a></li>
+        </ul>
+    </div>
+
+
+    <div class="main">
     <div class="about_main_divide">
         <div class="about_nav">
             <ul>
-                <li><a href="view_admitted_students.php">View Admitted Students</a></li>
+                <li><a class="active"  href="po_view_admitted_students.php">View Admitted Students</a></li>
+                <li><a  href="po_view_credit_application.php">View Credit Application</a></li>
                 <li><a href="change_student_password.php">Change Student Password</a></li>
             </ul>
         </div>
@@ -162,7 +165,7 @@ $conn->close();
             <?php else: ?>
                 <p>No students selected.</p>
             <?php endif; ?>
-            <button onclick="window.location.href='manage_students.php'" class="admit-buttons">Back to Manage Students</button>
+            <button onclick="window.location.href='po_view_admitted_students.php'" class="admit-buttons">Back to Manage Students</button>
         </div>
     </div>
 </div>

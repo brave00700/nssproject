@@ -171,7 +171,8 @@ $conn->close();
         <div class="about_nav">
             <ul>
                 <li><a  class="active" href="view_admitted_students.php">View Admitted Students</a></li>
-                
+                <li><a  href="view_credit_application.php">View Credits Application</a></li>
+
                 <li><a href="change_student_password.php">Change Student Password</a></li>
             </ul>
         </div>
@@ -202,13 +203,23 @@ $conn->close();
                     <input type="number" id="age" name="age" value="<?= $student['age'] ?? '' ?>"><br><br>
 
                     <label for="gender">Gender:</label>
-                    <input type="text" id="gender" name="gender" value="<?= $student['gender'] ?? '' ?>"><br><br>
-
+        <select id="gender" name="gender">
+            <option value="" disabled>Select</option>
+            <option value="MALE" <?= ($student['gender'] === 'MALE') ? 'selected' : '' ?>>Male</option>
+            <option value="FEMALE" <?= ($student['gender'] === 'FEMALE') ? 'selected' : '' ?>>Female</option>
+            <option value="OTHER" <?= ($student['gender'] === 'OTHER') ? 'selected' : '' ?>>Other</option>
+        </select><br><br>
                     <label for="address">Address:</label>
                     <textarea id="address" name="address"><?= $student['address'] ?? '' ?></textarea><br><br>
 
                     <label for="category">Category:</label>
-                    <input type="text" id="category" name="category" value="<?= $student['category'] ?? '' ?>"><br><br>
+                        <select id="category" name="category">
+                            <option value="" disabled>Select</option>
+                            <option value="GENERAL" <?= ($student['category'] === 'GENERAL') ? 'selected' : '' ?>>GENERAL</option>
+                            <option value="OBC" <?= ($student['category'] === 'OBC') ? 'selected' : '' ?>>OBC</option>
+                            <option value="SC" <?= ($student['category'] === 'SC') ? 'selected' : '' ?>>SC</option>
+                            <option value="ST" <?= ($student['category'] === 'ST') ? 'selected' : '' ?>>ST</option>
+                        </select><br><br>
 
                     <label for="bloodgroup">Select Blood group:</label>
                     <select id="bloodgroup" name="bloodgroup">
@@ -255,5 +266,6 @@ $conn->close();
         </div>
     </div>
 </div>
+<script src="script.js"></script>
 </body>
 </html>

@@ -121,14 +121,14 @@
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $stmt = $conn->prepare("SELECT role, Password FROM staff WHERE User_id = ?");
+            $stmt = $conn->prepare("SELECT role, password FROM staff WHERE User_id = ?");
             $stmt->bind_param("s", $admin_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
             if($result->num_rows > 0) {
                 $admin_data = $result->fetch_assoc();
-                if($admin_data['Password'] == $admin_pass && strtolower($admin_data['role']) == 'admin'){
+                if($admin_data['password'] == $admin_pass && strtolower($admin_data['role']) == 'admin'){
                     $_SESSION['admin_id'] = $admin_id;
                     header("Location: manage_applications.php");
                     exit();
@@ -147,5 +147,6 @@
     }
     ?>
 </div>
+<script src="script.js"></script>
 </body>
 </html>

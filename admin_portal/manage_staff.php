@@ -208,8 +208,8 @@ table td:hover:last-child {
             <div class="about_nav">
                 <ul>
                     
-                    <li><a class="active" href="view_po.php">View PO & Executive Account</a></li>
-                   
+                    <li><a class="active" href="manage_staff.php">View PO & Executive Account</a></li>
+                    <li><a  href="po_leave.php">View PO leave</a></li> 
                     <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
                 </ul>
             </div>
@@ -300,5 +300,6 @@ table td:hover:last-child {
             return true; // Allow form submission
         }
     </script>
+<script src="script.js"></script>
 </body>
 </html>

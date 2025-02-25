@@ -237,5 +237,6 @@ if(isset($_POST['att_submit'])){
 }
 ?>
 
+<script src="script.js"></script>
 </body>
 </html>

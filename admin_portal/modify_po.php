@@ -133,7 +133,7 @@ $conn->close();
                 <ul>
                    
                     <li><a class="active" href="view_po.php">View PO & Executive Account</a></li>
-                    
+                    <li><a  href="po_leave.php">View PO leave</a></li> 
                     <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
                 </ul>
             </div>
@@ -147,9 +147,7 @@ $conn->close();
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="<?= $staff['name'] ?? '' ?>"><br><br>
 
-        <label for="register_no">Register Number:</label>
-        <input type="text" id="register_no" name="register_no" value="<?= $staff['register_no'] ?? '' ?>"><br><br>
-
+        
         <label for="phone">Phone:</label>
         <input type="text" id="phone" name="phone" value="<?= $staff['phone'] ?? '' ?>"><br><br>
 
@@ -162,8 +160,9 @@ $conn->close();
         <label for="gender">Gender:</label>
         <select id="gender" name="gender">
             <option value="" disabled>Select</option>
-            <option value="Male" <?= ($staff['gender'] === 'Male') ? 'selected' : '' ?>>Male</option>
-            <option value="Female" <?= ($staff['gender'] === 'Female') ? 'selected' : '' ?>>Female</option>
+            <option value="MALE" <?= ($staff['gender'] === 'MALE') ? 'selected' : '' ?>>Male</option>
+            <option value="FEMALE" <?= ($staff['gender'] === 'FEMALE') ? 'selected' : '' ?>>Female</option>
+            <option value="OTHER" <?= ($staff['gender'] === 'OTHER') ? 'selected' : '' ?>>Other</option>
         </select><br><br>
 
         <label for="address">Address:</label>
@@ -197,5 +196,6 @@ $conn->close();
             </div>
         </div>
     </div>
+<script src="script.js"></script>
 </body>
 </html>

@@ -172,9 +172,9 @@ $conn->close();
         <ul>
             <li><a href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_students.php"> Manage Students</a></li>
-            <li><a href="manage_staff.php">Manage Staff</a></li>
+            <li><a class="active" href="manage_staff.php">Manage Staff</a></li>
             <li><a href="manage_announcements.php"> Announcements</a></li>
-            <li><a class="active" href="manage_more.php"> More</a></li>
+            <li><a href="manage_more.php"> More</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
 </div>
@@ -184,9 +184,11 @@ $conn->close();
         <div class="about_nav">
             <ul>
             
-            <li><a  href="view_events.php">View Events</a></li>
-            <li><a  href="view_grievances.php">View Grievances</a></li>
-            <li><a class="active" href="po_leave.php">View PO leave</a></li>
+            <li><a  href="manage_staff.php">View PO & Executive Account</a></li>
+            <li><a class="active" href="po_leave.php">View PO leave</a></li> 
+            <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
+            
+            
             </ul>
         </div>
         <div class="widget">
@@ -263,5 +265,6 @@ $conn->close();
 </div>
             </div>
             </div>
+<script src="script.js"></script>
 </body>
 </html>

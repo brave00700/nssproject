@@ -37,7 +37,8 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
             <li><a  href="po_view_admitted_students.php"> Manage Students</a></li>
             <li><a class="active" href="po_approve_attendance.php">Attendance</a></li>
             
-            <li><a href=".php"> ####</a></li>
+            <li><a  href="po_view_events.php"> More</a></li>
+
             <li><a href="po_logout.php">Logout</a></li>
         </ul>
     </div>
@@ -58,7 +59,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
             $po_id = $_SESSION['po_id'];
             $po_unit = $_SESSION['unit'];
             // Create a connection object
-            $conn_event = new mysqli("localhost", "root", "", "event_db");
+            $conn_event = new mysqli("localhost", "root", "", "nss_db");
             if($conn_event->connect_error){
                 die("Connection failed: " . $conn_event->connect_error);
             }
@@ -85,6 +86,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
         </div>
     </div>
 </div>
+<script src="script.js"></script>
 </body>
 </html>
 

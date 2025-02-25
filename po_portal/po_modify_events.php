@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-// Redirect if not logged in
-if (!isset($_SESSION['admin_id'])) {
+// Storing session variable
+if(!$_SESSION['po_id'] || !$_SESSION['unit']){
     header("Location: ../login.html");
-    exit();
-}
+}            
+   
 
 // Database connection
 $servername = "localhost";
@@ -89,9 +89,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
                       $student_incharge, $event_unit, $posterPath, $budgetPdfPath, $event_id);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Event details updated successfully!'); window.location.href = 'view_events.php';</script>";
+        echo "<script>alert('Event details updated successfully!'); window.location.href = 'po_view_events.php';</script>";
     } else {
-        echo "<script>alert('Error updating record: " . $conn->error . "'); window.location.href = 'view_events.php';</script>";
+        echo "<script>alert('Error updating record: " . $conn->error . "'); window.location.href = 'po_view_events.php';</script>";
     }
     $stmt->close();
 }
@@ -112,12 +112,12 @@ $conn->close();
 </head>
 <body>
 <div class="logo-container">
-        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-        <h1><b style="font-size: 2.9rem;">National Service Scheme </b><br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru.<br>
-            <b style="font-size: 1.3rem">Admin Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
+    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
+    <h1><b style="font-size: 2.9rem;">National Service Scheme</b><br>
+        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru.<br>
+        <b style="font-size: 1.3rem">Program Officer Portal</b><br>
+    </h1>
+    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
 </div>
 
 <div class="nav">
@@ -125,26 +125,22 @@ $conn->close();
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-        <li><a  href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="manage_students.php"> Manage Students</a></li>
-            <li><a  href="manage_staff.php">Manage Staff</a></li>
-            <li><a  href="manage_announcements.php"> Announcements</a></li>
-                        <li><a class="active" href="manage_more.php"> More</a></li>
-
-            <li><a href="admin_logout.php">Logout</a></li>
+            <li><a   href="po_profile.php">Profile</a></li>
+            <li><a   href="po_manage_application.php">Manage Applications</a></li>
+            <li><a  href="po_view_admitted_students.php"> Manage Students</a></li>
+            <li><a href="po_approve_attendance.php">Attendance</a></li>
+            
+            <li><a class="active" href="po_view_events.php"> More</a></li>
+            <li><a href="po_logout.php">Logout</a></li>
         </ul>
-</div>
-<body>
-<div class="main">
+    </div>
+    <div class="main">
     <div class="about_main_divide">
         <div class="about_nav">
-          <ul>
-            
-          
-            <li><a class="active"  href="view_events.php">View Events</a></li>
-            
-           
-          </ul>
+            <ul>
+            <li><a class="active" href="po_view_events.php"> View Events</a></li>
+
+            </ul>
         </div>
         <div class="widget">
             <div class="mainapply">
@@ -184,7 +180,7 @@ $conn->close();
             <input type="text" id="student_incharge" name="student_incharge" value="<?= $event['student_incharge'] ?? '' ?>"><br><br>
 
             <label for="event_unit">Event Unit:</label>
-            <select id="event_unit" name="event_unit">
+            <select id="event_unit" name="event_unit" disabled>
                 <option value="1" <?= ($event['event_unit'] ?? '') === '1' ? 'selected' : '' ?>>1</option>
                 <option value="2" <?= ($event['event_unit'] ?? '') === '2' ? 'selected' : '' ?>>2</option>
                 <option value="3" <?= ($event['event_unit'] ?? '') === '3' ? 'selected' : '' ?>>3</option>

@@ -3,7 +3,7 @@ session_start();
 
 // Storing session variable
 if(!$_SESSION['po_id'] || !$_SESSION['unit']){
-    header("Location: login.html");
+    header("Location: ../login.html");
 }            
 ?>
 
@@ -37,7 +37,8 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
             <li><a  href="po_view_admitted_students.php"> Manage Students</a></li>
             <li><a href="po_approve_attendance.php">Attendance</a></li>
             
-            <li><a href=".php"> ####</a></li>
+            <li><a  href="po_view_events.php"> More</a></li>
+
             <li><a href="po_logout.php">Logout</a></li>
         </ul>
         
@@ -57,31 +58,32 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
           
             $po_id = $_SESSION['po_id'];
             // Create a connection object
-            $conn = new mysqli("localhost", "root", "", "staff_db");
+            $conn = new mysqli("localhost", "root", "", "nss_db");
             if($conn->connect_error){
                 die("Connection failed: " . $conn->connect_error);
             }
-            $stmt = $conn->prepare("SELECT  Name, Phone, Email,DoB, Gender, Address,role, User_id, ProfilePhoto, Unit FROM staff_details WHERE User_id = ?");
+            $stmt = $conn->prepare("SELECT  name, phone, email,dob, gender, address,role, user_id, profile_photo, unit FROM staff WHERE user_id = ?");
             $stmt->bind_param("s", $po_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                $photoPath = $row['ProfilePhoto']; // Path to the photo
+                $photoPath = $row['profile_photo']; // Path to the photo
                 echo "<table>
                         <tr>
                             <td>Profile</td>
-                            <td><img src=\"../$photoPath\" style=\"width: 50px; height: 50px;\"></td>
+                           <td><img src=\"../$photoPath\" style=\"width: 50px; height: 50px;\"></td>
+
                         </tr>
                         
                         <tr>
                             <td>Name</td>
-                            <td>{$row['Name']}</td>
+                            <td>{$row['name']}</td>
                         </tr>
                         <tr>
                             <td>Unit</td>
-                            <td>{$row['Unit']}</td>
+                            <td>{$row['unit']}</td>
                         </tr>
                         <tr>
                             <td>Role</td>
@@ -89,24 +91,24 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
                         </tr>
                         <tr>
                             <td>User Id</td>
-                            <td>{$row['User_id']}</td>
+                            <td>{$row['user_id']}</td>
                         </tr>
                         <tr>
                             <td>Phone</td>
-                            <td>{$row['Phone']}</td>
+                            <td>{$row['phone']}</td>
                         </tr>
                         <tr>
                             <td>Email</td>
-                            <td>{$row['Email']}</td>
+                            <td>{$row['email']}</td>
                         </tr>
                         <tr>
                             <td>Address</td>
-                            <td>{$row['Address']}</td>
+                            <td>{$row['address']}</td>
                         </tr>
                         
                         <tr>
                             <td>Gender</td>
-                            <td>{$row['Gender']}</td>
+                            <td>{$row['gender']}</td>
                         </tr>
                         
                     </table>";
@@ -118,5 +120,6 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
         </div>
     </div>
 </div>
+<script src="script.js"></script>
 </body>
 </html>

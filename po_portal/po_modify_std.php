@@ -10,7 +10,7 @@ if (!$_SESSION['po_id']) {
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nss_application";
+$dbname = "nss_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modify']) && isset($_
     $register_no_array = $_POST['register_no'];
 
     if (count($register_no_array) > 1) {
-        echo "<script>alert('Please select only one student to modify.'); window.location.href = 'view_admitted_students.php';</script>";
+        echo "<script>alert('Please select only one student to modify.'); window.location.href = 'po_view_admitted_students.php';</script>";
         exit;
     }
 
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modify']) && isset($_
 
 // Fetch details for the selected student
 if ($register_no) {
-    $sql = "SELECT * FROM admitted_students WHERE Register_no = ?";
+    $sql = "SELECT * FROM students WHERE register_no = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $register_no);
     $stmt->execute();
@@ -47,7 +47,7 @@ if ($register_no) {
     if ($result && $result->num_rows > 0) {
         $student = $result->fetch_assoc();
     } else {
-        echo "<script>alert('No student found with the selected register number.'); window.location.href = 'view_admitted_students.php';</script>";
+        echo "<script>alert('No student found with the selected register number.'); window.location.href = 'po_view_admitted_students.php';</script>";
         exit;
     }
 }
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
     // Handle file upload
     $profilePhoto = '';
     if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = 'uploads/';
+        $uploadDir = '../uploads/profile_photos/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }
@@ -83,23 +83,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
 
     // Build the SQL query dynamically
     $updates = [];
-    if (!empty($name)) $updates[] = "Name = ?";
-    if (!empty($father_name)) $updates[] = "Father_name = ?";
-    if (!empty($mother_name)) $updates[] = "Mother_name = ?";
-    if (!empty($phone)) $updates[] = "Phone = ?";
-    if (!empty($email)) $updates[] = "Email = ?";
-    if (!is_null($age)) $updates[] = "Age = ?";
-    if (!empty($gender)) $updates[] = "Gender = ?";
-    if (!empty($address)) $updates[] = "Address = ?";
-    if (!empty($category)) $updates[] = "Category = ?";
-    if (!empty($bloodgroup)) $updates[] = "Bloodgroup = ?";
-    if (!is_null($shift)) $updates[] = "Shift = ?";
-    if (!empty($course)) $updates[] = "Course = ?";
-    if (!is_null($unit)) $updates[] = "Unit = ?";
-    if (!empty($profilePhoto)) $updates[] = "ProfilePhoto = ?";
+    if (!empty($name)) $updates[] = "name = ?";
+    if (!empty($father_name)) $updates[] = "father_name = ?";
+    if (!empty($mother_name)) $updates[] = "mother_name = ?";
+    if (!empty($phone)) $updates[] = "phone = ?";
+    if (!empty($email)) $updates[] = "email = ?";
+    if (!is_null($age)) $updates[] = "age = ?";
+    if (!empty($gender)) $updates[] = "gender = ?";
+    if (!empty($address)) $updates[] = "address = ?";
+    if (!empty($category)) $updates[] = "category = ?";
+    if (!empty($bloodgroup)) $updates[] = "bloodgroup = ?";
+    if (!is_null($shift)) $updates[] = "shift = ?";
+    if (!empty($course)) $updates[] = "course = ?";
+    if (!is_null($unit)) $updates[] = "unit = ?";
+    if (!empty($profilePhoto)) $updates[] = "profile_photo = ?";
 
     if (count($updates) > 0) {
-        $sql = "UPDATE admitted_students SET " . implode(", ", $updates) . " WHERE Register_no = ?";
+        $sql = "UPDATE students SET " . implode(", ", $updates) . " WHERE register_no = ?";
         $stmt = $conn->prepare($sql);
 
         $params = [];
@@ -124,15 +124,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
         if ($stmt->execute()) {
             echo "<script>alert('Student details updated successfully!'); window.location.href = 'po_view_admitted_students.php';</script>";
         } else {
-            echo "<script>alert('Error updating record: " . $stmt->error . "');</script>";
+            echo "<script>alert('Error updating record: " . $stmt->error . "'); window.location.href = 'po_view_admitted_students.php';</script>";
         }
     } else {
-        echo "<script>alert('No changes were made.');</script>";
+        echo "<script>alert('No changes were made.'); window.location.href = 'po_view_admitted_students.php';</script>";
     }
 }
 
 $conn->close();
 ?>
+
 
 
 <!DOCTYPE html>
@@ -162,7 +163,8 @@ $conn->close();
             <li><a class="active" href="po_view_admitted_students.php"> Manage Students</a></li>
             <li><a href="po_approve_attendance.php">Attendance</a></li>
             
-            <li><a href=".php"> ####</a></li>
+            <li><a  href="po_view_events.php"> More</a></li>
+
             <li><a href="po_logout.php">Logout</a></li>
         </ul>
 </div>
@@ -171,8 +173,8 @@ $conn->close();
     <div class="about_main_divide">
         <div class="about_nav">
             <ul>
-                <li><a  class="active" href="view_admitted_students.php">View Admitted Students</a></li>
-                
+                <li><a  class="active" href="po_view_admitted_students.php">View Admitted Students</a></li>
+                <li><a  href="po_view_credit_application.php">View Credit Application</a></li>
                 <li><a href="change_student_password.php">Change Student Password</a></li>
             </ul>
         </div>
@@ -181,68 +183,79 @@ $conn->close();
                 <h2>Modify Admitted Student Details</h2>
                 <form action="" method="POST" enctype="multipart/form-data" class="nss-form">
                     <label for="register_no">Register Number:</label>
-                    <input type="text" id="register_no" name="register_no" value="<?= $student['Register_no'] ?? '' ?>" required readonly>
+                    <input type="text" id="register_no" name="register_no" value="<?= $student['register_no'] ?? '' ?>" required readonly>
                     
 
                     <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" value="<?= $student['Name'] ?? '' ?>"><br><br>
+                    <input type="text" id="name" name="name" value="<?= $student['name'] ?? '' ?>"><br><br>
 
                     <label for="father_name">Father's Name:</label>
-                    <input type="text" id="father_name" name="father_name" value="<?= $student['Father_name'] ?? '' ?>"><br><br>
+                    <input type="text" id="father_name" name="father_name" value="<?= $student['father_name'] ?? '' ?>"><br><br>
 
                     <label for="mother_name">Mother's Name:</label>
-                    <input type="text" id="mother_name" name="mother_name" value="<?= $student['Mother_name'] ?? '' ?>"><br><br>
+                    <input type="text" id="mother_name" name="mother_name" value="<?= $student['mother_name'] ?? '' ?>"><br><br>
 
                     <label for="phone">Phone:</label>
-                    <input type="text" id="phone" name="phone" value="<?= $student['Phone'] ?? '' ?>"><br><br>
+                    <input type="text" id="phone" name="phone" value="<?= $student['phone'] ?? '' ?>"><br><br>
 
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="<?= $student['Email'] ?? '' ?>"><br><br>
+                    <input type="email" id="email" name="email" value="<?= $student['email'] ?? '' ?>"><br><br>
 
                     <label for="age">Age:</label>
-                    <input type="number" id="age" name="age" value="<?= $student['Age'] ?? '' ?>"><br><br>
+                    <input type="number" id="age" name="age" value="<?= $student['age'] ?? '' ?>"><br><br>
 
                     <label for="gender">Gender:</label>
-                    <input type="text" id="gender" name="gender" value="<?= $student['Gender'] ?? '' ?>"><br><br>
+                        <select id="gender" name="gender">
+                            <option value="" disabled>Select</option>
+                            <option value="MALE" <?= ($student['gender'] === 'MALE') ? 'selected' : '' ?>>Male</option>
+                            <option value="FEMALE" <?= ($student['gender'] === 'FEMALE') ? 'selected' : '' ?>>Female</option>
+                            <option value="OTHER" <?= ($student['gender'] === 'OTHER') ? 'selected' : '' ?>>Other</option>
+                        </select><br><br>
 
                     <label for="address">Address:</label>
-                    <textarea id="address" name="address"><?= $student['Address'] ?? '' ?></textarea><br><br>
+                    <textarea id="address" name="address"><?= $student['address'] ?? '' ?></textarea><br><br>
 
+                    
                     <label for="category">Category:</label>
-                    <input type="text" id="category" name="category" value="<?= $student['Category'] ?? '' ?>"><br><br>
-
+                <select id="category" name="category">
+                    <option value="" disabled>Select</option>
+                    <option value="GENERAL" <?= ($student['category'] === 'GENERAL') ? 'selected' : '' ?>>GENERAL</option>
+                    <option value="OBC" <?= ($student['category'] === 'OBC') ? 'selected' : '' ?>>OBC</option>
+                    <option value="SC" <?= ($student['category'] === 'SC') ? 'selected' : '' ?>>SC</option>
+                    <option value="ST" <?= ($student['category'] === 'ST') ? 'selected' : '' ?>>ST</option>
+                </select><br><br>
                     <label for="bloodgroup">Select Blood group:</label>
                     <select id="bloodgroup" name="bloodgroup">
                         <option value="" disabled>Select</option>
-                        <option value="A+" <?= isset($student['Bloodgroup']) && $student['Bloodgroup'] === 'A+' ? 'selected' : '' ?>>A+</option>
-                        <option value="A-" <?= isset($student['Bloodgroup']) && $student['Bloodgroup'] === 'A-' ? 'selected' : '' ?>>A-</option>
-                        <option value="B+" <?= isset($student['Bloodgroup']) && $student['Bloodgroup'] === 'B+' ? 'selected' : '' ?>>B+</option>
-                        <option value="B-" <?= isset($student['Bloodgroup']) && $student['Bloodgroup'] === 'B-' ? 'selected' : '' ?>>B-</option>
-                        <option value="AB+" <?= isset($student['Bloodgroup']) && $student['Bloodgroup'] === 'AB+' ? 'selected' : '' ?>>AB+</option>
-                        <option value="AB-" <?= isset($student['Bloodgroup']) && $student['Bloodgroup'] === 'AB-' ? 'selected' : '' ?>>AB-</option>
-                        <option value="O+" <?= isset($student['Bloodgroup']) && $student['Bloodgroup'] === 'O+' ? 'selected' : '' ?>>O+</option>
-                        <option value="O-" <?= isset($student['Bloodgroup']) && $student['Bloodgroup'] === 'O-' ? 'selected' : '' ?>>O-</option>
+                        <option value="A+" <?= isset($student['bloodgroup']) && $student['bloodgroup'] === 'A+' ? 'selected' : '' ?>>A+</option>
+                        <option value="A-" <?= isset($student['bloodgroup']) && $student['bloodgroup'] === 'A-' ? 'selected' : '' ?>>A-</option>
+                        <option value="B+" <?= isset($student['bloodgroup']) && $student['bloodgroup'] === 'B+' ? 'selected' : '' ?>>B+</option>
+                        <option value="B-" <?= isset($student['bloodgroup']) && $student['bloodgroup'] === 'B-' ? 'selected' : '' ?>>B-</option>
+                        <option value="AB+" <?= isset($student['bloodgroup']) && $student['bloodgroup'] === 'AB+' ? 'selected' : '' ?>>AB+</option>
+                        <option value="AB-" <?= isset($student['bloodgroup']) && $student['bloodgroup'] === 'AB-' ? 'selected' : '' ?>>AB-</option>
+                        <option value="O+" <?= isset($student['bloodgroup']) && $student['bloodgroup'] === 'O+' ? 'selected' : '' ?>>O+</option>
+                        <option value="O-" <?= isset($student['bloodgroup']) && $student['bloodgroup'] === 'O-' ? 'selected' : '' ?>>O-</option>
                     </select><br><br>
 
                     <label for="shift">Select Shift:</label>
                     <select id="shift" name="shift">
                         <option value="" disabled>Select</option>
-                        <option value="1" <?= isset($student['Shift']) && $student['Shift'] === '1' ? 'selected' : '' ?>>Shift 1</option>
-                        <option value="2" <?= isset($student['Shift']) && $student['Shift'] === '2' ? 'selected' : '' ?>>Shift 2</option>
-                        <option value="3" <?= isset($student['Shift']) && $student['Shift'] === '3' ? 'selected' : '' ?>>Shift 3</option>
+                        <option value="1" <?= isset($student['shift']) && $student['shift'] === '1' ? 'selected' : '' ?>>Shift 1</option>
+                        <option value="2" <?= isset($student['shift']) && $student['shift'] === '2' ? 'selected' : '' ?>>Shift 2</option>
+                        <option value="3" <?= isset($student['shift']) && $student['shift'] === '3' ? 'selected' : '' ?>>Shift 3</option>
                     </select><br><br>
 
                     <label for="course">Course:</label>
-                    <input type="text" id="course" name="course" value="<?= $student['Course'] ?? '' ?>"><br><br>
+                    <input type="text" id="course" name="course" value="<?= $student['course'] ?? '' ?>"><br><br>
 
                     <label for="unit">Select Unit:</label>
                     <select id="unit" name="unit" disabled>
                         <option value="" disabled>Select Unit</option>
-                        <option value="1" <?= isset($student['Unit']) && $student['Unit'] == '1' ? 'selected' : '' ?>>Unit 1</option>
-                        <option value="2" <?= isset($student['Unit']) && $student['Unit'] == '2' ? 'selected' : '' ?>>Unit 2</option>
-                        <option value="3" <?= isset($student['Unit']) && $student['Unit'] == '3' ? 'selected' : '' ?>>Unit 3</option>
-                        <option value="4" <?= isset($student['Unit']) && $student['Unit'] == '4' ? 'selected' : '' ?>>Unit 4</option>
-                        <option value="5" <?= isset($student['Unit']) && $student['Unit'] == '5' ? 'selected' : '' ?>>Unit 5</option>
+                        <option value="1" <?= isset($student['unit']) && $student['unit'] == '1' ? 'selected' : '' ?>>Unit 1</option>
+                        <option value="2" <?= isset($student['unit']) && $student['unit'] == '2' ? 'selected' : '' ?>>Unit 2</option>
+                        <option value="3" <?= isset($student['unit']) && $student['unit'] == '3' ? 'selected' : '' ?>>Unit 3</option>
+                        <option value="4" <?= isset($student['unit']) && $student['unit'] == '4' ? 'selected' : '' ?>>Unit 4</option>
+                        <option value="5" <?= isset($student['unit']) && $student['unit'] == '5' ? 'selected' : '' ?>>Unit 5</option>
                     </select><br><br>
 
                     <label for="profile_photo">Profile Photo:</label>
@@ -256,5 +269,6 @@ $conn->close();
         </div>
     </div>
 </div>
+<script src="script.js"></script>
 </body>
 </html>

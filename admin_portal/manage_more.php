@@ -40,7 +40,8 @@
             
             <li><a href="view_events.php">View Events</a></li>
             <li><a href="view_grievances.php">View Grievances</a></li>
-            <li><a  href="po_leave.php">View PO leave</a></li>
+            
+
 
             
           </ul>
@@ -56,5 +57,6 @@ if(!$_SESSION['admin_id']){
         </div>
     </div>
 </div>
+<script src="script.js"></script>
 </body>
 </html>

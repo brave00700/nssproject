@@ -14,7 +14,7 @@ $officerUnit = intval($_SESSION['unit']);
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "nss_application";
+$dbname = "nss_db";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -29,7 +29,7 @@ $searchResults = [];
 // Handle student search
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['search'])) {
     $search = $conn->real_escape_string($_POST['search']);
-    $searchQuery = "SELECT * FROM admitted_students WHERE Unit = ? AND register_no LIKE ?";
+    $searchQuery = "SELECT * FROM students WHERE unit = ? AND register_no LIKE ?";
     $stmt = $conn->prepare($searchQuery);
     $searchPattern = "%$search%";
     $stmt->bind_param("is", $officerUnit, $searchPattern);
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['search'])) {
     $stmt->close();
 } else {
     // Display all students from the officer's unit by default
-    $query = "SELECT * FROM admitted_students WHERE Unit = ?";
+    $query = "SELECT * FROM students WHERE unit = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $officerUnit);
     $stmt->execute();
@@ -283,13 +283,23 @@ select:focus {
             <li><a class="active" href="po_view_admitted_students.php"> Manage Students</a></li>
             <li><a href="po_approve_attendance.php">Attendance</a></li>
             
-            <li><a href=".php"> ####</a></li>
+            <li><a  href="po_view_events.php"> More</a></li>
+
             <li><a href="po_logout.php">Logout</a></li>
         </ul>
     </div>
 
-<div class="main">
-    <div class="special_widget">
+
+    <div class="main">
+    <div class="about_main_divide">
+        <div class="about_nav">
+            <ul>
+                <li><a  class="active" href="po_view_admitted_students.php">View Admitted Students</a></li>
+                <li><a  href="po_view_credit_application.php">View Credit Application</a></li>
+                <li><a href="change_student_password.php">Change Student Password</a></li>
+            </ul>
+        </div>
+    <div class="widget">
         
             <form class="search-container" method="POST">
                 
@@ -324,28 +334,28 @@ select:focus {
                     <tbody>
                     <?php foreach ($searchResults as $row): ?>
                         <tr>
-                            <td><input type="checkbox" name="register_no[]" value="<?= htmlspecialchars($row['Register_no']) ?>"></td>
+                            <td><input type="checkbox" name="register_no[]" value="<?= htmlspecialchars($row['register_no']) ?>"></td>
                             <td>
-                                <?php if (!empty($row['ProfilePhoto'])): ?>
-                                    <img src="<?= htmlspecialchars($row['ProfilePhoto']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
+                                <?php if (!empty($row['profile_photo'])): ?>
+                                    <img src="<?= htmlspecialchars($row['profile_photo']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
                                 <?php else: ?>
                                     No Photo
                                 <?php endif; ?>
                             </td>
-                            <td><?= htmlspecialchars($row['Register_no']) ?></td>
-                            <td><?= htmlspecialchars($row['Unit']) ?></td>
-                            <td><?= htmlspecialchars($row['Name']) ?></td>
-                            <td><?= htmlspecialchars($row['Course']) ?></td>
-                            <td><?= htmlspecialchars($row['Shift']) ?></td>
-                            <td><?= htmlspecialchars($row['Email']) ?></td>
-                            <td><?= htmlspecialchars($row['Phone']) ?></td>
-                            <td><?= htmlspecialchars($row['Father_name']) ?></td>
-                            <td><?= htmlspecialchars($row['Mother_name']) ?></td>
-                            <td><?= htmlspecialchars($row['Age']) ?></td>
-                            <td><?= htmlspecialchars($row['Gender']) ?></td>
-                            <td><?= htmlspecialchars($row['Address']) ?></td>
-                            <td><?= htmlspecialchars($row['Category']) ?></td>
-                            <td><?= htmlspecialchars($row['Bloodgroup']) ?></td>
+                            <td><?= htmlspecialchars($row['register_no']) ?></td>
+                            <td><?= htmlspecialchars($row['unit']) ?></td>
+                            <td><?= htmlspecialchars($row['name']) ?></td>
+                            <td><?= htmlspecialchars($row['course']) ?></td>
+                            <td><?= htmlspecialchars($row['shift']) ?></td>
+                            <td><?= htmlspecialchars($row['email']) ?></td>
+                            <td><?= htmlspecialchars($row['phone']) ?></td>
+                            <td><?= htmlspecialchars($row['father_name']) ?></td>
+                            <td><?= htmlspecialchars($row['mother_name']) ?></td>
+                            <td><?= htmlspecialchars($row['age']) ?></td>
+                            <td><?= htmlspecialchars($row['gender']) ?></td>
+                            <td><?= htmlspecialchars($row['address']) ?></td>
+                            <td><?= htmlspecialchars($row['category']) ?></td>
+                            <td><?= htmlspecialchars($row['bloodgroup']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -355,10 +365,25 @@ select:focus {
             <?php endif; ?>
         </div>
         <button type="submit" formaction="po_modify_std.php" name="modify" class="admit-buttons" onclick="return validateSelection()" >Modify</button>
-        <button type="submit" formaction="view_report.php" name="view" class="admit-buttons" >View Report</button>
+        <button type="submit" formaction="po_view_report.php" name="view" class="admit-buttons" onclick="return validateSelection()" >View Report</button>
         
     </form>
     </div>
 </div>
+<script>
+    function validateSelection() {
+        const checkboxes = document.querySelectorAll('input[name="register_no[]"]:checked');
+        if (checkboxes.length > 1) {
+            alert("Please select only one student to modify.");
+            return false; // Prevent form submission
+        }
+        if (checkboxes.length  === 0) {
+            alert("Please select at least one student to modify.");
+            return false; // Prevent form submission
+        }
+        return true; // Allow form submission
+    }
+    </script>
+<script src="script.js"></script>
 </body>
 </html>

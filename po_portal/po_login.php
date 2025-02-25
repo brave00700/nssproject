@@ -114,21 +114,21 @@
             $officer_pass = $_POST['pass'];
 
             // Create a connection object
-            $conn = new mysqli("localhost", "root", "", "staff_db");
+            $conn = new mysqli("localhost", "root", "", "nss_db");
             if($conn->connect_error){
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $stmt = $conn->prepare("SELECT role, Password, Unit FROM staff_details WHERE User_id = ?");
+            $stmt = $conn->prepare("SELECT role, password, unit FROM staff WHERE user_id = ?");
             $stmt->bind_param("s", $po_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
             if($result->num_rows > 0) {
                 $officer_data = $result->fetch_assoc();
-                if($officer_data['Password'] == $officer_pass && strtolower($officer_data['role']) == 'program_officer'){
+                if($officer_data['password'] == $officer_pass && strtolower($officer_data['role']) == 'po'){
                     $_SESSION['po_id'] = $po_id;
-                    $_SESSION['unit'] = intval($officer_data['Unit']);
+                    $_SESSION['unit'] = intval($officer_data['unit']);
                     
                     header("Location: po_profile.php");
                     exit();
@@ -147,5 +147,6 @@
     }
     ?>
 </div>
+<script src="script.js"></script>
 </body>
 </html>

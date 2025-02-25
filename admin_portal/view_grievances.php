@@ -180,7 +180,7 @@ table th {
             
             <li><a  href="view_events.php">View Events</a></li>
             <li><a class="active" href="view_grievances.php">View Grievances</a></li>
-            <li><a  href="po_leave.php">View PO leave</a></li>
+            
             </ul>
         </div>
         <div class="widget">
@@ -256,5 +256,6 @@ table th {
     </div>
 </div>
 
+<script src="script.js"></script>
 </body>
 </html>

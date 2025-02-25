@@ -93,7 +93,8 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
             <li><a  href="po_view_admitted_students.php"> Manage Students</a></li>
             <li><a class="active" href="po_approve_attendance.php">Attendance</a></li>
             
-            <li><a href=".php"> ####</a></li>
+            <li><a  href="po_view_events.php"> More</a></li>
+
             <li><a href="po_logout.php">Logout</a></li>
         </ul>
     </div>
@@ -121,11 +122,11 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
             $po_unit = intval($_SESSION['unit']);
             $event_name = $_SESSION['att_evt_name'];
             // Create a connection object
-            $conn_attendance = new mysqli("localhost", "root", "", "attendance_db");
+            $conn_attendance = new mysqli("localhost", "root", "", "nss_db");
             if($conn_attendance->connect_error){
                 die("Connection failed: " . $conn_attendance->connect_error);
             }
-            $stmt_attendance = $conn_attendance->prepare("SELECT reg_no, name FROM attendance WHERE event_name = ? AND unit = ? AND status='Pending'");
+            $stmt_attendance = $conn_attendance->prepare("SELECT register_no, name FROM attendance WHERE event_name = ? AND unit = ? AND status='Pending'");
             $stmt_attendance->bind_param("si", $event_name, $po_unit);
             $stmt_attendance->execute();
             $result = $stmt_attendance->get_result();
@@ -133,8 +134,8 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<tr>
-                        <td><input type='checkbox' name='selected_students[]' value='{$row['reg_no']}'></td>
-                        <td>{$row['reg_no']}</td>
+                        <td><input type='checkbox' name='selected_students[]' value='{$row['register_no']}'></td>
+                        <td>{$row['register_no']}</td>
                         <td>{$row['name']}</td>
                     </tr>";
                 }
@@ -165,6 +166,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
         }
     })
 </script>
+<script src="script.js"></script>
 </body>
 </html>
 
@@ -176,13 +178,13 @@ if(isset($_POST['approve'])){
             exit;
         }
 
-        $conn = new mysqli("localhost", "root", "", "attendance_db");
+        $conn = new mysqli("localhost", "root", "", "nss_db");
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
 
         foreach ($selectedStudents as $reg_no) {
-            $stmt_update = $conn->prepare("UPDATE attendance SET status = 'Approved' WHERE reg_no = ? AND event_name = ? AND unit = ?");
+            $stmt_update = $conn->prepare("UPDATE attendance SET status = 'Approved' WHERE register_no = ? AND event_name = ? AND unit = ?");
             $stmt_update->bind_param("ssi", $reg_no, $event_name, $po_unit);
             $stmt_update->execute();
         }
