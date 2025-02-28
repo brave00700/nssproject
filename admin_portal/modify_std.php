@@ -52,7 +52,7 @@ if ($register_no) {
     }
 }
 
-// Handle form submission for update
+// Handle form submission for update 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
     // Fetch and validate input fields
     $register_no = $_POST['register_no'];
@@ -62,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
     $phone = $_POST['phone'];
     $email = $_POST['email'];
     $age = isset($_POST['age']) && $_POST['age'] !== '' ? intval($_POST['age']) : null;
+    $dob = $_POST['dob']; // Added DOB field
     $gender = $_POST['gender'];
     $address = $_POST['address'];
     $category = $_POST['category'];
@@ -89,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
     if (!empty($phone)) $updates[] = "phone = ?";
     if (!empty($email)) $updates[] = "email = ?";
     if (!is_null($age)) $updates[] = "age = ?";
+    if (!empty($dob)) $updates[] = "dob = ?"; // Added DOB update logic
     if (!empty($gender)) $updates[] = "gender = ?";
     if (!empty($address)) $updates[] = "address = ?";
     if (!empty($category)) $updates[] = "category = ?";
@@ -109,6 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
         if (!empty($phone)) $params[] = $phone;
         if (!empty($email)) $params[] = $email;
         if (!is_null($age)) $params[] = $age;
+        if (!empty($dob)) $params[] = $dob;
         if (!empty($gender)) $params[] = $gender;
         if (!empty($address)) $params[] = $address;
         if (!empty($category)) $params[] = $category;
@@ -133,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
 
 $conn->close();
 ?>
+
 
 
 <!DOCTYPE html>
@@ -170,7 +174,7 @@ $conn->close();
     <div class="about_main_divide">
         <div class="about_nav">
             <ul>
-                <li><a  class="active" href="view_admitted_students.php">View Admitted Students</a></li>
+                <li><a  class="active" href="manage_students.php">View Admitted Students</a></li>
                 <li><a  href="view_credit_application.php">View Credits Application</a></li>
 
                 <li><a href="change_student_password.php">Change Student Password</a></li>
@@ -179,7 +183,7 @@ $conn->close();
         <div class="widget">
             <div class="mainapply">
                 <h2>Modify Admitted Student Details</h2>
-                <form action="" method="POST" enctype="multipart/form-data" class="nss-form">
+                <form action="" method="POST" enctype="multipart/form-data" class="nss-form"  onsubmit="return validateForm();">
                     <label for="register_no">Register Number:</label>
                     <input type="text" id="register_no" name="register_no" value="<?= $student['register_no'] ?? '' ?>" required readonly>
                     
@@ -198,9 +202,10 @@ $conn->close();
 
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" value="<?= $student['email'] ?? '' ?>"><br><br>
-
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" value="<?= $student['dob'] ?? '' ?>"><br><br>
                     <label for="age">Age:</label>
-                    <input type="number" id="age" name="age" value="<?= $student['age'] ?? '' ?>"><br><br>
+                    <input type="number" id="age" name="age"  value="<?= $student['age'] ?? '' ?>"><br><br>
 
                     <label for="gender">Gender:</label>
         <select id="gender" name="gender">
@@ -266,6 +271,87 @@ $conn->close();
         </div>
     </div>
 </div>
+<script>
+        function validateForm() {
+            const nameRegex = /^[A-Za-z\s]+$/;
+            const phoneRegex = /^[0-9]{10}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            let name = document.getElementById("name").value;
+            let father_name = document.getElementById("father_name").value;
+            let mother_name = document.getElementById("mother_name").value;
+            
+            let phone = document.getElementById("phone").value;
+            let email = document.getElementById("email").value;
+            let dob = document.getElementById("dob").value;
+            let course = document.getElementById("course").value;
+            let age = document.getElementById("age").value;
+
+             // Validate Name
+            if (!nameRegex.test(name)) {
+                alert("Name should contain only letters and spaces.");
+                return false;
+            }
+           
+            if (!nameRegex.test(father_name)) {
+                alert("Father Name should contain only letters and spaces.");
+                return false;
+            }
+
+            if (!nameRegex.test(mother_name)) {
+                alert("Mother Name should contain only letters and spaces.");
+                return false;
+            }
+
+            // Validate Phone Number
+            if (!phoneRegex.test(phone)) {
+                alert("Phone number must be exactly 10 digits.");
+                return false;
+            }
+
+            // Validate Email
+            if (!emailRegex.test(email)) {
+                alert("Enter a valid email address.");
+                return false;
+            }
+           
+            // Validate Course Name
+            if (!nameRegex.test(course)) {
+                alert("Course name should contain only letters and spaces.");
+                return false;
+            }
+
+            // Validate Age
+            if (age < 17 || age > 50) {
+                alert("Enter proper Age details.");
+                return false;
+            }
+            if (dob) {
+            let dobDate = new Date(dob);
+            let today = new Date();
+            let age = today.getFullYear() - dobDate.getFullYear();
+            let monthDiff = today.getMonth() - dobDate.getMonth();
+            let dayDiff = today.getDate() - dobDate.getDate();
+
+            // Adjust age if birth date hasn't occurred yet this year
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+
+            if (age < 17 || age > 50) {
+                alert("Enter proper DoB details.");
+                return false;
+            }
+        } else {
+            alert("Please enter your Date of Birth.");
+            return false;
+        }
+            
+            return true;
+        }
+
+       
+    </script>
 <script src="script.js"></script>
 </body>
 </html>

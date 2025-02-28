@@ -1,0 +1,63 @@
+:root {
+  --primary_1: #ebebeb;
+  --primary_blue: #322864;
+  --primary_yellow: #ff0000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.h-50 {
+  max-height: 50px;
+}
+
+.fs-7 {
+  font-size: 0.75rem;
+}
+
+.fs-8 {
+  font-size: 0.625rem;
+}
+
+.nav-link.active.nav-item {
+  background-color: var(--primary_yellow);
+}
+
+.navbar-nav a {
+  padding-left: 1vw !important;
+  padding-right: 1vw !important;
+}
+
+.navbar-nav a:hover {
+  background-color: var(--primary_yellow);
+  color: var(--primary_1) !important;
+}
+
+a.nav-link.p-0.text-light.d-inline:hover {
+  color: var(--primary_yellow) !important;
+}
+
+.head-sju {
+  font-size: 2.7vw;
+}
+.head-nav {
+  font-size: 2vw;
+}
+
+.navbar-toggler-icon {
+  background: url("../icons/hamburger.svg") center contain;
+}
+
+.nav-item .dropdown-menu {
+  position: absolute;
+  right: 0;
+}
+
+.nav-item:hover .dropdown-menu {
+  display: block;
+}

@@ -122,7 +122,7 @@ $conn->close();
             <li><a href="manage_students.php">Manage Students</a></li>
             <li><a class="active" href="manage_staff.php">Manage Staff</a></li>
             <li><a href="manage_announcements.php">Announcements</a></li>
-            <li><a href="manage_events.php">Events</a></li>
+            <li><a href="manage_more.php">More</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>

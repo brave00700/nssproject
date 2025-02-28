@@ -1,0 +1,23 @@
+# Ignore everything inside the folders
+/assets/carousel/*
+/assets/gallery/*
+/assets/uploads/attendance/*
+/assets/uploads/grievance/*
+/assets/uploads/posters/*
+/assets/uploads/profile_photo/*
+
+# Allow specific files
+!/assets/carousel/
+!/assets/gallery/
+!/assets/uploads/attendance/
+!/assets/uploads/grievance/
+!/assets/uploads/posters/
+!/assets/uploads/profile_photo/
+
+!/assets/carousel/sample_dont_add.png
+!/assets/gallery/sample_dont_add.png
+!/assets/uploads/attendance/SampleEvent_dont_add/
+!/assets/uploads/attendance/SampleEvent_dont_add/sample_dont_add.png
+!/assets/uploads/grievance/sample_dont_add.png
+!/assets/uploads/posters/sample_dont_add.png
+!/assets/uploads/profile_photo/sample_dont_add.png

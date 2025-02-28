@@ -119,7 +119,7 @@
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $stmt = $conn->prepare("SELECT role, password, unit FROM staff WHERE user_id = ?");
+            $stmt = $conn->prepare("SELECT role, password, unit ,user_id FROM staff WHERE user_id = ?");
             $stmt->bind_param("s", $po_id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -129,7 +129,7 @@
                 if($officer_data['password'] == $officer_pass && strtolower($officer_data['role']) == 'po'){
                     $_SESSION['po_id'] = $po_id;
                     $_SESSION['unit'] = intval($officer_data['unit']);
-                    
+                    $_SESSION['user_id'] = $po_id;
                     header("Location: po_profile.php");
                     exit();
                 } else {

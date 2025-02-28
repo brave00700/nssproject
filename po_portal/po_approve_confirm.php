@@ -119,15 +119,19 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
             <?php
           
             $po_id = $_SESSION['po_id'];
-            $po_unit = intval($_SESSION['unit']);
-            $event_name = $_SESSION['att_evt_name'];
+            $po_unit = $_SESSION['unit'];
+            $event_id = intval($_SESSION['att_evt_id']);
             // Create a connection object
             $conn_attendance = new mysqli("localhost", "root", "", "nss_db");
             if($conn_attendance->connect_error){
                 die("Connection failed: " . $conn_attendance->connect_error);
             }
-            $stmt_attendance = $conn_attendance->prepare("SELECT register_no, name FROM attendance WHERE event_name = ? AND unit = ? AND status='Pending'");
-            $stmt_attendance->bind_param("si", $event_name, $po_unit);
+            $stmt_attendance = $conn_attendance->prepare("SELECT attendance.register_no, students.name 
+            FROM attendance 
+            JOIN students ON attendance.register_no = students.user_id
+            JOIN events ON attendance.event_id = events.event_id
+            WHERE events.event_id = ? AND students.unit = ? AND attendance.status='PENDING'");
+            $stmt_attendance->bind_param("is", $event_id, $po_unit);
             $stmt_attendance->execute();
             $result = $stmt_attendance->get_result();
 
@@ -184,8 +188,8 @@ if(isset($_POST['approve'])){
         }
 
         foreach ($selectedStudents as $reg_no) {
-            $stmt_update = $conn->prepare("UPDATE attendance SET status = 'Approved' WHERE register_no = ? AND event_name = ? AND unit = ?");
-            $stmt_update->bind_param("ssi", $reg_no, $event_name, $po_unit);
+            $stmt_update = $conn->prepare("UPDATE attendance SET status = 'PO_APPROVED' WHERE register_no = ? AND event_id = ?");
+            $stmt_update->bind_param("si", $reg_no, $event_id);
             $stmt_update->execute();
         }
 

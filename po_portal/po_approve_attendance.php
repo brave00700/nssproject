@@ -63,8 +63,8 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
             if($conn_event->connect_error){
                 die("Connection failed: " . $conn_event->connect_error);
             }
-            $stmt_event = $conn_event->prepare("SELECT event_name, event_date FROM events WHERE event_unit = ? OR event_unit = 10");
-            $stmt_event->bind_param("i", $po_unit);
+            $stmt_event = $conn_event->prepare("SELECT event_name, event_date, event_id FROM events WHERE event_unit = ? OR event_unit = 'All'");
+            $stmt_event->bind_param("s", $po_unit);
             $stmt_event->execute();
             $result = $stmt_event->get_result();
 
@@ -74,7 +74,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
                 <td>{$row['event_name']}</td>
                 <td>{$row['event_date']}</td>
                 <td><form method='POST'>
-                    <input type='hidden' name='event_name' value='{$row['event_name']}'>
+                    <input type='hidden' name='event_id' value='{$row['event_id']}'>
                     <input type='submit' value='Approve'>
                 </form></td></tr>";
                 }
@@ -91,8 +91,8 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
 </html>
 
 <?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_name'])){
-    $_SESSION['att_evt_name'] = $_POST['event_name'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_id'])){
+    $_SESSION['att_evt_id'] = $_POST['event_id'];
     header("Location: po_approve_confirm.php");
 }
 ?>

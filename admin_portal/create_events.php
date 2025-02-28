@@ -162,7 +162,7 @@ $conn->close();
         <div class="about_nav">
           <ul>
             <li><a class="active"  href="view_events.php">View Events</a></li>
-            
+            <li><a  href="view_grievances.php">View Grievances</a></li>
             
             
           </ul>

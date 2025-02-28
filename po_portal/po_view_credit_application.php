@@ -211,7 +211,7 @@ $stmt->close();
     <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
     <h1><b style="font-size: 2.9rem;">National Service Scheme</b> <br>
         <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-        <b style="font-size: 1.3rem">Admin Portal</b><br>
+        <b style="font-size: 1.3rem">Program Officer Portal</b><br>
     </h1> 
     <img class="nsslogo" src="../nss_logo.png" alt="logo" />
 </div>
@@ -239,7 +239,8 @@ $stmt->close();
             <ul>
                 <li><a  href="po_view_admitted_students.php">View Admitted Students</a></li>
                 <li><a class="active"  href="po_view_credit_application.php">View Credit Application</a></li>
-                <li><a href="change_student_password.php">Change Student Password</a></li>
+                
+
             </ul>
         </div>
         <div class="widget">

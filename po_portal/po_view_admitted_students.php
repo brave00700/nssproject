@@ -296,7 +296,7 @@ select:focus {
             <ul>
                 <li><a  class="active" href="po_view_admitted_students.php">View Admitted Students</a></li>
                 <li><a  href="po_view_credit_application.php">View Credit Application</a></li>
-                <li><a href="change_student_password.php">Change Student Password</a></li>
+                
             </ul>
         </div>
     <div class="widget">

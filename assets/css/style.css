@@ -1,0 +1,463 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+/*index css*/
+.nav > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  background-color: #303983;
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space items evenly */
+}
+.nav > ul li {
+  flex: 1; /* Allow list items to grow and fill space */
+  text-align: center; /* Center text in each item */
+}
+
+.nav > ul li a {
+  display: block; /* Use block display for links */
+  padding: 14px 16px;
+}
+
+.nav .ham-menu a {
+  padding: 7px 16px;
+  display: none;
+  align-items: center;
+}
+
+.nav > ul li a,
+.nav .ham-menu a {
+  color: white;
+  text-decoration: none;
+  font-weight: bolder;
+}
+
+.ham-icon {
+  color: #ffffff;
+  font-size: 2rem;
+  overflow: hidden;
+}
+.ham-icon:hover {
+  color: #ffa200;
+  
+}
+
+.ham-menu {
+  width: 100%;
+  background-color: #303983;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nav > ul li a:hover {
+  background-color: #ffa200;
+  
+}
+.nav > ul li a.active {
+  background-color: #ffa200;
+ 
+}
+.nav > ul li a {
+  background-color: #303983;
+  color: white;
+}
+
+h1,
+h2,
+h3 {
+  color: #303983;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  height: 100%;
+  width: 100%;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center; /* Center items vertically */
+  justify-content: space-between; /* Space items out horizontally */
+  padding: 10px 20px; /*Add padding for better spacing */
+  width: calc(100vw - 20px);
+}
+
+.nsslogo {
+  width: 140px;
+}
+
+.sjulogo {
+  height: 140px;
+}
+
+.logo-container h1 {
+  text-align: center; /* Center the heading text */
+  margin: 0 10px;
+  font-size: 2.2rem; /* Adjust font size if necessary */
+}
+
+.main {
+  padding: 20px;
+  background-color: white;
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/*about css*/
+h1,
+h2,
+h3 {
+  color: #303983;
+}
+
+strong {
+  color: #333;
+}
+
+p {
+  margin: 10px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  align-content: center;
+}
+
+td {
+  padding: 10px;
+  text-align: left;
+}
+
+td img {
+  height: 100px;
+  width: 100px;
+}
+
+.guide-text {
+  text-align: center;
+  margin-top: 20px;
+}
+/*innerabout css*/
+/* Horizontal Navigation Bar */
+.about_nav > ul {
+  list-style-type: none;
+  display: flex; /* Use flexbox for layout */
+  flex-direction: column; /* Space items evenly */
+}
+.about_nav > ul li {
+  width: 96%;
+  flex: 1; /* Allow list items to grow and fill space */
+  text-align: center; /* Center text in each item */
+  margin: 0 auto;
+}
+
+.about_nav > ul li a {
+  display: block; /* Use block display for links */
+  color: #ffffff;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-weight: bolder;
+  border-radius: 5px;
+  margin: 7px 0;
+}
+
+.about_nav > ul li a:hover {
+  background-color: #ffa200;
+}
+.about_nav > ul li a.active {
+  background-color: #ffa200;
+  color: white;
+}
+.about_nav {
+  display: block;
+  width: 20%;
+  background-color: #303983;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+.widget {
+  display: block;
+  width: 80%;
+  /* flex-grow: 1; */
+}
+.special_widget {
+  display: block;
+  width: 100%;
+  /* flex-grow: 1; */
+}
+.about_main_divide {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+/*apply css*/
+.mainapply {
+  padding: 20px;
+  background-color: white;
+  margin: 20px auto;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+}
+
+.nss-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #303983;
+}
+
+.nss-form input,
+.nss-form select,
+.nss-form textarea {
+  width: 100%;
+  padding: 12px; /* Increased padding for a comfortable input area */
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box; /* Ensures padding does not affect width */
+}
+
+.nss-form label {
+  display: block;
+  margin-bottom: 8px; /* Added slight spacing below labels */
+  font-weight: bold;
+  color: #303983;
+}
+
+.nss-form textarea {
+  resize: none;
+  padding: 12px; /* Matching the padding with input fields */
+}
+
+.nss-form {
+  gap: 10px; /* Adds vertical spacing between form groups for better readability */
+}
+.nss-form .form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nss-form button {
+  background-color: #303983;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.nss-form button:hover {
+  background-color: #ffa200;
+}
+
+.field-content {
+  margin-bottom: 20px;
+}
+
+/*login css*/
+.mainlogin {
+  padding: 20px;
+  background-color: white;
+  margin: 20px auto;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 50vw;
+}
+.login_nav > ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+}
+
+.login_nav > ul li a {
+  display: block;
+  color: #000;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color on hover */
+.login_nav > ul li a:hover {
+  background-color: #555;
+  color: white;
+}
+.login_nav > ul li {
+  flex: 1; /* Allow list items to grow and fill space */
+  text-align: center; /* Center text in each item */
+}
+
+/* responsive media queries */
+
+/* For Large Desktops */
+@media only screen and (min-width: 1200px) {
+}
+
+/* For Small Laptops */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .logo-container h1 {
+    font-size: 2rem;
+  }
+  .nsslogo {
+    width: 120px;
+  }
+  .sjulogo {
+    height: 100px;
+  }
+}
+
+/* For Tablets */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .logo-container h1 {
+    font-size: 1.75rem;
+  }
+  .nsslogo {
+    width: 90px;
+  }
+  .sjulogo {
+    height: 70px;
+  }
+  /* About Page Nav */
+  .about_main_divide {
+    display: block;
+  }
+  .about_nav {
+    width: 100%;
+  }
+  .widget {
+    width: 100%;
+  }
+}
+
+/* For Large Phones */
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+  .logo-container h1 {
+    font-size: 1.4rem;
+  }
+  .nsslogo {
+    width: 80px;
+  }
+  .sjulogo {
+    height: 60px;
+  }
+  /* About Page Nav */
+  .about_main_divide {
+    display: block;
+  }
+  .about_nav {
+    width: 100%;
+  }
+  .widget {
+    width: 100%;
+  }
+  td,
+  th {
+    font-size: 0.8rem;
+  }
+}
+
+/* For Small Devices */
+@media only screen and (min-width: 400px) and (max-width: 599px) {
+  .logo-container {
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space items out horizontally */
+    padding: 10px 10px;
+  }
+  .logo-container h1 {
+    font-size: 1.2rem;
+    margin: auto;
+  }
+  .nsslogo {
+    width: 80px;
+    height: 60px;
+  }
+  .sjulogo {
+    height: 60px;
+  }
+  .nav .ham-menu a {
+    display: flex;
+  }
+  .nav > ul {
+    flex-direction: column;
+    display: none;
+    /* clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); */
+  }
+  .nav > ul.scroll {
+    display: flex;
+    /* clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); */
+  }
+  /* About Page Nav */
+  .about_main_divide {
+    display: block;
+  }
+  .about_nav {
+    width: 100%;
+  }
+  .widget {
+    width: 100%;
+  }
+  td,
+  th {
+    font-size: 0.5rem;
+  }
+}
+@media only screen and (max-width: 399px) {
+  .logo-container {
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space items out horizontally */
+    padding: 10px 10px;
+  }
+  .logo-container h1 {
+    font-size: 1.2rem;
+    margin: auto;
+  }
+  .nsslogo {
+    width: 80px;
+    height: 60px;
+  }
+  .sjulogo {
+    height: 60px;
+  }
+  .nav .ham-menu a {
+    display: flex;
+  }
+  .nav > ul {
+    flex-direction: column;
+    display: none;
+    /* clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); */
+  }
+  .nav > ul.scroll {
+    display: flex;
+    /* clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); */
+  }
+  /* About Page Nav */
+  .about_main_divide {
+    display: block;
+  }
+  .about_nav {
+    width: 100%;
+  }
+  .widget {
+    width: 100%;
+  }
+  td,
+  th {
+    font-size: 0.4rem;
+  }
+}
