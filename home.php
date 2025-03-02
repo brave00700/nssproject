@@ -127,9 +127,9 @@ $count = 1;
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">LOGIN</a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="student/login.php" target="_blank">Student Login</a>
-                <a class="dropdown-item" href="executive/login.php" target="_blank">Executive Login</a>
-                <a class="dropdown-item" href="po/login.php" target="_blank">Program Officer Login</a>
-                <a class="dropdown-item" href="admin/login.php" target="_blank">Admin Login</a>
+                <a class="dropdown-item" href="exe_portal/exe_login.php" target="_blank">Executive Login</a>
+                <a class="dropdown-item" href="po_portal/po_login.php" target="_blank">Program Officer Login</a>
+                <a class="dropdown-item" href="admin_portal/admin_login.php" target="_blank">Admin Login</a>
               </div>
             </div>
           </div>
