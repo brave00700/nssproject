@@ -10,6 +10,52 @@ $result_student = $stmt->get_result();
 $stmt1 = $conn->prepare("SELECT photo_path FROM gallery LIMIT 3");
 $stmt1->execute();
 $result_2 = $stmt1->get_result();
+
+$stmt2 = $conn->prepare("SELECT photo_path FROM carousel");
+$stmt2->execute();
+$result_3 = $stmt2->get_result();
+
+// Generating the carousel
+$count = 1;
+      $indicators = "";
+      $sliders = "";
+      while($row3 = $result_3->fetch_assoc()){
+        $cminus = $count - 1;
+        if($count == 1){
+          $indicators .= "<button
+          type='button'
+          data-bs-target='#robotcarousel'
+          data-bs-slide-to='{$cminus}'
+          class='active'
+          aria-current='true'
+          aria-label='Slide {$count}'
+        ></button>";
+          
+          $sliders .= "<div class='carousel-item active'>
+          <img
+            class='d-block w-100'
+            src='{$row3["photo_path"]}'
+            alt='Image {$count}'
+          />
+        </div>";
+        }else{
+          $indicators .= "<button
+          type='button'
+          data-bs-target='#robotcarousel'
+          data-bs-slide-to='{$cminus}'
+          aria-label='Slide {$count}'
+            ></button>";
+
+        $sliders .= "<div class='carousel-item'>
+        <img
+          class='d-block w-100'
+          src='{$row3["photo_path"]}'
+          alt='Image {$count}'
+            />
+          </div>";
+        }
+        $count++;
+      }
 ?>
 
 <!DOCTYPE html>
@@ -80,10 +126,10 @@ $result_2 = $stmt1->get_result();
             <div class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">LOGIN</a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="student/login.php" target="_blank">Student Login</a>
-                <a class="dropdown-item" href="exe_portal/exe_login.php" target="_blank">Executive Login</a>
-                <a class="dropdown-item" href="po_portal/po_login.php" target="_blank">Program Officer Login</a>
-                <a class="dropdown-item" href="admin_portal/admin_login.php" target="_blank">Admin Login</a>
+                <a class="dropdown-item" href="student/login.php" target="_blank">Student Login</a>
+                <a class="dropdown-item" href="executive/login.php" target="_blank">Executive Login</a>
+                <a class="dropdown-item" href="po/login.php" target="_blank">Program Officer Login</a>
+                <a class="dropdown-item" href="admin/login.php" target="_blank">Admin Login</a>
               </div>
             </div>
           </div>
@@ -92,7 +138,6 @@ $result_2 = $stmt1->get_result();
     </nav>
 
     <!-- Carousel  -->
-
     <div
       id="robotcarousel"
       class="carousel slide"
@@ -101,50 +146,11 @@ $result_2 = $stmt1->get_result();
       data-bs-ride="carousel"
     >
       <div class="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#robotcarousel"
-          data-bs-slide-to="0"
-          class="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#robotcarousel"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#robotcarousel"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
+        <?php echo $indicators; ?>
       </div>
 
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img
-            class="d-block w-100"
-            src="assets/carousel/img1.png"
-            alt="img1"
-          />
-        </div>
-        <div class="carousel-item">
-          <img
-            class="d-block w-100"
-            src="assets/carousel/img2.png"
-            alt="img2"
-          />
-        </div>
-        <div class="carousel-item">
-          <img
-            class="d-block w-100"
-            src="assets/carousel/img3.png"
-            alt="img3"
-          />
-        </div>
+        <?php echo $sliders;   ?>
       </div>
 
       <button
