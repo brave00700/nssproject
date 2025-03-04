@@ -169,7 +169,7 @@ $conn->close();
         <input type="hidden" name="credit_id" value="<?= htmlspecialchars($credit_id) ?>">
         
         <label for="credits">Credits:</label>
-        <select name="credits" id="credits" required>
+        <select name="credits" id="credits" required disabled>
             <option value="0" <?= ($creditData['credits'] == '0') ? 'selected' : '' ?>>0</option>
             <option value="1" <?= ($creditData['credits'] == '1') ? 'selected' : '' ?>>1</option>
             <option value="2" <?= ($creditData['credits'] == '2') ? 'selected' : '' ?>>2</option>
@@ -180,8 +180,7 @@ $conn->close();
         <select name="status" id="status" required>
             <option value="PENDING" <?= ($creditData['status'] == 'PENDING') ? 'selected' : '' ?>>Pending</option>
             <option value="APPROVED" <?= ($creditData['status'] == 'APPROVED') ? 'selected' : '' ?>>Approved</option>
-            <option value="PO_APPROVED" <?= ($creditData['status'] == 'PO_APPROVED') ? 'selected' : '' ?>>PO Approved</option>
-            <option value="REJECTED" <?= ($creditData['status'] == 'REJECTED') ? 'selected' : '' ?>>Rejected</option>
+            
         </select>
         
         <button name="update" type="submit">Update</button>

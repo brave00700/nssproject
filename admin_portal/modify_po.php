@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
     // Handle file upload
     $profilePhoto = '';
     if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = 'uploads/';
+        $uploadDir = '../uploads/profile_photos/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true);
         }

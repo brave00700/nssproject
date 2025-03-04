@@ -68,6 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Move the uploaded file to the specified directory
         if (move_uploaded_file($fileTmpPath, $filePath)) {
             $profilePhoto = $filePath;
+            echo "<script>alert('{$profilePhoto}');</script>";
         } else {
             echo "<script>alert('Error: Failed to upload the profile photo. Please try again.');</script>";
             exit;
