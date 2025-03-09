@@ -4,6 +4,40 @@
   box-sizing: border-box;
   overflow-x: hidden;
 }
+
+/* Header */
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  text-align: center;
+  flex-wrap: wrap;
+}
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+.header-content {
+  flex: 1;
+  min-width: 200px;
+  text-align: center;
+}
+.header-text {
+  font-weight: bold;
+  line-height: 1.2;
+  font-size: 1.5rem;
+}
+.header-subtext {
+  color: var(--primary_blue);
+  font-size: 1.2rem;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
 /*index css*/
 .nav > ul {
   list-style-type: none;
@@ -44,7 +78,6 @@
 }
 .ham-icon:hover {
   color: #ffa200;
-  
 }
 
 .ham-menu {
@@ -56,11 +89,9 @@
 
 .nav > ul li a:hover {
   background-color: #ffa200;
-  
 }
 .nav > ul li a.active {
   background-color: #ffa200;
- 
 }
 .nav > ul li a {
   background-color: #303983;
@@ -81,28 +112,6 @@ body {
   background-color: #f4f4f4;
   height: 100%;
   width: 100%;
-}
-
-.logo-container {
-  display: flex;
-  align-items: center; /* Center items vertically */
-  justify-content: space-between; /* Space items out horizontally */
-  padding: 10px 20px; /*Add padding for better spacing */
-  width: calc(100vw - 20px);
-}
-
-.nsslogo {
-  width: 140px;
-}
-
-.sjulogo {
-  height: 140px;
-}
-
-.logo-container h1 {
-  text-align: center; /* Center the heading text */
-  margin: 0 10px;
-  font-size: 2.2rem; /* Adjust font size if necessary */
 }
 
 .main {
@@ -305,32 +314,23 @@ td img {
 
 /* responsive media queries */
 
-/* For Large Desktops */
-@media only screen and (min-width: 1200px) {
-}
-
-/* For Small Laptops */
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-  .logo-container h1 {
-    font-size: 2rem;
+  .header-text {
+    font-size: 1.4rem;
   }
-  .nsslogo {
-    width: 120px;
-  }
-  .sjulogo {
-    height: 100px;
+  .logo {
+    width: 75px;
+    height: 75px;
   }
 }
 
 /* For Tablets */
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-  .logo-container h1 {
-    font-size: 1.75rem;
+  .header-text {
+    font-size: 1.3rem;
   }
-  .nsslogo {
-    width: 90px;
-  }
-  .sjulogo {
+  .logo {
+    width: 70px;
     height: 70px;
   }
   /* About Page Nav */
@@ -347,14 +347,12 @@ td img {
 
 /* For Large Phones */
 @media only screen and (min-width: 600px) and (max-width: 767px) {
-  .logo-container h1 {
-    font-size: 1.4rem;
+  .header-text {
+    font-size: 1.2rem;
   }
-  .nsslogo {
-    width: 80px;
-  }
-  .sjulogo {
-    height: 60px;
+  .logo {
+    width: 65px;
+    height: 65px;
   }
   /* About Page Nav */
   .about_main_divide {
@@ -374,21 +372,19 @@ td img {
 
 /* For Small Devices */
 @media only screen and (min-width: 400px) and (max-width: 599px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+  }
   .logo-container {
-    align-items: center; /* Center items vertically */
-    justify-content: space-between; /* Space items out horizontally */
-    padding: 10px 10px;
+    flex-direction: column;
   }
-  .logo-container h1 {
-    font-size: 1.2rem;
-    margin: auto;
-  }
-  .nsslogo {
-    width: 80px;
+  .logo {
+    width: 60px;
     height: 60px;
   }
-  .sjulogo {
-    height: 60px;
+  .header-text {
+    font-size: 1.1rem;
   }
   .nav .ham-menu a {
     display: flex;
@@ -396,11 +392,9 @@ td img {
   .nav > ul {
     flex-direction: column;
     display: none;
-    /* clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); */
   }
   .nav > ul.scroll {
     display: flex;
-    /* clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); */
   }
   /* About Page Nav */
   .about_main_divide {
@@ -418,21 +412,19 @@ td img {
   }
 }
 @media only screen and (max-width: 399px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+  }
   .logo-container {
-    align-items: center; /* Center items vertically */
-    justify-content: space-between; /* Space items out horizontally */
-    padding: 10px 10px;
+    flex-direction: column;
   }
-  .logo-container h1 {
-    font-size: 1.2rem;
-    margin: auto;
+  .logo {
+    width: 50px;
+    height: 50px;
   }
-  .nsslogo {
-    width: 80px;
-    height: 60px;
-  }
-  .sjulogo {
-    height: 60px;
+  .header-text {
+    font-size: 1rem;
   }
   .nav .ham-menu a {
     display: flex;
@@ -440,11 +432,9 @@ td img {
   .nav > ul {
     flex-direction: column;
     display: none;
-    /* clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); */
   }
   .nav > ul.scroll {
     display: flex;
-    /* clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); */
   }
   /* About Page Nav */
   .about_main_divide {

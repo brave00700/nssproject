@@ -8,7 +8,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 function sendEmail($to, $token) {
-    $reset_url = "http://$_SERVER[HTTP_HOST]/NMS/student/forgot_pass_change.php?token=$token";
+    $reset_url = "http://$_SERVER[HTTP_HOST]/nssproject/student/forgot_pass_change.php?token=$token";
     $mail = new PHPMailer(true);
 
     try {
@@ -53,7 +53,7 @@ $current = new DateTime();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSS Home</title>
+    <title>Reset Password - Student</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         form {
@@ -107,25 +107,27 @@ $current = new DateTime();
         transform: scale(0.98); 
     }
 
-    /* .main {
+    .main {
         display: flex;
         flex-direction: column;
-        justify-content: center; 
+        justify-content: flex-start; 
         align-items: center; 
-        height: 60vh; 
         background-color: #f7f7f7; 
-    } */
+    }
+    p.msg {
+        width: 350px;
+        border-radius: 8px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        background-color: #ffb1005c; 
+        color:rgb(255, 0, 0);
+        font-weight: 700;
+        padding: 1rem;   
+        text-align: center;
+    }
 </style>
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../assets/icons/sju_logo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Student Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../assets/icons/nss_logo.png" alt="logo" />
-</div>
+<?php include "header.php" ?>
    
 <div class="nav">
         <div class="ham-menu">
@@ -144,7 +146,7 @@ $current = new DateTime();
                         <td><input type="text" name='id' ></td>
                     </tr>
                         <td></td>
-                        <td><button type="submit" name="reset">Forgot Password</button></td>
+                        <td><button type="submit" name="reset">Reset</button></td>
                     </tr>
                 </table>
             </form>
@@ -184,8 +186,8 @@ $current = new DateTime();
                             $stmt2 = $conn->prepare("UPDATE password_resets SET token = ?, expires_at = DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE user_id = ?");
                             $stmt2->bind_param("ss", $new_token, $lreg);
                             if($stmt2->execute()){
-                                echo "Password Update Successfull";
                                 sendEmail($email, $new_token);
+                                echo "<p class='msg'>Password Reset Successfull. Check your mail</p>";
                             }else{
                                 echo "Error" . $conn->error;
                             }
@@ -195,25 +197,31 @@ $current = new DateTime();
                             $stmt2 = $conn->prepare("INSERT INTO password_resets (user_id, token, expires_at) VALUES(?, ?, DATE_ADD(NOW(), INTERVAL 30 MINUTE))");
                             $stmt2->bind_param("ss", $lreg, $new_token);
                             if($stmt2->execute()){
-                                echo "Password Reset Successfull";
                                 sendEmail($email, $new_token);
+                                echo "<p class='msg'>Password Reset Successfull. Check your mail</p>";
                             }else{
                                 echo "Error" . $conn->error;
                             }
                         }
                     }
                     else {
-                        echo 'Invalid UserID';
+                        echo "<p class='msg'>Invalid User ID</p>";
                     }
 
                     $stmt->close();
                     $conn->close();
                 }else{
-                    echo 'Invalid UserID';
+                    echo "<p class='msg'>Invalid User ID</p>";
                 }
             }
 ?>
 </div>
 <script src="../assets/js/script.js"></script>
+<script>
+     // Run on page load
+     window.addEventListener('load', adjustMainHeight);
+    // Run on window resize
+    window.addEventListener('resize', adjustMainHeight);
+</script>
 </body>
 </html>

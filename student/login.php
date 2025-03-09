@@ -74,7 +74,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
         padding: 1.5rem; 
         border-radius: 8px; 
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-        width: 350px; 
+        max-width: 350px; 
         margin: auto; 
     }
 
@@ -128,7 +128,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
         background-color: #f7f7f7; 
     }
 
-    p {
+    p.msg {
         width: 350px;
         border-radius: 8px; 
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
@@ -138,22 +138,30 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
         padding: 1rem;   
         text-align: center;
     }
+    .forgot {
+        font-size: 0.9rem;
+    }
+    .forgot:hover {
+        color: #e69202 !important;
+    }
+    .nav > ul {
+        display: block !important;
+    }
+    @media only screen and (max-width: 399px) {
+        tr {
+            display: flex;
+            flex-direction: column;
+        }
+        tr .label {
+            text-align: left;
+        }
+    }
 </style>
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../assets/icons/sju_logo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Student Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../assets/icons/nss_logo.png" alt="logo" />
-</div>
+    <?php include "header.php" ?>
    
 <div class="nav">
-        <div class="ham-menu">
-            <a><i class="fa-solid fa-bars ham-icon"></i></a>
-        </div>
         <ul>
             <li><a  class="active" href="">Log In</a></li>
         </ul>
@@ -171,18 +179,23 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
                         <td><input type="password" name='pass' ></td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td><button name="login" type="submit">Login</button></td>
+                        <td colspan="2"><button name="login" type="submit">Login</button></td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td><a href="forgot_pass.php">Forgot Password</a></td>
+                        <th colspan="2"><a href="forgot_pass.php" class="forgot" style="text-decoration: none; color: #000;">Forgot Password ?</a></th>
                     </tr>
                 </table>
             </form>
             <?php if ($message): ?>
-                <p><?php echo $message ?>
+                <p class="msg"><?php echo $message ?>
             <?php endif; ?>
 </div>
+<script src="../assets/js/script.js"></script>
+<script>
+     // Run on page load
+     window.addEventListener('load', adjustMainHeight);
+    // Run on window resize
+    window.addEventListener('resize', adjustMainHeight);
+</script>
 </body>
 </html>

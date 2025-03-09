@@ -29,32 +29,6 @@ $unit = $_SESSION['unit'];
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-    .tile {
-        border: 1px solid #303a8394;
-        padding: 10px;
-        display: flex;
-        margin-bottom: 10px;
-        background-color: #303983;
-        color: #FFFFFF;
-        border-radius: 5px;
-    }
-    .tile a {
-        flex: 0.2;
-        display: inline-block;
-        text-decoration: none;
-    }
-    .tile img {
-        display: block;
-        height: 100%;
-        width: 100%;
-        object-fit: fill;
-    }
-    .tile-content{
-        flex:0.8;
-        padding: 0 5px;
-        display: flex;
-        flex-direction: column;
-    }
     span{
         line-height: 1.1rem;
         overflow-y: hidden;
@@ -81,8 +55,8 @@ $unit = $_SESSION['unit'];
 }
 .widget{
     width: 100%;
-    padding-left: 100px;
-    padding-right: 100px;
+    /* padding-left: 100px; */
+    /* padding-right: 100px; */
     min-height: 50vh;
 }
 button {
@@ -101,18 +75,35 @@ button:hover {
     background-color: #0056b3;
 }
 /* Basic style for the dropdown */
+/* Dropdown fix */
 select {
-    width: 100%;  /* Makes it responsive */
+    width: 100%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f8f8f8;
     cursor: pointer;
-    appearance: none;  /* Removes default dropdown arrow */
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    position: relative;
 }
+
+.ql-toolbar {
+    z-index: 1000 !important;
+    position: relative;
+}
+
+.ql-picker {
+    z-index: 1050 !important;
+    position: absolute;
+}
+
+.ql-picker-options {
+    z-index: 1100 !important;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+}
+
 
 /* Custom dropdown arrow */
 select::after {
@@ -132,17 +123,11 @@ select:hover, select:focus {
 }
 
 
+
 </style>
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../assets/icons/sju_logo.png" alt="sjulogo" />
-        <h1 style="line-height: normal;">  <b style="font-size: 3.2vw;">National Service Scheme </b> <br>
-            <div style="font-size: 1.6vw;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.6vw">Student Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../assets/icons/nss_logo.png" alt="logo" />
-</div>
+<?php include "header.php" ?>
    
 <div class="nav">
         <div class="ham-menu">
@@ -152,55 +137,64 @@ select:hover, select:focus {
             <li><a href="profile.php">Profile</a></li>
             <li><a href="attendance_view.php">Attendance</a></li>
             <li><a href="events.php">Events</a></li>
-            <li><a  class="active" href="griev.php">Grievience</a></li>
-            <li><a  href="credits.php">Credits</a></li>
+            <li><a class="active" href="grievance.php">Grievience</a></li>
+            <li><a href="credits.php">Credits</a></li>
         </ul>
-    </div>
+</div>
 
-    <div class="main">
-        <div class="widget">
-            <form class="form" method="POST" enctype="multipart/form-data">
-                <div class="group-input" style="display: flex; gap: 10px; width: 100%">
-                <div class="input-group" style="width: 100%">
-                    <label for="type">Grievance-Type:</label>
-                    <select id="type" name="grievance_type" required>
-                        <option value="" selected hidden>Select</option>
-                        <option value="REGULAR" >Regular activiy</option>
-                        <option value="CAMP">Camp activity</option>
-                        <option value="OTHER">Other</option>
-                    </select>
-                </div>
-                <div class="input-group" style="width: 100%">
-                    <label for="type">Send To:</label>
-                    <select id="type" name="send_to" required>
-                        <option value="" selected hidden>Select</option>
-                        <option value="PO" >Program Officer</option>
-                        <option value="ADMIN">Program Coordinator</option>
-                        <option value="BOTH">Both</option>
-                    </select>
-                </div>
-                </div>
-                <div class="input-group">
-                    <label for="subject">Subject:</label>
-                <input type="text" name="subject" id="subject" placeholder="Eg. Grievance regarding camp" required/>
-                </div>
-                <textarea style="position: absolute; opacity: 0" name="body"></textarea>
-            
-            <label>Body:</label>
-            <div id="editor" style="height: fit-content">
-            
-            </div>
-            <div class="input-group" style="width: 100%; border: 1px solid #CCC; margin-top: 10px; border-radius: 3px; padding: 3px">
-                <label>Upload Photo/PDF :</label>
-                <input type="file" name="uploadpf" id="uploadpf" accept="image/jpeg, image/png, image/jpg, application/pdf"/>
-            </div>
-            <button type="submit" name="submit" id="send">Send</button>
-            </form>
+<div class="main">
+    <div class="about_main_divide">
+        <div class="about_nav">
+            <ul>
+            <li><a href="grievance.php">My Grievances</a></li>
+            <li><a class="active" href="grievance_new.php">New Grievance</a></li>
+            </ul>
         </div>
+        <div class="widget">
+        <form class="form" method="POST" enctype="multipart/form-data">
+            <div class="group-input" style="display: flex; gap: 10px; width: 100%">
+            <div class="input-group" style="width: 100%">
+                <label for="type">Grievance-Type:</label>
+                <select id="type" name="grievance_type" required>
+                    <option value="" selected hidden>Select</option>
+                    <option value="REGULAR" >Regular activiy</option>
+                    <option value="CAMP">Camp activity</option>
+                    <option value="OTHER">Other</option>
+                </select>
+            </div>
+            <div class="input-group" style="width: 100%">
+                <label for="type">Send To:</label>
+                <select id="type" name="send_to" required>
+                    <option value="" selected hidden>Select</option>
+                    <option value="PO" >Program Officer</option>
+                    <option value="ADMIN">Program Coordinator</option>
+                    <option value="BOTH">Both</option>
+                </select>
+            </div>
+            </div>
+            <div class="input-group">
+                <label for="subject">Subject:</label>
+            <input type="text" name="subject" id="subject" placeholder="Eg. Grievance regarding camp" required/>
+            </div>
+            <textarea style="position: absolute; opacity: 0" name="body"></textarea>
+        
+        <label>Body:</label>
+        <div id="editor" >
+        
+        </div>
+        <div class="input-group" style="width: 100%; border: 1px solid #CCC; margin-top: 10px; border-radius: 3px; padding: 3px">
+            <label>Upload Photo/PDF :</label>
+            <input type="file" name="uploadpf" id="uploadpf" accept="image/jpeg, image/png, image/jpg, application/pdf"/>
+        </div>
+        <button type="submit" name="submit" id="send">Send</button>
+        </form>
     </div>
+</div>
+</div>
+<script src="../assets/js/script.js"></script>
 <!-- Include the Quill library -->
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-<script src="../assets/js/script.js"></script>
+
 <!-- Initialize Quill editor -->
 <script>
   const quill = new Quill('#editor', {
@@ -287,8 +281,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if($conn->connect_error){
         die("Connection failed: " . $conn->connect_error);
     }
-    $stmt = $conn->prepare("INSERT INTO grievance (unit, activity_type, subject, body, send_to, photo_pdf_path) VALUES(?,?,?,?,?,?);");
-    $stmt->bind_param("ssssss", $unit, $type, $subject, $body, $send_to, $proof);
+    $stmt = $conn->prepare("INSERT INTO grievance (student_id, unit, activity_type, subject, body, send_to, photo_pdf_path) VALUES(?,?,?,?,?,?,?);");
+    $stmt->bind_param("sssssss", $reg, $unit, $type, $subject, $body, $send_to, $proof);
     if($stmt->execute()){
         echo "<script>alert('Grievance sent successfully');</script>";
     }else{

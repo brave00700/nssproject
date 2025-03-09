@@ -7,35 +7,80 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        input {
-            outline: none;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        form label{
-            text-transform: uppercase;
-        }
-        form input {
-            font-size: 1rem;
-            padding: 0.1rem;
-            /* backround-color: ; */
-        }
-        form button {
-            padding: 0.5rem 0;
-        }
+        .widget {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* max-width: 800px; */
+    margin: 1.5rem auto;
+}
+
+.widget form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.widget .form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.widget .form-row > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.widget label {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: #333;
+}
+
+.widget input {
+    padding: 0.4rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.widget input[readonly] {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.widget button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.6rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.widget button:hover {
+    background: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .widget .form-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+
     </style>
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../assets/icons/sju_logo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Student Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../assets/icons/nss_logo.png" alt="logo" />
-</div>
+<?php include "header.php" ?>
    
 <div class="nav">
         <div class="ham-menu">
@@ -45,7 +90,7 @@
             <li><a href="profile.php">Profile</a></li>
             <li><a class="active" href="attendance_view.php">Attendance</a></li>
             <li><a  href="events.php">Events</a></li>
-            <li><a  href="griev.php">Grievience</a></li>
+            <li><a  href="grievance.php">Grievience</a></li>
             <li><a  href="credits.php">Credits</a></li>
         </ul>
 </div>
@@ -94,35 +139,55 @@
             $event_details = $event_query->fetch_assoc();
 
             echo "<form method='POST' enctype='multipart/form-data' name='att_form'>
-                    <label for='student_name'>Name</label>
-                    <input type='text' id='student_name' name='student_name' value='{$student_details['name']}' readonly><br>
+    <div class='form-row'>
+        <div>
+            <label for='student_name'>Name</label>
+            <input type='text' id='student_name' name='student_name' value='{$student_details['name']}' readonly>
+        </div>
+        <div>
+            <label for='reg'>Register No</label>
+            <input type='text' id='reg' name='reg' value='{$reg}' readonly>
+        </div>
+    </div>
 
-                    <label for='reg'>Register No</label>
-                    <input type='text' id='reg' name='reg' value='{$reg}' readonly><br>
+    <div class='form-row'>
+        <div>
+            <label for='unit'>Unit</label>
+            <input type='text' id='unit' name='unit' value='{$student_details['unit']}' readonly>
+        </div>
+        <div>
+            <label for='event_name'>Event Name</label>
+            <input type='text' id='event_name' name='event_name' value='{$event_name}' readonly>
+        </div>
+    </div>
 
-                    <label for='unit'>Unit</label>
-                    <input type='text' id='unit' name='unit' value='{$student_details['unit']}' readonly><br>
+    <div class='form-row'>
+        <div>
+            <label for='event_date'>Event Date</label>
+            <input type='date' id='event_date' name='event_date' value='{$event_details['event_date']}' readonly>
+        </div>
+        <div>
+            <label for='event_duration'>Event Duration</label>
+            <input type='number' id='event_duration' name='event_duration' value='{$event_details['event_duration']}' readonly>
+        </div>
+    </div>
 
-                    <label for='event_name'>Event Name</label>
-                    <input type='text' id='event_name' name='event_name' value='{$event_name}' readonly><br>
+    <div class='form-row'>
+        <div>
+            <label for='teacher_inc'>Teacher Incharge</label>
+            <input type='text' id='teacher_inc' name='teacher_inc' value='{$event_details['teacher_incharge']}' readonly>
+        </div>
+        <div>
+            <label for='event_type'>Event Type</label>
+            <input type='text' id='event_type' name='event_type' value='{$event_details['event_type']}' readonly>
+        </div>
+    </div>
 
-                    <label for='event_date'>Event Date</label>
-                    <input type='date' id='event_date' name='event_date' value='{$event_details['event_date']}' readonly><br>
+    <label for='photo'>Upload Proof</label>
+    <input type='file' id='photo' name='photo' accept='image/jpeg, image/png, image/jpg' required>
 
-                    <label for='event_duration'>Event Duration</label>
-                    <input type='number' id='event_duration' name='event_duration' value='{$event_details['event_duration']}' size='2' readonly><br>
-
-                    <label for='teacher_inc'>Teacher Incharge</label>
-                    <input type='text' id='teacher_inc' name='teacher_inc' value='{$event_details['teacher_incharge']}' readonly><br>
-
-                    <label for='event_type'>Event Type</label>
-                    <input type='text' id='event_type' name='event_type' value='{$event_details['event_type']}' readonly><br>
-
-                    <label for='photo'>Upload Proof</label>
-                    <input type='file' id='photo' name='photo' accept='image/jpeg, image/png, image/jpg' required><br>
-
-                    <button type='submit' name='att_submit'>Submit</button>
-                </form>";
+    <button type='submit' name='att_submit'>Submit</button>
+</form>";
 
                 $event_id = $event_details['event_id'];
             

@@ -72,14 +72,25 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $conn->close();
     }else if(isset($_POST['generate'])){
 
-        include 'certificate.php';
+        $stmt4 = $conn->prepare("SELECT credits, hours, credits.register_no, students.name, students.unit 
+        FROM credits 
+        JOIN students on credits.register_no = students.user_id
+        WHERE credits.register_no = ?");
+        $stmt4->bind_param("s", $reg);
+        $stmt4->execute();
+        $result4 = $stmt4->get_result();
+
+        if($result4->num_rows > 0){
+            $row = $result4->fetch_assoc();
+            $hours = $row['hours'];
+            $credits = $row['credits'];
+            $name = $row['name'];
+            $unit = $row['unit'];
+        }
 
 
         $pdf = new TCPDF('L', 'mm', 'A4', true, 'UTF-8', false);
 
-        
-
-        
         $pdf->SetMargins(10, 10, 10);
         $pdf->SetAutoPageBreak(TRUE, 10);
         $pdf->AddPage();
@@ -264,18 +275,59 @@ select:hover, select:focus {
     outline: none;
 }
 
+.widget {
+    width: 80%;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.widget p {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0;
+}
+
+button.credit, button.generate {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button.credit {
+    background: rgb(255, 164, 6);
+    color: white;
+}
+
+button.credit:hover {
+    background: #e69202;
+}
+
+button.generate {
+    color: white;
+    margin-top: 10px;
+    background:rgb(255, 164, 6);
+}
+
+button.generate:hover {
+    background: #e69202;
+}
+
+
 
 </style>
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../assets/icons/sju_logo.png" alt="sjulogo" />
-        <h1 style="line-height: normal;">  <b style="font-size: 3.2vw;">National Service Scheme </b> <br>
-            <div style="font-size: 1.6vw;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.6vw">Student Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../assets/icons/nss_logo.png" alt="logo" />
-</div>
+<?php include "header.php" ?>
    
 <div class="nav">
         <div class="ham-menu">
@@ -285,7 +337,7 @@ select:hover, select:focus {
             <li><a href="profile.php">Profile</a></li>
             <li><a href="attendance_view.php">Attendance</a></li>
             <li><a href="events.php">Events</a></li>
-            <li><a href="griev.php">Grievience</a></li>
+            <li><a href="grievance.php">Grievience</a></li>
             <li><a  class="active" href="credits.php">Credits</a></li>
         </ul>
     </div>
@@ -301,6 +353,7 @@ select:hover, select:focus {
             }
             else{
                 // Show hours after form submission
+                if($status == 'PO_APPROVED') $status = 'Approved by Program Officer';
                 echo "<p>Working Hours: " . $hours . " hours.</p>
                 <p>Credits Claimable: " . $credits . "</p>
                 <p>Approval Status: " . $status . "</p>";

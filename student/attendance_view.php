@@ -7,27 +7,91 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        table tbody > tr:first-child td{
-            background-color: #ffbf2ee0;
-            color: #FFFFFF;
-        }
-        table tbody > tr td:not(:last-child){
-            border-right: 1px solid #FFFFFF;
-        }
-        table tbody > tr:not(:first-child) td {
-            background-color: #fff1d3e0;
-        }
+        .widget {
+    background: #ffffff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Enables horizontal scrolling */
+}
+
+/* Add a scrollable wrapper */
+.widget .table-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Table Styling */
+.widget table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 1rem;
+    min-width: 600px; /* Prevents table from shrinking too much */
+}
+
+.widget table thead {
+    background: #ffbf2e;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.widget table tr:first-child td {
+    background: #ffbf2e;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 12px;
+}
+
+.widget table tr:nth-child(even) {
+    background: #fff1d3;
+}
+
+.widget table tr:nth-child(odd) {
+    background: #ffe6b3;
+}
+
+.widget table td {
+    padding: 10px;
+    border: 1px solid #fff;
+}
+
+/* Link Styling */
+.widget table a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #007bff;
+    transition: 0.3s;
+}
+
+.widget table a:hover {
+    color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .widget {
+        padding: 1rem;
+    }
+
+    .widget .table-container {
+        overflow-x: auto;
+    }
+
+    .widget table {
+        font-size: 0.9rem;
+        min-width: 600px; /* Ensures the table scrolls instead of shrinking */
+    }
+
+    .widget table td {
+        padding: 8px;
+    }
+}
+
     </style>
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../assets/icons/sju_logo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Student Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../assets/icons/nss_logo.png" alt="logo" />
-</div>
+<?php include "header.php" ?>
    
 <div class="nav">
         <div class="ham-menu">
@@ -37,7 +101,7 @@
             <li><a href="profile.php">Profile</a></li>
             <li><a class="active" href="attendance_view.php">Attendance</a></li>
             <li><a  href="events.php">Events</a></li>
-            <li><a  href="griev.php">Grievience</a></li>
+            <li><a  href="grievance.php">Grievience</a></li>
             <li><a  href="credits.php">Credits</a></li>
         </ul>
     </div>
@@ -51,6 +115,7 @@
           </ul>
         </div>
         <div class="widget">
+            <div class="table-container">
             <table class="att_list">
                 <tr>
                     <td>Sl No</td>
@@ -110,6 +175,7 @@
             }
             ?>
             </table>
+            </div>
         </div>
     </div>
 </div>

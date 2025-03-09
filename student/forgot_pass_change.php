@@ -36,7 +36,7 @@ if($result->num_rows > 0){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSS Home</title>
+    <title>Reset Password - Student</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         form {
@@ -89,18 +89,22 @@ if($result->num_rows > 0){
         background-color: #cc7d02; 
         transform: scale(0.98); 
     }
+    p.msg {
+        width: 350px;
+        border-radius: 8px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        background-color: #ffb1005c; 
+        color:rgb(255, 0, 0);
+        font-weight: 700;
+        padding: 1rem;   
+        text-align: center;
+        margin: 20px auto;
+    }
 
 </style>
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../assets/icons/sju_logo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Student Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../assets/icons/nss_logo.png" alt="logo" />
-</div>
+<?php include "header.php" ?>
    
 <div class="nav">
         <div class="ham-menu">
@@ -123,7 +127,7 @@ if($result->num_rows > 0){
                         <td><input type="password" name='pass2' ></td>
                     </tr>
                         <td></td>
-                        <td><button type="submit" name="reset">Forgot Password</button></td>
+                        <td><button type="submit" name="reset">Submit</button></td>
                     </tr>
                 </table>
             </form>
@@ -135,10 +139,10 @@ if($result->num_rows > 0){
                 $pass1 = $_POST['pass1'];
                 $pass2 = $_POST['pass2'];
                 if (empty($_POST['pass1']) || empty($_POST['pass2'])){
-                    echo "Please enter both passwords";
+                    echo '<p class="msg">Please enter both passwords</p>';
                 }
                 else if($pass1 != $pass2){
-                    echo "Passwords don't match";
+                    echo "<p class='msg'>Passwords don't match</p>";
                 }
                 else{
                     // Create a connection object
@@ -149,12 +153,12 @@ if($result->num_rows > 0){
                     $stmt = $conn->prepare("UPDATE students SET password = ?, login_attempts = 0 WHERE user_id = ?");
                     $stmt->bind_param("ss", $pass1, $user_id);
                     if($stmt->execute()){
-                        echo "Password reset successfull";
+                        echo "<p class='msg'>Password changed successfully</p>";
 
                         $stmt2 = $conn->prepare("DELETE FROM password_resets WHERE user_id = ?");
                         $stmt2->bind_param("s", $user_id);
-                        if($stmt2->execute()){
-                            echo "Hurray!!";
+                        if(!$stmt2->execute()){
+                            echo "Error occurred" . $conn->connect_error;
                         }
 
                     }

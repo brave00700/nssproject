@@ -7,41 +7,79 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        input {
-            outline: none;
-        }
-        table tbody > tr:first-child td{
-            background-color: #ffbf2ee0;
-            color: #FFFFFF;
-        }
-        table tbody> tr td:not(:last-child){
-            border-right: 1px solid #FFFFFF;
-        }
-        table tbody> tr:not(:first-child) td:not(:last-child) {
-            background-color: #fff1d3e0;
-        }
-        button {
-            width: 100%;
-            border: none;
-            background-color: #ffca3b;
-            border-radius: 4px;
-            padding: 2px 0;
-            color:rgb(37, 37, 37);
-        }
-        button:active {
-            background-color: #ffba00;
-        }
+        .widget {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    /* margin: 20px auto; */
+    overflow: hidden;
+}
+
+.widget table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.widget table tr:first-child {
+    background: #ffbf2e;
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
+}
+
+.widget table th,
+.widget table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.widget table tbody tr:hover {
+    background: #fff5cc;
+    transition: background 0.3s ease-in-out;
+}
+
+.widget button {
+    background: #ffca3b;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.widget button:hover {
+    background: #ffba00;
+}
+
+@media (max-width: 768px) {
+    .widget {
+        padding: 15px;
+        overflow-x: auto;
+    }
+
+    .widget table {
+        font-size: 14px;
+    }
+
+    .widget table th,
+    .widget table td {
+        padding: 10px;
+    }
+
+    .widget button {
+        padding: 6px 10px;
+        font-size: 14px;
+    }
+}
+
+
     </style>
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../assets/icons/sju_logo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Student Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../assets/icons/nss_logo.png" alt="logo" />
-</div>
+<?php include "header.php" ?>
    
 <div class="nav">
         <div class="ham-menu">
@@ -51,7 +89,7 @@
             <li><a href="profile.php">Profile</a></li>
             <li><a class="active" href="attendance_view.php">Attendance</a></li>
             <li><a  href="events.php">Events</a></li>
-            <li><a  href="griev.php">Grievience</a></li>
+            <li><a  href="grievance.php">Grievience</a></li>
             <li><a  href="credits.php">Credits</a></li>
         </ul>
 </div>
@@ -122,14 +160,19 @@
             }
 
             if($result_event->num_rows > 0){
+                $current_date = new DateTime();
                 while($row = $result_event->fetch_assoc()){
-                    if(!in_array($row['event_name'],$applied_events, true)){
+                    $event_date = new DateTime($row['event_date']); 
+                    $deadline_date = (clone $event_date)->modify('+7 days 23:59:59');
+
+
+                    if(!in_array($row['event_name'],$applied_events, true) && ($event_date < $current_date) && ($current_date < $deadline_date)){
                     echo "<tr>
                             <td>{$row['event_name']}</td>
                             <td>{$row['event_date']}</td>
                             <td>{$row['event_duration']}</td>
                             <td><button name='event_submit' type='submit'>Apply</button></td>
-                            <td><input type='hidden' name='event_name' value='{$row['event_name']}'></td>
+                            <input type='hidden' name='event_name' value='{$row['event_name']}'>
                         </tr>";
                         $inc++;
                     }
