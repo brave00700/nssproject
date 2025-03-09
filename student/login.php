@@ -2,6 +2,19 @@
 // Creating a new session
 session_start();
 
+$hideNotifications = true;
+
+// Check if already logged in
+if(isset($_SESSION['reg']) && isset($_SESSION['last_seen'])){
+    if((time() - $_SESSION['last_seen']) < $_SESSION['timeout']){
+        header("Location: profile.php");
+        exit();
+    }else {
+        session_unset();
+        session_destroy();
+    }
+}
+
 // Error message to be displayed
 $message = "";
   
@@ -66,7 +79,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Login - NSS</title>
+    <title>Student Portal - NSS</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         form {
@@ -98,7 +111,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
         font-size: 1rem;
     }
 
-    button {
+    td button {
         width: 100%; 
         padding: 0.6rem; 
         font-size: 1rem;
@@ -111,11 +124,11 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
         transition: all 0.3s ease; 
     }
 
-    button:hover {
+    td button:hover {
         background-color: #e69202; 
     }
 
-    button:active {
+    td button:active {
         background-color: #cc7d02; 
         transform: scale(0.98); 
     }
@@ -190,8 +203,15 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
                 <p class="msg"><?php echo $message ?>
             <?php endif; ?>
 </div>
-<script src="../assets/js/script.js"></script>
 <script>
+    // Adjust screen height
+    function adjustMainHeight() {
+    const logoHeight = document.querySelector('header').offsetHeight;
+    const navHeight = document.querySelector('.nav').offsetHeight;
+    const mainElement = document.querySelector('.main');
+
+    mainElement.style.minHeight = `calc(100vh - ${logoHeight + navHeight}px - 40px)`;
+    }
      // Run on page load
      window.addEventListener('load', adjustMainHeight);
     // Run on window resize

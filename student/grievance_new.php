@@ -24,7 +24,7 @@ $unit = $_SESSION['unit'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSS Home</title>
+    <title>Student Portal - NSS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <link rel="stylesheet" href="../assets/css/style.css">
@@ -59,7 +59,7 @@ $unit = $_SESSION['unit'];
     /* padding-right: 100px; */
     min-height: 50vh;
 }
-button {
+form button {
     margin-top: 10px;
     padding: 10px 20px;
     font-size: 16px;
@@ -71,7 +71,7 @@ button {
     transition: background 0.3s ease;
 }
 
-button:hover {
+form button:hover {
     background-color: #0056b3;
 }
 /* Basic style for the dropdown */
@@ -121,7 +121,6 @@ select:hover, select:focus {
     border-color: #007bff;
     outline: none;
 }
-
 
 
 </style>

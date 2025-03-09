@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSS Home</title>
+    <title>Student Portal - NSS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
@@ -138,7 +138,7 @@
                 $row = $result->fetch_assoc();
                 $photoPath = $row['profile_photo'];?>
                         <div class="profile-header">
-                            <img src="../<?php echo $photoPath; ?>" alt="Profile Picture" class="profile-img">
+                            <img src="..<?php echo $photoPath; ?>" alt="Profile Picture" class="profile-img">
                             <h2><?php echo $row['name']; ?></h2>
                             <p><strong>Register No:</strong> <?php echo $row['register_no']; ?></p>
                         </div>

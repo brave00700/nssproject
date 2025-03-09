@@ -2,6 +2,8 @@
 // Creating a new session
 session_start();
 
+$hideNotifications = true;
+
 require_once __DIR__ . '/../config.php'; // For PHPMailer
 
 use PHPMailer\PHPMailer\PHPMailer;
@@ -53,7 +55,7 @@ $current = new DateTime();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password - Student</title>
+    <title>Student Portal - NSS</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         form {
@@ -216,8 +218,15 @@ $current = new DateTime();
             }
 ?>
 </div>
-<script src="../assets/js/script.js"></script>
 <script>
+    // Adjust screen height
+    function adjustMainHeight() {
+    const logoHeight = document.querySelector('header').offsetHeight;
+    const navHeight = document.querySelector('.nav').offsetHeight;
+    const mainElement = document.querySelector('.main');
+
+    mainElement.style.minHeight = `calc(100vh - ${logoHeight + navHeight}px - 40px)`;
+    }
      // Run on page load
      window.addEventListener('load', adjustMainHeight);
     // Run on window resize

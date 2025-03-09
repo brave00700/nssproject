@@ -21,8 +21,8 @@ if ($conn->connect_error) {
 }
 
 // Handle file upload
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['pdf_file'])) {
-    $fileName = $_FILES['pdf_file']['name'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload']) && isset($_FILES['pdf_file'])) {
+    $fileName = $_POST['pdf_name'];
     $fileTmpName = $_FILES['pdf_file']['tmp_name'];
     $fileType = $_FILES['pdf_file']['type'];
 
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['pdf_file'])) {
 }
 
 // Handle deletion
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['pdf_id'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['delete'])) {
     $pdfId = intval($_POST['pdf_id']);
 
     // Check if the PDF exists in the database
@@ -152,9 +152,10 @@ flexviewcol{
                 <h2>Upload a PDF File</h2>
                 <?php if (isset($uploadMessage)) ?>
                 <form method="POST" enctype="multipart/form-data">
-                    <label>Select PDF File:</label>
-                    <input type="file" name="pdf_file" required>
-                    <button type="submit">Upload</button>
+                    <label>Enter announcement name:</label>
+                    <input type="text" name="pdf_name" id="pdf_name" required />
+                    <input type="file" name="pdf_file" required />
+                    <button type="submit" name="upload">Upload</button>
                 </form>
             </div>
             
@@ -164,7 +165,7 @@ flexviewcol{
                 <form method="POST">
                     <label for="pdf_id">Enter PDF ID:</label>
                     <input type="number" name="pdf_id" id="pdf_id" required>
-                    <button type="submit">Delete</button>
+                    <button type="submit" name="delete">Delete</button>
                 </form>
             </div>
 </div>
@@ -173,7 +174,7 @@ flexviewcol{
                 <div class="box"> <ul>
                 <ul>
                     <?php while ($row = $result->fetch_assoc()) { ?>
-                        <li><a href="download.php?id=<?= $row['id'] ?>" target="_blank"><?= $row['id'] ?>: <?= $row['name'] ?></a></li>
+                        <li><a href="../download.php?id=<?= $row['id'] ?>" target="_blank"><?= $row['id'] ?>: <?= $row['name'] ?></a></li>
                     <?php } ?>
                 </ul>
                     </div>

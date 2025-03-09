@@ -169,7 +169,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSS Home</title>
+    <title>Student Portal - NSS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
@@ -229,21 +229,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     padding-right: 30px;
     min-height: 50vh;
 }
-button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
 
-button:hover {
-    background-color: #0056b3;
-}
 /* Basic style for the dropdown */
 select {
     width: 100%;  /* Makes it responsive */

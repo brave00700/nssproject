@@ -1,9 +1,29 @@
+<?php
+// Creating a new session
+session_start();
+
+//Checking user session timeout
+if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
+    session_unset();
+    session_destroy();
+    header("Location: login.php");
+    exit();
+}
+//Update last activity time
+$_SESSION['last_seen'] = time();
+
+// Storing session variable
+if(!$_SESSION['reg']){
+    header("Location: login.php");
+}
+$reg = $_SESSION['reg'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSS Home</title>
+    <title>Student Portal - NSS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
@@ -137,24 +157,7 @@ p.msg {
         <button name="change" type="submit">Change Password</button>
             </form>
             <?php
-            // Creating a new session
-            session_start();
-
-            //Checking user session timeout
-            if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
-                session_unset();
-                session_destroy();
-                header("Location: login.php");
-                exit();
-            }
-            //Update last activity time
-            $_SESSION['last_seen'] = time();
-
-            // Storing session variable
-            if(!$_SESSION['reg']){
-                header("Location: login.php");
-            }
-            $reg = $_SESSION['reg'];
+            
             
             // Checking for change password
             if(isset($_POST['change'])){

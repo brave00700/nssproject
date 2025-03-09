@@ -5,6 +5,7 @@
 /assets/uploads/grievance/*
 /assets/uploads/posters/*
 /assets/uploads/profile_photo/*
+/assets/uploads/student_req/*
 
 # Allow specific files
 !/assets/carousel/
