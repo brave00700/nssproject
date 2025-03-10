@@ -41,9 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['new_unit'], $_POST['r
     $stmt->bind_param("i" . $types, $newUnit, ...$selectedStudents);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Unit updated successfully for selected students.'); window.location.href = 'view_admitted_students.php';</script>";
+        echo "<script>alert('Unit updated successfully for selected students.'); window.location.href = 'manage_students.php';</script>";
     } else {
-        echo "<script>alert('Error updating unit. Please try again.'); window.location.href = 'view_admitted_students.php';</script>";
+        echo "<script>alert('Error updating unit. Please try again.'); window.location.href = 'manage_students.php';</script>";
     }
 
     $stmt->close();

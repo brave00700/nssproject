@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
 $grievances = [];
 $status_filter = isset($_POST['status']) ? $_POST['status'] : "";
 
-$sql = "SELECT id, unit, activity_type, subject, body, send_to, photo_pdf_path, status FROM grievance WHERE send_to IN ('BOTH', 'ADMIN')";
+$sql = "SELECT grievance_id, unit, activity_type, subject, body, send_to, photo_pdf_path, status FROM grievance WHERE send_to IN ('BOTH', 'ADMIN')";
 if (!empty($status_filter)) {
     $sql .= " AND status = ?";
 }
@@ -180,6 +180,8 @@ table th {
             
             <li><a  href="view_events.php">View Events</a></li>
             <li><a class="active" href="view_grievances.php">View Grievances</a></li>
+            <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
+            <li><a href="manage_images.php">Upload Images to gallery</a></li>
             
             </ul>
         </div>
@@ -219,8 +221,8 @@ table th {
                         <tbody>
                             <?php foreach ($grievances as $row): ?>
                                 <tr>
-                                    <td><input type="checkbox" name="selected_grievances[]" value="<?= $row['id'] ?>"></td>
-                                    <td><?= htmlspecialchars($row['id']) ?></td>
+                                    <td><input type="checkbox" name="selected_grievances[]" value="<?= $row['grievance_id'] ?>"></td>
+                                    <td><?= htmlspecialchars($row['grievance_id']) ?></td>
                                     <td><?= htmlspecialchars($row['unit']) ?></td>
                                     <td><?= htmlspecialchars($row['activity_type']) ?></td>
                                     <td><?= htmlspecialchars($row['subject']) ?></td>

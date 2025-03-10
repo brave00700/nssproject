@@ -251,6 +251,8 @@ table td:hover:last-child {
             
             <li><a class="active" href="view_events.php">View Events</a></li>
             <li><a  href="view_grievances.php">View Grievances</a></li>
+            <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
+            <li><a href="manage_images.php">Upload Images to gallery</a></li>
             
             
             </ul>

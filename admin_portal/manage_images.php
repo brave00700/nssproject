@@ -309,14 +309,28 @@ $galleryResult = $conn->query($gallerySql);
             <li><a href="manage_students.php">Manage Students</a></li>
             <li><a href="manage_staff.php">Manage Staff</a></li>
             <li><a href="manage_announcements.php">Announcements</a></li>
-            <li><a class="active" href="manage_images.php">Manage Images</a></li>
-            <li><a href="manage_more.php">More</a></li>
+            
+            <li><a class="active" href="manage_more.php">More</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
 
     <div class="main">
-        <div class="special_widget">
+    <div class="about_main_divide">
+        <div class="about_nav">
+          <ul>
+            
+            <li><a href="view_events.php">View Events</a></li>
+            <li><a href="view_grievances.php">View Grievances</a></li>
+            <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
+            <li><a  class="active" href="manage_images.php">Upload Images to gallery</a></li>
+
+
+
+            
+          </ul>
+        </div>
+        <div class="widget">
             <h1 style="text-align: center; color: #303983;">Manage Website Images</h1>
             
             <!-- Upload Forms -->
