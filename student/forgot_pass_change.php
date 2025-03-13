@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . "/functions.php";
 // Creating a new session
 session_start();
 
@@ -7,30 +8,14 @@ $hideNotifications = true;
 parse_str($_SERVER['QUERY_STRING'], $query_params);
 $token = $query_params['token'];
 
-$conn = new mysqli("localhost", "root", "", "nss_db");
-if($conn->connect_error){
-    die("Connection failed: " . $conn->connect_error);
-}
-$stmt = $conn->prepare("SELECT user_id, expires_at FROM password_resets WHERE token = ?");
-$stmt->bind_param("s", $token);
-$stmt->execute();
-$result = $stmt->get_result();
+$conn = getDatabaseConnection();
 
-if($result->num_rows > 0){
-    $row = $result->fetch_assoc();
-    $user_id = $row["user_id"];
-    $expires_at = new DateTime($row["expires_at"]);
-    $current = new DateTime();
-
-    if($current < $expires_at){
-        $_SESSION['valid_reset'] = true;
-    }else{
-        $_SESSION['valid_reset'] = false;
-    }
+$user_id = '';
+if(isValidToken($conn, $token, $user_id)){
+    $_SESSION['valid_reset'] = true;
 }else{
     $_SESSION['valid_reset'] = false;
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -140,34 +125,12 @@ if($result->num_rows > 0){
             if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reset'])){
                 $pass1 = $_POST['pass1'];
                 $pass2 = $_POST['pass2'];
-                if (empty($_POST['pass1']) || empty($_POST['pass2'])){
-                    echo '<p class="msg">Please enter both passwords</p>';
-                }
-                else if($pass1 != $pass2){
-                    echo "<p class='msg'>Passwords don't match</p>";
-                }
-                else{
-                    // Create a connection object
-                    $conn = new mysqli("localhost", "root", "", "nss_db");
-                    if($conn->connect_error){
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-                    $stmt = $conn->prepare("UPDATE students SET password = ?, login_attempts = 0 WHERE user_id = ?");
-                    $stmt->bind_param("ss", $pass1, $user_id);
-                    if($stmt->execute()){
-                        echo "<p class='msg'>Password changed successfully</p>";
 
-                        $stmt2 = $conn->prepare("DELETE FROM password_resets WHERE user_id = ?");
-                        $stmt2->bind_param("s", $user_id);
-                        if(!$stmt2->execute()){
-                            echo "Error occurred" . $conn->connect_error;
-                        }
-
-                    }
-                    $stmt->close();
-                    $conn->close();
-                }
+                $message = resetPassword($conn, $pass1, $pass2, $user_id);
+                echo "<p class='msg'>$message</p>";
+                
             }
+            $conn->close();
 ?>
 </div>
 <script>

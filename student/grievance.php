@@ -1,29 +1,11 @@
 <?php
-// Creating a new session
-session_start();
+require_once __DIR__ . '/functions.php';
 
-//Checking user session timeout
-if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
-    session_unset();
-    session_destroy();
-    header("Location: login.php");
-    exit();
-}
-//Update last activity time
-$_SESSION['last_seen'] = time();
-
-// Storing session variable
-if(!$_SESSION['reg']){
-    header("Location: login.php");
-}
-$reg = $_SESSION['reg'];
-$unit = $_SESSION['unit'];
+// Check current session
+$reg = checkSession();
 
 // Create a connection object 
-$conn = new mysqli("localhost", "root", "", "nss_db");
-if($conn->connect_error){
-    die("Connection failed: " . $conn->connect_error);
-}
+$conn = getDatabaseConnection();
 
 $inc = 1;
 
@@ -104,7 +86,7 @@ $conn->close();
         padding: 8px; /* Reduce padding slightly */
     }
 }
-}
+
 </style>
 </head>
 <body>
@@ -191,82 +173,3 @@ $conn->close();
 </script>
 </body>
 </html>
-
-<?php
-
-function generateFileName() {
-    $prefix = 'G_' . date('Ymd') . '_';
-
-    $characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
-    $randomChars = substr(str_shuffle($characters), 0, 4);
-
-    return ($prefix . $randomChars);
-}
-
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $subject = $_POST['subject'];
-    $body = $_POST['body'];
-    $type = $_POST['grievance_type'];
-    $send_to = $_POST['send_to'];
-    $proof = null;
-
-    // Handle file upload
-    if (isset($_FILES['uploadpf']) && $_FILES['uploadpf']['error'] === UPLOAD_ERR_OK) {
-        $fileTmpPath = $_FILES['uploadpf']['tmp_name'];
-        $fileName = $_FILES['uploadpf']['name'];
-        $fileExt = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileSize = $_FILES['uploadpf']['size'];
-        $fileType = mime_content_type($fileTmpPath);
-        $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
-        $maxFileSize = 2 * 1024 * 1024; // 2MB
-
-        // Validate file size
-        if ($fileSize > $maxFileSize) {
-            echo "<script>alert('Error: File size exceeds 2MB limit.');</script>";
-            exit;
-        }
-
-        // Validate file type
-        if (!in_array($fileType, $allowedFileTypes)) {
-            echo "<script>alert('Error: Invalid file type. Only JPEG, PNG, JPG and PDF are allowed.');</script>";
-            exit;
-        }
-
-        // Define the upload directory
-        $uploadDir = "../assets/uploads/grievance/";
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true); // Create directory if not exists
-        }
-
-        // Define the path where the photo will be saved
-        $filePath = $uploadDir . generateFileName() . "." . $fileExt;
-
-
-        // Move the uploaded file to the specified directory
-        if (move_uploaded_file($fileTmpPath, $filePath)) {
-            $proof = $filePath;
-        } else {
-            echo "<script>alert('Error: Failed to upload the profile photo. Please try again.');</script>";
-            exit;
-        }
-    }else{
-        echo "<script>alert('Erroeelsfkjkl');</script>";
-    }
-
-    // Create a connection object 
-    $conn = new mysqli("localhost", "root", "", "nss_db");
-    if($conn->connect_error){
-        die("Connection failed: " . $conn->connect_error);
-    }
-    $stmt = $conn->prepare("INSERT INTO grievance (student_id, unit, activity_type, subject, body, send_to, photo_pdf_path) VALUES(?,?,?,?,?,?,?);");
-    $stmt->bind_param("sssssss", $reg, $unit, $type, $subject, $body, $send_to, $proof);
-    if($stmt->execute()){
-        echo "<script>alert('Grievance sent successfully');</script>";
-    }else{
-        echo "<script>alert('Failed to send');</script>";
-    }
-
-    $stmt->close();
-    $conn->close();
-}
-?>

@@ -1,22 +1,8 @@
 <?php
-// Creating a new session
-session_start();
+require_once __DIR__ . '/functions.php';
 
-//Checking user session timeout
-if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
-    session_unset();
-    session_destroy();
-    header("Location: login.php");
-    exit();
-}
-//Update last activity time
-$_SESSION['last_seen'] = time();
-
-// Storing session variable
-if(!$_SESSION['reg']){
-    header("Location: login.php");
-}
-$reg = $_SESSION['reg'];
+// Check current session
+$reg = checkSession();
 $unit = $_SESSION['unit'];
 ?>
 <!DOCTYPE html>
@@ -55,8 +41,6 @@ $unit = $_SESSION['unit'];
 }
 .widget{
     width: 100%;
-    /* padding-left: 100px; */
-    /* padding-right: 100px; */
     min-height: 50vh;
 }
 form button {
@@ -271,15 +255,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             echo "<script>alert('Error: Failed to upload the profile photo. Please try again.');</script>";
             exit;
         }
-    }else{
-        echo "<script>alert('Erroeelsfkjkl');</script>";
     }
 
     // Create a connection object 
-    $conn = new mysqli("localhost", "root", "", "nss_db");
-    if($conn->connect_error){
-        die("Connection failed: " . $conn->connect_error);
-    }
+    $conn = getDatabaseConnection();
     $stmt = $conn->prepare("INSERT INTO grievance (student_id, unit, activity_type, subject, body, send_to, photo_pdf_path) VALUES(?,?,?,?,?,?,?);");
     $stmt->bind_param("sssssss", $reg, $unit, $type, $subject, $body, $send_to, $proof);
     if($stmt->execute()){

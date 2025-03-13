@@ -1,29 +1,11 @@
 <?php
-// Starting a session
-session_start();
+require_once __DIR__ . '/functions.php';
 
-// Checking user session timeout
-if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
-    session_unset();
-    session_destroy();
-    header("Location: login.php");
-    exit();
-}
-// Update last activity time
-$_SESSION['last_seen'] = time();
-
-// Storing session variable
-if(!isset($_SESSION['reg'])){
-    header("Location: login.php");
-    exit();
-}
-$reg = $_SESSION['reg'];
+// Check current session
+$reg = checkSession();
 
 // Create a connection object
-$conn = new mysqli("localhost", "root", "", "nss_db");
-if($conn->connect_error){
-    die("Connection failed: " . $conn->connect_error);
-}
+$conn = getDatabaseConnection();
 
 // Initialize variables
 $successMessage = "";
@@ -96,15 +78,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_request'])) {
 
     if($field !== 'profile_photo'){
         $newValue = trim($_POST['new_value']);
-    }else {
-        $newValue = 'dummy';
-    }
+    }else 
     
     // Validate input based on field type
     $isValid = true;
     
     if (empty($newValue)) {
         $errorMessage = "New value cannot be empty.";
+        $isValid = false;
+    } else if ($newValue === $oldValue) {
+        $errorMessage = "New value is the same as current value.";
         $isValid = false;
     } else if (($field == 'name' || $field == 'mother_name' || $field == 'father_name') && !preg_match('/^[A-Za-z ]{0,50}$/', $newValue)) {
         $errorMessage = "$updateableFields[$field] should contain only alphabets from A-Z or a-z.";
@@ -128,9 +111,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_request'])) {
             $errorMessage = "Please enter a reasonable date of birth (between 16 and 50 years old).";
             $isValid = false;
         }
-    } else if ($newValue === $oldValue) {
-        $errorMessage = "New value is the same as current value.";
-        $isValid = false;
     } else if ($field == 'category' && !in_array($newValue, $categoryList)) {
         $errorMessage = "Invalid Category. Allowed values: " . implode(", ",$categoryList);
         $isValid = false;

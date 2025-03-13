@@ -1,22 +1,8 @@
 <?php
-// Creating a new session
-session_start();
+require_once __DIR__ . '/functions.php';
 
-//Checking user session timeout
-if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
-    session_unset();
-    session_destroy();
-    header("Location: login.php");
-    exit();
-}
-//Update last activity time
-$_SESSION['last_seen'] = time();
-
-// Storing session variable
-if(!$_SESSION['reg']){
-    header("Location: login.php");
-}
-$reg = $_SESSION['reg'];
+// Check current session
+$reg = checkSession();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -169,23 +155,21 @@ p.msg {
                     echo '<p class="msg">New Passwords do not match</p>';
                 }else{
                     // Create a connection object
-                    $conn = new mysqli("localhost", "root", "", "nss_db");
-                    if($conn->connect_error){
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-                    $stmt1 = $conn->prepare("SELECT user_id, password FROM students WHERE user_id = ?");
-                    $stmt1->bind_param("s", $reg);
-                    $stmt1->execute();
-                    $result = $stmt1->get_result();
+                    $conn = getDatabaseConnection();
+
+                    $stmtStudents = $conn->prepare("SELECT user_id, password FROM students WHERE user_id = ?");
+                    $stmtStudents->bind_param("s", $reg);
+                    $stmtStudents->execute();
+                    $result = $stmtStudents->get_result();
 
                     if($result->num_rows > 0) {
                         $cred = $result->fetch_assoc();
                         if($cred['password'] != $old_pass){
                             echo '<p class="msg">Incorrect Password</p>';
                         }else{
-                            $stmt2 = $conn->prepare("UPDATE students SET password = ? WHERE user_id = ?");
-                            $stmt2->bind_param("ss",$new_pass,$cred['user_id']);
-                            if($stmt2->execute()){
+                            $stmtUpdate = $conn->prepare("UPDATE students SET password = ? WHERE user_id = ?");
+                            $stmtUpdate->bind_param("ss",$new_pass,$cred['user_id']);
+                            if($stmtUpdate->execute()){
                                 echo '<p class="msg">Password updated successfully</p>';
                             }else {
                                 echo 'Error updating password: ' . $conn->connect_error;

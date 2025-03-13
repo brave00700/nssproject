@@ -1,3 +1,17 @@
+<?php
+require_once __DIR__ . '/functions.php';
+
+// Check current session
+$reg = checkSession();
+
+if(!$_SESSION['event_name']){
+    header("Location: attendance_apply.php");
+}
+$event_name = $_SESSION['event_name'];
+
+// Create a database connection object
+$conn = getDatabaseConnection();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,32 +119,6 @@
         </div>
         <div class="widget">
             <?php
-            // Creating a new session
-            session_start();
-
-            //Checking user session timeout
-            if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
-                session_unset();
-                session_destroy();
-                header("Location: login.php");
-                exit();
-            }
-            //Update last activity time
-            $_SESSION['last_seen'] = time();
-
-            // Storing session variable
-            if(!$_SESSION['reg']){
-                header("Location: login.php");
-            }
-            $reg = $_SESSION['reg'];
-
-            if(!$_SESSION['event_name']){
-                header("Location: attendance_apply.php");
-            }
-            $event_name = $_SESSION['event_name'];
-
-            // Create a connection object
-            $conn = new mysqli("localhost", "root", "", "nss_db");
 
             $student_query = $conn->query("SELECT name,unit FROM students WHERE register_no = '$reg'");
             $event_query = $conn->query("SELECT event_id, teacher_incharge, event_type, event_duration, event_date FROM events WHERE event_name = '$event_name'");
@@ -262,8 +250,6 @@ if(isset($_POST['att_submit'])){
             echo "<script>alert('Error: Failed to upload the profile photo. Please try again.');</script>";
             exit;
         }
-    }else{
-        echo "<script>alert('Erroeelsfkjkl');</script>";
     }
 
     // Prepare SQL statement to insert data

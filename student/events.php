@@ -1,51 +1,27 @@
 <?php
-// Creating a new session
-session_start();
+require_once __DIR__ . '/functions.php';
 
-//Checking user session timeout
-if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
-    session_unset();
-    session_destroy();
-    header("Location: login.php");
-    exit();
-}
-//Update last activity time
-$_SESSION['last_seen'] = time();
-
-// Storing session variable
-if(!$_SESSION['reg']){
-    header("Location: login.php");
-}
-$reg = $_SESSION['reg'];
+// Check current session
+$reg = checkSession();
+$unit = $_SESSION['unit'];
 
 // Create a connection object for retrieving student unit no
-$conn = new mysqli("localhost", "root", "", "nss_db");
-if($conn->connect_error){
-    die("Connection failed: " . $conn->connect_error);
-}
-$stmt1 = $conn->prepare("SELECT unit FROM students WHERE register_no = ?");
-$stmt1->bind_param("s",$reg);
-$stmt1->execute();
-$result_student = $stmt1->get_result();
-if($result_student->num_rows > 0){
-    $row = $result_student->fetch_assoc();
-    $unit = $row['unit'];
-}
+$conn = getDatabaseConnection();
 
 $past_events = "";
 $upcom_events = "";
 
-$stmt2 = $conn->prepare("SELECT event_name, event_date, event_time, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue 
+$stmtEvents = $conn->prepare("SELECT event_name, event_date, event_time, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue 
 FROM events 
 WHERE event_unit = ? OR event_unit = 'All'
 ORDER BY event_date DESC");
-$stmt2->bind_param("s",$unit);
-$stmt2->execute();
-$result_event = $stmt2->get_result();
+$stmtEvents->bind_param("s",$unit);
+$stmtEvents->execute();
+$resultEvents = $stmtEvents->get_result();
 
-if($result_event->num_rows > 0){
+if($resultEvents->num_rows > 0){
     $current_date = new DateTime();
-    while($row = $result_event->fetch_assoc()){
+    while($row = $resultEvents->fetch_assoc()){
         $event_date = new DateTime($row["event_date"]);
         if($current_date < $event_date){
             $upcom_events .= "<div class='tile'>
@@ -79,8 +55,7 @@ if($result_event->num_rows > 0){
     echo "<script>document.querySelector('.widget').innerHTML += 'No Events Found';</script>";
 }
 
-$stmt1->close();
-$stmt2->close();
+$stmtEvents->close();
 $conn->close();
 ?>
 <!DOCTYPE html>

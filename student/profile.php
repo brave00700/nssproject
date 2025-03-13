@@ -1,3 +1,15 @@
+<?php
+require_once __DIR__ . '/functions.php';
+
+// Check current session
+$reg = checkSession();
+
+// Create a connection object
+$conn = getDatabaseConnection();
+
+// Fetch student data
+$result = getStudentData($conn, $reg);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +21,6 @@
     <style>
         .widget {
     width: 100%;
-    /* max-width: 800px;  */
     padding: 20px;
     background: #fff;
     border-radius: 12px;
@@ -57,8 +68,6 @@
     font-size: 14px;
     color: #333;
 }
-
-/* Responsive Design */
 @media (max-width: 600px) {
     .widget {
         width: 95%;
@@ -105,57 +114,27 @@
         </div>
         <div class="widget">
             <?php
-            //Starting a session
-            session_start();
-
-            //Checking user session timeout
-            if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
-                session_unset();
-                session_destroy();
-                header("Location: login.php");
-                exit();
-            }
-            //Update last activity time
-            $_SESSION['last_seen'] = time();
-
-            // Storing session variable
-            if(!$_SESSION['reg']){
-                header("Location: login.php");
-            }
-            $reg = $_SESSION['reg'];
-
-            // Create a connection object
-            $conn = new mysqli("localhost", "root", "", "nss_db");
-            if($conn->connect_error){
-                die("Connection failed: " . $conn->connect_error);
-            }
-            $stmt = $conn->prepare("SELECT register_no, name, father_name, mother_name, phone, email, dob, gender, category, bloodgroup, shift, course, profile_photo, unit, address FROM students WHERE user_id = ?");
-            $stmt->bind_param("s", $reg);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $photoPath = $row['profile_photo'];?>
+            if ($result) {
+                $photoPath = $result['profile_photo'];?>
                         <div class="profile-header">
                             <img src="..<?php echo $photoPath; ?>" alt="Profile Picture" class="profile-img">
-                            <h2><?php echo $row['name']; ?></h2>
-                            <p><strong>Register No:</strong> <?php echo $row['register_no']; ?></p>
+                            <h2><?php echo $result['name']; ?></h2>
+                            <p><strong>Register No:</strong> <?php echo $result['register_no']; ?></p>
                         </div>
                         
                         <div class="profile-info">
-                            <div><strong>Unit:</strong> <?php echo $row['unit']; ?></div>
-                            <div><strong>Shift:</strong> <?php echo $row['shift']; ?></div>
-                            <div><strong>Course:</strong> <?php echo $row['course']; ?></div>
-                            <div><strong>Phone:</strong> <?php echo $row['phone']; ?></div>
-                            <div><strong>Email:</strong> <?php echo $row['email']; ?></div>
-                            <div><strong>Address:</strong> <?php echo $row['address']; ?></div>
-                            <div><strong>Father's Name:</strong> <?php echo $row['father_name']; ?></div>
-                            <div><strong>Mother's Name:</strong> <?php echo $row['mother_name']; ?></div>
-                            <div><strong>Date of Birth:</strong> <?php echo $row['dob']; ?></div>
-                            <div><strong>Gender:</strong> <?php echo $row['gender']; ?></div>
-                            <div><strong>Category:</strong> <?php echo $row['category']; ?></div>
-                            <div><strong>Blood Group:</strong> <?php echo $row['bloodgroup']; ?></div>
+                            <div><strong>Unit:</strong> <?php echo $result['unit']; ?></div>
+                            <div><strong>Shift:</strong> <?php echo $result['shift']; ?></div>
+                            <div><strong>Course:</strong> <?php echo $result['course']; ?></div>
+                            <div><strong>Phone:</strong> <?php echo $result['phone']; ?></div>
+                            <div><strong>Email:</strong> <?php echo $result['email']; ?></div>
+                            <div><strong>Address:</strong> <?php echo $result['address']; ?></div>
+                            <div><strong>Father's Name:</strong> <?php echo $result['father_name']; ?></div>
+                            <div><strong>Mother's Name:</strong> <?php echo $result['mother_name']; ?></div>
+                            <div><strong>Date of Birth:</strong> <?php echo $result['dob']; ?></div>
+                            <div><strong>Gender:</strong> <?php echo $result['gender']; ?></div>
+                            <div><strong>Category:</strong> <?php echo $result['category']; ?></div>
+                            <div><strong>Blood Group:</strong> <?php echo $result['bloodgroup']; ?></div>
                         </div>
 
 

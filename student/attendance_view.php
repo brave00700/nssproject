@@ -1,3 +1,12 @@
+<?php
+require_once __DIR__ . '/functions.php';
+
+// Check current session
+$reg = checkSession();
+
+$conn = getDatabaseConnection();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -125,31 +134,7 @@
                     <td>Status</td>
                 </tr>
             <?php
-            // Creating a new session
-            session_start();
-
-            //Checking user session timeout
-            if(isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']){
-                session_unset();
-                session_destroy();
-                header("Location: login.php");
-                exit();
-            }
-            //Update last activity time
-            $_SESSION['last_seen'] = time();
-
-            // Storing session variable
-            if(!$_SESSION['reg']){
-                header("Location: login.php");
-            }
-            $reg = $_SESSION['reg'];
-
-            // Create a connection object for attendance
-            $conn_attendance = new mysqli("localhost", "root", "", "nss_db");
-            if($conn_attendance->connect_error){
-                die("Connection failed: " . $conn->connect_error);
-            }
-            $stmt = $conn_attendance->prepare("SELECT events.event_name, events.event_date, attendance.photo_path, attendance.status 
+            $stmt = $conn->prepare("SELECT events.event_name, events.event_date, attendance.photo_path, attendance.status 
             FROM attendance 
             JOIN events ON attendance.event_id = events.event_id
             WHERE attendance.register_no = ?");

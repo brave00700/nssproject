@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__ . '/functions.php';
+
 // Creating a new session
 session_start();
 
+// Notifications not required until logged in
 $hideNotifications = true;
 
 // Check if already logged in
@@ -21,54 +24,11 @@ $message = "";
 // Checking for login
 if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
     if (!empty($_POST['id']) && !empty($_POST['pass'])){
-        $lreg = $_POST['id'];
-        $lpass = $_POST['pass'];
-
-        // Create a connection object for database
-        $conn = new mysqli("localhost", "root", "", "nss_db");
-        if($conn->connect_error){
-            die("Connection failed: " . $conn->connect_error);
+        $message = loginStudent($_POST['id'], $_POST['pass']);
+        if($message === "Logged in"){
+            header("Location: profile.php");
+            exit();
         }
-        $stmt = $conn->prepare("SELECT user_id, password, unit, login_attempts FROM students WHERE user_id = ?");
-        $stmt->bind_param("s", $lreg);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if($result->num_rows > 0) {
-            $cred = $result->fetch_assoc();
-            $login_attempts = intval($cred['login_attempts']);
-            if($cred['password'] == $lpass && $login_attempts < 5){
-                // Reset login counter
-                $stmt1 = $conn->prepare("UPDATE students SET login_attempts = 0 WHERE user_id = ?");
-                $stmt1->bind_param("s", $lreg);
-                if($stmt1->execute()){
-                    $_SESSION['reg'] = $lreg;
-                    $_SESSION['last_seen'] = time();
-                    $_SESSION['timeout'] = 300;
-                    $_SESSION['unit'] = $cred['unit'];
-                    header("Location: profile.php");
-                    exit();
-                }
-                
-            }else{
-                if($login_attempts < 5){
-                    $login_attempts++;
-                    $stmt1 = $conn->prepare("UPDATE students SET login_attempts = ? WHERE user_id = ?");
-                    $stmt1->bind_param("is", $login_attempts, $lreg);
-                    if($stmt1->execute()){
-                        $message = 'Invalid User ID or Password';
-                    }
-                }else{
-                    $message = 'Your account is locked!!! Please reset your password to continue using it';
-                }
-            }
-        }
-        else {
-            $message = 'Invalid User ID or Password';
-        }
-
-        $stmt->close();
-        $conn->close();
     }else{
         $message = 'Please enter both User ID and Password';
     }
