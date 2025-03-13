@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_request'])) {
 
     if($field !== 'profile_photo'){
         $newValue = trim($_POST['new_value']);
-    }else 
+    }
     
     // Validate input based on field type
     $isValid = true;
