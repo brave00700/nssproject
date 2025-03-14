@@ -242,7 +242,7 @@ table th {
         $approval_ids = (array) $_POST['approval_id']; // Convert string to array if needed
 
         // Database connection
-        $conn = new mysqli("localhost", "root", "", "nss_db");
+        $conn = new mysqli("sql12.freesqldatabase.com", "sql12767434", "fdUtRRwmJ9", "sql12767434");
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }

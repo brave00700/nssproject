@@ -58,7 +58,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
           
             $po_id = $_SESSION['po_id'];
             // Create a connection object
-            $conn = new mysqli("localhost", "root", "", "nss_db");
+            $conn = new mysqli("sql12.freesqldatabase.com", "sql12767434", "fdUtRRwmJ9", "sql12767434");
             if($conn->connect_error){
                 die("Connection failed: " . $conn->connect_error);
             }

@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_request'])) {
     // Validate input based on field type
     $isValid = true;
     
-    if (empty($newValue)) {
+    if (empty($newValue) && $field !== 'profile_photo') {
         $errorMessage = "New value cannot be empty.";
         $isValid = false;
     } else if ($newValue === $oldValue) {

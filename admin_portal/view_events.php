@@ -346,7 +346,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['delete'])) {
         $event_ids = (array) $_POST['event_id']; // Convert string to array if needed
 
         // Database connection
-        $conn = new mysqli("localhost", "root", "", "nss_db");
+        $conn = new mysqli("sql12.freesqldatabase.com", "sql12767434", "fdUtRRwmJ9", "sql12767434");
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
