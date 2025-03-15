@@ -1,5 +1,17 @@
 <?php
 require_once __DIR__ . '/../config.php'; // For PHPMailer
+require_once __DIR__ . "/../config_db.php";
+
+// Load the environment variables
+loadEnv(__DIR__ . '/../.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+
+
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -28,8 +40,9 @@ function checkSession(){
 }
 
 function getDatabaseConnection(){
+    global $DB_HOST, $DB_USER, $DB_PASS, $DB_NAME;
     // Create a connection object
-    $conn = new mysqli("localhost", "root", "", "nss_db");
+    $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
     if($conn->connect_error){
         die("Connection failed: " . $conn->connect_error);
     }
@@ -99,6 +112,9 @@ function getStudentData($conn, $user_id){
     }
     return null; // Return null if no student found 
 }
+//==========================================================
+//forgot_pass.php
+//==========================================================
 function forgotPassRequest($user_id){
     // Create a connection object
     $conn = getDatabaseConnection();
@@ -153,7 +169,7 @@ function forgotPassRequest($user_id){
 }
 function sendEmail($to, $token) {
     // $host = 
-    $reset_url = "http://" . ($_SERVER['HTTP_HOST'] ? $_SERVER['HTTP_HOST'] : 'localhost') . "/nssproject/student/forgot_pass_change.php?token=$token";
+    $reset_url = "http://" . ($_SERVER['HTTP_HOST'] ? $_SERVER['HTTP_HOST'] : 'localhost') . "/student/forgot_pass_change.php?token=$token";
     $mail = new PHPMailer(true);
 
     try {

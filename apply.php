@@ -1,12 +1,16 @@
 <?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "nss_db";
+require_once "config_db.php";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+// Load the environment variables
+loadEnv(__DIR__ . '/.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+
+$conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 
 // Check connection
 if ($conn->connect_error) {

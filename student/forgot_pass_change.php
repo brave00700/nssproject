@@ -27,66 +27,136 @@ if(isValidToken($conn, $token, $user_id)){
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         form {
-        background-color: #ffffff; 
-        padding: 1.5rem; 
-        border-radius: 8px; 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-        width: 400px; 
-        margin: auto; 
-    }
+    background-color: #ffffff; 
+    padding: 1.5rem; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    width: 90%; 
+    max-width: 400px; 
+    margin: auto; 
+}
 
-    table {
+.nav > ul {
+    display: block;
+}
+table {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.label {
+    font-size: 1rem;
+    color: #333;
+    text-align: right; 
+    padding-right: 0.8rem; 
+}
+
+input {
+    width: 100%; 
+    padding: 0.6rem; 
+    margin-bottom: 0.8rem; 
+    border: 1px solid #ccc; 
+    border-radius: 6px; 
+    font-size: 1rem;
+}
+
+button {
+    width: 100%; 
+    padding: 0.6rem; 
+    font-size: 1rem;
+    font-weight: bold; 
+    color: #fff; 
+    background-color: #ffa200; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+}
+
+button:hover {
+    background-color: #e69202; 
+}
+
+button:active {
+    background-color: #cc7d02; 
+    transform: scale(0.98); 
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center; 
+    background-color: #f7f7f7; 
+    padding: 20px;
+    min-height: 100vh;
+}
+
+p.msg {
+    width: 90%;
+    max-width: 350px;
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    background-color: #ffb1005c; 
+    color: rgb(255, 0, 0);
+    font-weight: 700;
+    padding: 1rem;   
+    text-align: center;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+    form {
         width: 100%;
+        max-width: 350px;
     }
 
     .label {
-        font-size: 1rem;
-        color: #333;
-        text-align: right; 
-        padding-right: 0.8rem; 
+        text-align: left;
+        display: block;
+        padding-bottom: 5px;
+    }
+
+    tr {
+        display: flex;
+        flex-direction: column;
     }
 
     input {
-        width: 100%; 
-        padding: 0.6rem; 
-        margin-bottom: 0.8rem; 
-        border: 1px solid #ccc; 
-        border-radius: 6px; 
-        font-size: 1rem;
+        font-size: 0.9rem;
+        padding: 0.5rem;
     }
 
     button {
-        width: 100%; 
-        padding: 0.6rem; 
-        font-size: 1rem;
-        font-weight: bold; 
-        color: #fff; 
-        background-color: #ffa200; 
-        border: none; 
-        border-radius: 6px; 
-        cursor: pointer; 
-        transition: all 0.3s ease; 
+        font-size: 0.9rem;
+        padding: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    form {
+        padding: 1rem;
     }
 
-    button:hover {
-        background-color: #e69202; 
+    .main {
+        padding: 10px;
+        box-shadow: none;
     }
 
-    button:active {
-        background-color: #cc7d02; 
-        transform: scale(0.98); 
+    .label {
+        font-size: 0.9rem;
     }
+
+    input, button {
+        font-size: 0.85rem;
+        padding: 0.5rem;
+    }
+
     p.msg {
-        width: 350px;
-        border-radius: 8px; 
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-        background-color: #ffb1005c; 
-        color:rgb(255, 0, 0);
-        font-weight: 700;
-        padding: 1rem;   
-        text-align: center;
-        margin: 20px auto;
+        font-size: 0.9rem;
     }
+}
 
 </style>
 </head>
@@ -94,9 +164,6 @@ if(isValidToken($conn, $token, $user_id)){
 <?php include "header.php" ?>
    
 <div class="nav">
-        <div class="ham-menu">
-            <a><i class="fa-solid fa-bars ham-icon"></i></a>
-        </div>
         <ul>
             <li><a  class="active" href="">Reset Password</a></li>
         </ul>
