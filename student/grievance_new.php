@@ -259,8 +259,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     // Create a connection object 
     $conn = getDatabaseConnection();
-    $stmt = $conn->prepare("INSERT INTO grievance (student_id, unit, activity_type, subject, body, send_to, photo_pdf_path) VALUES(?,?,?,?,?,?,?);");
-    $stmt->bind_param("sssssss", $reg, $unit, $type, $subject, $body, $send_to, $proof);
+    $created_at = date('Y-m-d H:i:s');
+    $stmt = $conn->prepare("INSERT INTO grievance (student_id, unit, activity_type, subject, body, send_to, photo_pdf_path, created_at) VALUES(?,?,?,?,?,?,?,?);");
+    $stmt->bind_param("ssssssss", $reg, $unit, $type, $subject, $body, $send_to, $proof, $created_at);
     if($stmt->execute()){
         echo "<script>alert('Grievance sent successfully');</script>";
     }else{

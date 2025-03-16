@@ -93,11 +93,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['approve_request'])) {
             $statusStmt->execute();
 
             
+            $created_at = date('Y-m-d H:i:s');
             $notice = $fieldDisplayNames[$fieldName] . " update approved.";
             $notifyStmt = $conn->prepare("INSERT INTO student_notifications 
-                                     (student_id, notice) 
-                                     VALUES (?, ?)");
-            $notifyStmt->bind_param("ss", $studentId, $notice);
+                                     (student_id, notice, created_at) 
+                                     VALUES (?, ?, ?)");
+            $notifyStmt->bind_param("sss", $studentId, $notice, $created_at);
             if($notifyStmt->execute()){
                 // Commit transaction
                 $conn->commit();
@@ -147,14 +148,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reject_request'])) {
     }
     
     if ($statusStmt->execute()) {
-        // In a real system, you might want to notify the student about the rejection and reason
         // Reject message
+        $created_at = date('Y-m-d H:i:s');
         $rejectReason = $fieldName . " update rejected: " . $rejectReason;
 
         $notifyStmt = $conn->prepare("INSERT INTO student_notifications 
-                                     (student_id, notice) 
-                                     VALUES (?, ?)");
-        $notifyStmt->bind_param("ss", $studentId, $rejectReason);
+                                     (student_id, notice, created_at) 
+                                     VALUES (?, ?, ?)");
+        $notifyStmt->bind_param("sss", $studentId, $rejectReason, $created_at);
         if($notifyStmt->execute()){
             $successMessage = "Request rejected successfully.";
         }else{

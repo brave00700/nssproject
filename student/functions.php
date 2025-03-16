@@ -137,10 +137,10 @@ function forgotPassRequest($user_id){
         $new_token = generateToken();
 
         // If there is an entry
+        $expires_at = date('Y-m-d H:i:s', strtotime('+30 minutes'));
         if($result1->num_rows > 0){
-            
-            $stmt2 = $conn->prepare("UPDATE password_resets SET token = ?, expires_at = DATE_ADD(NOW(), INTERVAL 30 MINUTE) WHERE user_id = ?");
-            $stmt2->bind_param("ss", $new_token, $user_id);
+            $stmt2 = $conn->prepare("UPDATE password_resets SET token = ?, expires_at = ? WHERE user_id = ?");
+            $stmt2->bind_param("sss", $new_token, $expires_at, $user_id);
             if($stmt2->execute()){
                 sendEmail($email, $new_token);
                 return "Password Reset Successfull. Check your mail";
@@ -150,8 +150,8 @@ function forgotPassRequest($user_id){
         }
         //Create a new entry
         else{
-            $stmt2 = $conn->prepare("INSERT INTO password_resets (user_id, token, expires_at) VALUES(?, ?, DATE_ADD(NOW(), INTERVAL 30 MINUTE))");
-            $stmt2->bind_param("ss", $user_id, $new_token);
+            $stmt2 = $conn->prepare("INSERT INTO password_resets (user_id, token, expires_at) VALUES(?, ?, ?");
+            $stmt2->bind_param("sss", $user_id, $new_token, $expires_at);
             if($stmt2->execute()){
                 sendEmail($email, $new_token);
                 return "Password Reset Successfull. Check your mail";

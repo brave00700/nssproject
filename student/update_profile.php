@@ -29,7 +29,7 @@ $categoryList = [
     'GENERAL', 'OBC', 'SC', 'ST'
 ];
 $bloodgroupList = [
-    'B+ve', 'B-ve', 'A+ve', 'A-ve', 'AB+ve', 'AB-ve', 'O-ve', 'O+ve'
+    'B+', 'B-', 'A+', 'A-', 'AB+', 'AB-', 'O-', 'O+'
 ];
 $genderList = [
     'MALE', 'FEMALE', 'OTHER'
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_request'])) {
         
         
         if (!$dobDate || $dobDate->format('Y-m-d') !== $newValue) {
-            $errorMessage = "Please enter a valid date in YYYY-MM-DD format.";
+            $errorMessage = "Please enter a valid date in DD-MM-YYYY format.";
             $isValid = false;
         } else if ($dobDate > $maxDate || $dobDate < $minDate) {
             $errorMessage = "Please enter a reasonable date of birth (between 16 and 50 years old).";
