@@ -150,7 +150,7 @@ function forgotPassRequest($user_id){
         }
         //Create a new entry
         else{
-            $stmt2 = $conn->prepare("INSERT INTO password_resets (user_id, token, expires_at) VALUES(?, ?, ?");
+            $stmt2 = $conn->prepare("INSERT INTO password_resets (user_id, token, expires_at) VALUES(?, ?, ?)");
             $stmt2->bind_param("sss", $user_id, $new_token, $expires_at);
             if($stmt2->execute()){
                 sendEmail($email, $new_token);
