@@ -1,4 +1,15 @@
 <?php
+require_once __DIR__ . "/../config_db.php";
+
+// Load the environment variables
+loadEnv(__DIR__ . '/../.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+
 session_start();
 
 // Check if the session contains a valid PO login and unit
@@ -10,14 +21,10 @@ if (!isset($_SESSION['po_id']) || !isset($_SESSION['unit'])) {
 // Get the unit assigned to the logged-in Program Officer
 $po_unit = $_SESSION['unit'];        ?>
 <?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "nss_db";
+
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 
 // Check connection
 if ($conn->connect_error) {

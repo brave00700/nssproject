@@ -1,4 +1,15 @@
 <?php
+require_once __DIR__ . "/../config_db.php";
+
+// Load the environment variables
+loadEnv(__DIR__ . '/../.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+
 session_start();
 
 // Storing session variable
@@ -270,7 +281,7 @@ select:focus {
                         </thead>
                         <tbody>
                         <?php
-                        $conn = new mysqli("localhost", "root", "", "nss_db");
+                        $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 
                         if ($conn->connect_error) {
                             die("Connection failed: " . $conn->connect_error);
@@ -345,7 +356,7 @@ select:focus {
                 exit;
             }
 
-            $conn = new mysqli("localhost", "root", "", "nss_db");
+            $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
@@ -359,6 +370,7 @@ select:focus {
 
                 if ($result->num_rows > 0) {
                     $student = $result->fetch_assoc();
+                    $hashedPassword = password_hash($student['register_no'], PASSWORD_DEFAULT);
                     $insertSQL = "INSERT INTO students
                                   (register_no, name, father_name, mother_name, phone, email, age, gender, address, category, bloodgroup, shift, course, profile_photo, user_id, password, unit) 
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -380,7 +392,7 @@ select:focus {
                         $student['course'],
                         $student['profile_photo'],
                         $student['register_no'], 
-                        $student['register_no'], 
+                        $hashedPassword, 
                         $commonUnit
                     );
 
@@ -409,7 +421,7 @@ select:focus {
                 exit;
             }
 
-            $conn = new mysqli("localhost", "root", "", "nss_db");
+            $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }

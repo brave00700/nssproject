@@ -193,7 +193,7 @@ p.msg {
                 $pass1 = $_POST['pass1'];
                 $pass2 = $_POST['pass2'];
 
-                $message = resetPassword($conn, $pass1, $pass2, $user_id);
+                $message = resetPassword($conn, trim($pass1), trim($pass2), $user_id);
                 echo "<p class='msg'>$message</p>";
                 
             }

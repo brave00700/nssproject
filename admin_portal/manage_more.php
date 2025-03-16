@@ -1,3 +1,22 @@
+<?php
+require_once __DIR__ . "/../config_db.php";
+
+// Load the environment variables
+loadEnv(__DIR__ . '/../.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+
+session_start();
+
+// Storing session variable
+if(!$_SESSION['admin_id']){
+    header("Location: ../login.html");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,13 +67,7 @@
           </ul>
         </div>
         <div class="widget">
-        <?php
-session_start();
 
-// Storing session variable
-if(!$_SESSION['admin_id']){
-    header("Location: ../login.html");
-}            ?>
         </div>
     </div>
 </div>

@@ -1,24 +1,30 @@
 <?php
+require_once __DIR__ . "/../config_db.php";
+
+// Load the environment variables
+loadEnv(__DIR__ . '/../.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+$EMAIL_USER = getenv("EMAIL_USER");
+$EMAIL_PASS = getenv("EMAIL_PASS");
+
 session_start();
 
 // Storing session variable
 if(!$_SESSION['admin_id']){
     header("Location: ../login.html");
-}            ?>
-<?php
+}      
 require_once __DIR__ . '/../config.php'; // For PHPMailer
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-// Database configuration
-$servername = "localhost";
-$username = "root";
-$password = ""; // Replace with your database password
-$dbname = "nss_db";
-
 // Connect to database
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 
 // Check connection
 if ($conn->connect_error) {
@@ -85,6 +91,7 @@ function generatePassword($length = 8) {
  * Function to send email using PHPMailer
  */
 function sendEmail($to, $password) {
+    global $EMAIL_PASS, $EMAIL_USER;
     $mail = new PHPMailer(true);
 
     try {
@@ -92,13 +99,13 @@ function sendEmail($to, $password) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'testreset1882@gmail.com'; // Replace with your email
-        $mail->Password = 'lgoykdxxwrdplacx'; // Replace with your app password
+        $mail->Username = $EMAIL_USER; // Replace with your email
+        $mail->Password = $EMAIL_PASS; // Replace with your app password
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
         // Email settings
-        $mail->setFrom('testreset1882@gmail.com', 'Admin Portal');
+        $mail->setFrom($EMAIL_USER, 'Admin Portal');
         $mail->addAddress($to);
         $mail->isHTML(true);
         $mail->Subject = 'Your New Password';

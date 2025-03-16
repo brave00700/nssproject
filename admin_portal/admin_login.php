@@ -1,3 +1,56 @@
+<?php
+require_once __DIR__ . "/../config_db.php";
+
+// Load the environment variables
+loadEnv(__DIR__ . '/../.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+
+session_start();
+
+$message = '';
+
+// Checking for admin login
+if(isset($_POST['login'])){
+    if (!empty($_POST['id']) && !empty($_POST['pass'])){
+        $admin_id = $_POST['id'];
+        $admin_pass = $_POST['pass'];
+
+        // Create a connection object
+        $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+        if($conn->connect_error){
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        $stmt = $conn->prepare("SELECT role, password FROM staff WHERE User_id = ?");
+        $stmt->bind_param("s", $admin_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if($result->num_rows > 0) {
+            $admin_data = $result->fetch_assoc();
+            if($admin_data['password'] == $admin_pass && strtolower($admin_data['role']) == 'admin'){
+                $_SESSION['admin_id'] = $admin_id;
+                header("Location: manage_applications.php");
+                exit();
+            } else {
+                $message = 'Invalid credentials or role mismatch. Access restricted to Admins.';
+            }
+        } else {
+            $message = 'Invalid Admin ID or Password';
+        }
+
+        $stmt->close();
+        $conn->close();
+    } else {
+        $message = 'Please enter both Admin ID and Password';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -106,45 +159,8 @@
         </table>
     </form>
     <?php
-    // Starting the session
-    session_start();
 
-    // Checking for admin login
-    if(isset($_POST['login'])){
-        if (!empty($_POST['id']) && !empty($_POST['pass'])){
-            $admin_id = $_POST['id'];
-            $admin_pass = $_POST['pass'];
-
-            // Create a connection object
-            $conn = new mysqli("localhost", "root", "", "nss_db");
-            if($conn->connect_error){
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $stmt = $conn->prepare("SELECT role, password FROM staff WHERE User_id = ?");
-            $stmt->bind_param("s", $admin_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if($result->num_rows > 0) {
-                $admin_data = $result->fetch_assoc();
-                if($admin_data['password'] == $admin_pass && strtolower($admin_data['role']) == 'admin'){
-                    $_SESSION['admin_id'] = $admin_id;
-                    header("Location: manage_applications.php");
-                    exit();
-                } else {
-                    echo 'Invalid credentials or role mismatch. Access restricted to Admins.';
-                }
-            } else {
-                echo 'Invalid Admin ID or Password';
-            }
-
-            $stmt->close();
-            $conn->close();
-        } else {
-            echo 'Please enter both Admin ID and Password';
-        }
-    }
+    
     ?>
 </div>
 <script src="script.js"></script>

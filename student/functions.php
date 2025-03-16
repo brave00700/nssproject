@@ -10,13 +10,13 @@ $DB_HOST = getenv("DB_HOST");
 $DB_USER = getenv("DB_USER");
 $DB_PASS = getenv("DB_PASS");
 $DB_NAME = getenv("DB_NAME");
-
-
+$EMAIL_USER = getenv("EMAIL_USER");
+$EMAIL_PASS = getenv("EMAIL_PASS");
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-// Commonly used functions
 
+// Commonly used functions
 function checkSession(){
     // Starting a session
     session_start();
@@ -61,7 +61,7 @@ function loginStudent($userid, $password){
     if($result->num_rows > 0) {
         $cred = $result->fetch_assoc();
         $login_attempts = intval($cred['login_attempts']);
-        if($cred['password'] == $password && $login_attempts < 5){
+        if(password_verify($password, $cred['password']) && $login_attempts < 5){
             // Reset login counter
             $stmtUpdate = $conn->prepare("UPDATE students SET login_attempts = 0 WHERE user_id = ?");
             $stmtUpdate->bind_param("s", $userid);
@@ -168,7 +168,7 @@ function forgotPassRequest($user_id){
     $conn->close();
 }
 function sendEmail($to, $token) {
-    // $host = 
+    global $EMAIL_USER, $EMAIL_PASS;
     $reset_url = "http://" . ($_SERVER['HTTP_HOST'] ? $_SERVER['HTTP_HOST'] : 'localhost') . "/student/forgot_pass_change.php?token=$token";
     $mail = new PHPMailer(true);
 
@@ -177,13 +177,13 @@ function sendEmail($to, $token) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'testreset1882@gmail.com'; // Replace with your email
-        $mail->Password = 'lgoykdxxwrdplacx'; // Replace with your app password
+        $mail->Username = $EMAIL_USER; // Replace with your email
+        $mail->Password = $EMAIL_PASS; // Replace with your app password
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 
         // Email settings
-        $mail->setFrom('testreset1882@gmail.com', 'Admin Portal');
+        $mail->setFrom($EMAIL_USER, 'Admin Portal');
         $mail->addAddress($to);
         $mail->isHTML(true);
         $mail->Subject = 'Reset Password';
@@ -239,8 +239,9 @@ function resetPassword($conn, $pass1, $pass2, $user_id){
         $message = "Passwords don't match";
     }
     else{
+        $hashedPassword = password_hash($pass1, PASSWORD_DEFAULT);
         $stmt = $conn->prepare("UPDATE students SET password = ?, login_attempts = 0 WHERE user_id = ?");
-        $stmt->bind_param("ss", $pass1, $user_id);
+        $stmt->bind_param("ss", $hashedPassword, $user_id);
         if($stmt->execute()){
             $message = "Password changed successfully";
             

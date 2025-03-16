@@ -147,9 +147,9 @@ p.msg {
             
             // Checking for change password
             if(isset($_POST['change'])){
-                $old_pass = $_POST['old_pass'];
-                $new_pass = $_POST['new_pass'];
-                $confirm_pass = $_POST['confirm_pass'];
+                $old_pass = trim($_POST['old_pass']);
+                $new_pass = trim($_POST['new_pass']);
+                $confirm_pass = trim($_POST['confirm_pass']);
 
                 if($new_pass != $confirm_pass){
                     echo '<p class="msg">New Passwords do not match</p>';
@@ -164,11 +164,12 @@ p.msg {
 
                     if($result->num_rows > 0) {
                         $cred = $result->fetch_assoc();
-                        if($cred['password'] != $old_pass){
+                        if(!password_verify($old_pass, $cred['password'])){
                             echo '<p class="msg">Incorrect Password</p>';
                         }else{
+                            $hashedPassword = password_hash($new_pass, PASSWORD_DEFAULT);
                             $stmtUpdate = $conn->prepare("UPDATE students SET password = ? WHERE user_id = ?");
-                            $stmtUpdate->bind_param("ss",$new_pass,$cred['user_id']);
+                            $stmtUpdate->bind_param("ss", $hashedPassword, $cred['user_id']);
                             if($stmtUpdate->execute()){
                                 echo '<p class="msg">Password updated successfully</p>';
                             }else {

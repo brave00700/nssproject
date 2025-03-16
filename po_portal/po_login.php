@@ -1,3 +1,58 @@
+<?php
+require_once __DIR__ . "/../config_db.php";
+
+// Load the environment variables
+loadEnv(__DIR__ . '/../.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+
+session_start();
+
+$message = "";
+
+// Checking for program officer login
+if(isset($_POST['login'])){
+    if (!empty($_POST['id']) && !empty($_POST['pass'])){
+        $po_id = $_POST['id'];
+        $officer_pass = $_POST['pass'];
+
+        // Create a connection object
+        $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+        if($conn->connect_error){
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        $stmt = $conn->prepare("SELECT role, password, unit ,user_id FROM staff WHERE user_id = ?");
+        $stmt->bind_param("s", $po_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if($result->num_rows > 0) {
+            $officer_data = $result->fetch_assoc();
+            if($officer_data['password'] == $officer_pass && strtolower($officer_data['role']) == 'po'){
+                $_SESSION['po_id'] = $po_id;
+                $_SESSION['unit'] = intval($officer_data['unit']);
+                $_SESSION['user_id'] = $po_id;
+                header("Location: po_profile.php");
+                exit();
+            } else {
+                $message =  'Invalid credentials or role mismatch. Access restricted to Program Officers.';
+            }
+        } else {
+            $message = 'Invalid Officer ID or Password';
+        }
+
+        $stmt->close();
+        $conn->close();
+    } else {
+        $message = 'Please enter both Officer ID and Password';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,49 +158,9 @@
             </tr>
         </table>
     </form>
-    <?php
-    // Starting the session
-    session_start();
-
-    // Checking for program officer login
-    if(isset($_POST['login'])){
-        if (!empty($_POST['id']) && !empty($_POST['pass'])){
-            $po_id = $_POST['id'];
-            $officer_pass = $_POST['pass'];
-
-            // Create a connection object
-            $conn = new mysqli("localhost", "root", "", "nss_db");
-            if($conn->connect_error){
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $stmt = $conn->prepare("SELECT role, password, unit ,user_id FROM staff WHERE user_id = ?");
-            $stmt->bind_param("s", $po_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-
-            if($result->num_rows > 0) {
-                $officer_data = $result->fetch_assoc();
-                if($officer_data['password'] == $officer_pass && strtolower($officer_data['role']) == 'po'){
-                    $_SESSION['po_id'] = $po_id;
-                    $_SESSION['unit'] = intval($officer_data['unit']);
-                    $_SESSION['user_id'] = $po_id;
-                    header("Location: po_profile.php");
-                    exit();
-                } else {
-                    echo 'Invalid credentials or role mismatch. Access restricted to Program Officers.';
-                }
-            } else {
-                echo 'Invalid Officer ID or Password';
-            }
-
-            $stmt->close();
-            $conn->close();
-        } else {
-            echo 'Please enter both Officer ID and Password';
-        }
-    }
-    ?>
+    <?php if ($message): ?>
+        <p><?php echo $message ?>
+    <?php endif; ?>
 </div>
 <script src="script.js"></script>
 </body>

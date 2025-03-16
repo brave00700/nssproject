@@ -24,7 +24,7 @@ $message = "";
 // Checking for login
 if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
     if (!empty($_POST['id']) && !empty($_POST['pass'])){
-        $message = loginStudent($_POST['id'], $_POST['pass']);
+        $message = loginStudent($_POST['id'], trim($_POST['pass']));
         if($message === "Logged in"){
             header("Location: profile.php");
             exit();
@@ -158,7 +158,7 @@ if($_SERVER['REQUEST_METHOD']=='POST' && isset($_POST['login'])){
                         <td colspan="2"><button name="login" type="submit">Login</button></td>
                     </tr>
                     <tr>
-                        <th colspan="2"><a href="forgot_pass.php" class="forgot" style="text-decoration: none; color: #000;">Forgot Password ?</a></th>
+                        <th colspan="2"><a href="forgot_pass.php" target = "_blank" rel="noopener noreferrer" class="forgot" style="text-decoration: none; color: #000;">Forgot Password ?</a></th>
                     </tr>
                 </table>
             </form>
