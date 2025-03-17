@@ -73,7 +73,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Program Officer - Manage Students</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         /*search applications*/
         .search-container {
@@ -271,14 +271,17 @@ select:focus {
     </style>
 </head>
 <body>
-<div class="logo-container">
-    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-    <h1><b style="font-size: 2.9rem;">National Service Scheme</b><br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru.<br>
-        <b style="font-size: 1.3rem">Program Officer Portal</b><br>
-    </h1>
-    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">PROGRAM OFFICER PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
 
 <div class="nav">
         <div class="ham-menu">
@@ -344,7 +347,7 @@ select:focus {
                             <td><input type="checkbox" name="register_no[]" value="<?= htmlspecialchars($row['register_no']) ?>"></td>
                             <td>
                                 <?php if (!empty($row['profile_photo'])): ?>
-                                    <img src="<?= htmlspecialchars($row['profile_photo']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
+                                    <img src="../<?= htmlspecialchars($row['profile_photo']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
                                 <?php else: ?>
                                     No Photo
                                 <?php endif; ?>

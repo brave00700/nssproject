@@ -78,16 +78,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
     $course = $_POST['course'];
     $unit = isset($_POST['unit']) && $_POST['unit'] !== '' ? intval($_POST['unit']) : null;
 
-    // Handle file upload
-    $profilePhoto = '';
-    if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../uploads/profile_photos/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-        $profilePhoto = $uploadDir . basename($_FILES['profile_photo']['name']);
-        move_uploaded_file($_FILES['profile_photo']['tmp_name'], $profilePhoto);
+   // Handle file upload
+$profilePhoto = '';
+if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
+    $uploadDir = '../assets/uploads/profile_photo/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
     }
+    $fileName = basename($_FILES['profile_photo']['name']);
+    $filePath = $uploadDir . $fileName;
+
+    if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $filePath)) {
+        // Store path in database without '../'
+        $profilePhoto = 'assets/uploads/profile_photo/' . $fileName;
+    }
+}
 
     // Build the SQL query dynamically
     $updates = [];
@@ -153,18 +158,21 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../adminportal.css">
 </head>
 <body>
-<div class="logo-container">
-    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-    <h1><b style="font-size: 2.9rem;">National Service Scheme</b><br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru.<br>
-        <b style="font-size: 1.3rem">Program Officer Portal</b><br>
-    </h1>
-    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">PROGRAM OFFICER PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
 
 <div class="nav">
 <ul>

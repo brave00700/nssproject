@@ -82,7 +82,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Admin Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
     /* Table styling */
 table {
@@ -231,14 +231,17 @@ table td:hover:last-child {
     </style>
 </head>
 <body>
-<div class="logo-container">
-    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-    <h1><b style="font-size: 2.9rem;">National Service Scheme</b><br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru.<br>
-        <b style="font-size: 1.3rem">Admin Portal</b><br>
-    </h1>
-    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">ADMIN PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
 
 <div class="nav">
         <div class="ham-menu">
@@ -261,8 +264,8 @@ table td:hover:last-child {
 <div class="about_main_divide">
         <div class="about_nav">
             <ul>
-                <li><a  class="active" href="manage_students.php">View Admitted Students</a></li>
-                <li><a  href="view_credit_application.php">View Credits Application</a></li>
+                <li><a  class="active" href="manage_students.php">Admitted Students</a></li>
+                <li><a  href="view_credit_application.php">Credits Application</a></li>
 
                 <li><a href="change_student_password.php">Change Student Password</a></li>
             </ul>
@@ -318,8 +321,8 @@ table td:hover:last-child {
                             <td><input type="checkbox" name="register_no[]" value="<?= htmlspecialchars($row['register_no']) ?>" ></td>
                             <td>
                                 <?php if (!empty($row['profile_photo'])): ?>
-                                    <img src="<?= htmlspecialchars($row['profile_photo']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
-                                <?php else: ?>
+                                    <img src="../<?= htmlspecialchars($row['profile_photo']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
+                                    <?php else: ?>
                                     No Photo
                                 <?php endif; ?>
                             </td>

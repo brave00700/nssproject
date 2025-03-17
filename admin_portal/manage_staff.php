@@ -61,7 +61,7 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
     /* Table styling */
 table {
@@ -187,14 +187,17 @@ table td:hover:last-child {
 </style>
 </head>
 <body>
-    <div class="logo-container">
-        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-        <h1><b style="font-size: 2.9rem;">National Service Scheme</b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Admin Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">ADMIN PORTAL</div>
     </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
 
     <div class="nav">
         <div class="ham-menu">
@@ -215,8 +218,8 @@ table td:hover:last-child {
             <div class="about_nav">
                 <ul>
                     
-                    <li><a class="active" href="manage_staff.php">View PO & Executive Account</a></li>
-                    <li><a  href="po_leave.php">View PO leave</a></li> 
+                    <li><a class="active" href="manage_staff.php">PO & Executive Account</a></li>
+                    <li><a  href="po_leave.php">PO leave</a></li> 
                     <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
                 </ul>
             </div>
@@ -258,8 +261,8 @@ table td:hover:last-child {
                                             <td><input type="checkbox" name="user_id" value="<?= htmlspecialchars($row['user_id']) ?>"></td>
                                             <td>
                                                 <?php if (!empty($row['profile_photo'])): ?>
-                                                    <img src="<?= htmlspecialchars($row['profile_photo']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
-                                                <?php else: ?>
+                                                    <img src="../<?= htmlspecialchars($row['profile_photo']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
+                                                    <?php else: ?>
                                                     No Photo
                                                 <?php endif; ?>
                                             </td>

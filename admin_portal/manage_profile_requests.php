@@ -188,7 +188,7 @@ $requestsResult = $conn->query($requestsSql);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Admin Portal - Manage Profile Update Requests</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../adminportal.css">
     <style>
         .special_widget {
@@ -418,14 +418,17 @@ $requestsResult = $conn->query($requestsSql);
     </style>
 </head>
 <body>
-    <div class="logo-container">
-        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Admin Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">ADMIN PORTAL</div>
     </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
 
     <div class="nav">
         <div class="ham-menu">
@@ -447,8 +450,8 @@ $requestsResult = $conn->query($requestsSql);
         <div class="about_nav">
           <ul>
             
-            <li><a href="view_events.php">View Events</a></li>
-            <li><a href="view_grievances.php">View Grievances</a></li>
+            <li><a href="view_events.php">Events</a></li>
+            <li><a href="view_grievances.php">Grievances</a></li>
             <li><a class="active" href="manage_profile_requests.php">Profile Requests</a></li>
             <li><a href="manage_images.php">Upload Images to gallery</a></li>
 

@@ -176,8 +176,8 @@ function sendEmail($to, $password) {
           <ul>
            
             
-            <li><a href="manage_students.php">View Admitted Students</a></li>
-            <li><a  href="view_credit_application.php">View Credits Application</a></li>
+            <li><a href="manage_students.php">Admitted Students</a></li>
+            <li><a  href="view_credit_application.php">Credits Application</a></li>
             <li><a class="active" href="change_student_password.php">Change Student Password</a></li>
             
             

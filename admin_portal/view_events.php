@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['event_unit']) && !emp
     $event_unit = $_POST['event_unit'];
 
     // Fetch data based on selected unit
-    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path,event_unit
+    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue,event_unit
                             FROM events 
                             WHERE event_unit = ? OR event_unit = 10");
     $stmt->bind_param("s", $event_unit);
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['event_unit']) && !emp
     $result = $stmt->get_result();
 } else {
     // If no specific unit is selected, fetch all events
-    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path,event_unit FROM events");
+    $stmt = $conn->prepare("SELECT event_id, event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue,event_unit FROM events");
     $stmt->execute();
     $result = $stmt->get_result();
 }
@@ -64,7 +64,7 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
      /* Table styling */
 table {
@@ -228,15 +228,17 @@ table td:hover:last-child {
 
 </head>
 <body>
-<div class="logo-container">
-    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-    <h1><b style="font-size: 2.9rem;">National Service Scheme</b> <br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-        <b style="font-size: 1.3rem">Admin Portal</b><br>
-    </h1> 
-    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
-   
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">ADMIN PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
 <div class="nav">
         <div class="ham-menu">
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
@@ -256,8 +258,8 @@ table td:hover:last-child {
         <div class="about_nav">
             <ul>
             
-            <li><a class="active" href="view_events.php">View Events</a></li>
-            <li><a  href="view_grievances.php">View Grievances</a></li>
+            <li><a class="active" href="view_events.php">Events</a></li>
+            <li><a  href="view_grievances.php">Grievances</a></li>
             <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
             <li><a href="manage_images.php">Upload Images to gallery</a></li>
             
@@ -300,7 +302,7 @@ table td:hover:last-child {
                         <th>Teacher In-Charge</th>
                         <th>Student In-Charge</th>
                         <th>Venue</th>
-                        <th>Budget</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -315,8 +317,8 @@ table td:hover:last-child {
                             <td><?= htmlspecialchars($row['event_duration']) ?></td>
                             <td>
                                 <?php if (!empty($row['poster_path'])): ?>
-                                    <img src="<?= htmlspecialchars($row['poster_path']) ?>" alt="Poster" style="width: 50px; height: 50px; object-fit: cover; border-radius: 20%;">
-                                    <a href="<?= htmlspecialchars($row['poster_path']) ?>" target="_blank">Download</a>
+                                    <img src="../<?= htmlspecialchars($row['poster_path']) ?>" alt="Poster" style="width: 50px; height: 50px; object-fit: cover; border-radius: 20%;">
+                                    <a href="../<?= htmlspecialchars($row['poster_path']) ?>" target="_blank">Download</a>
                                 <?php else: ?>
                                     No Poster
                                 <?php endif; ?>
@@ -326,13 +328,7 @@ table td:hover:last-child {
                             <td><?= htmlspecialchars($row['teacher_incharge']) ?></td>
                             <td><?= htmlspecialchars($row['student_incharge']) ?></td>
                             <td><?= htmlspecialchars($row['event_venue']) ?></td>
-                            <td>
-                                <?php if (!empty($row['budget_pdf_path'])): ?>
-                                    <a href="<?= htmlspecialchars($row['budget_pdf_path']) ?>" target="_blank">View</a>
-                                <?php else: ?>
-                                    No Budget File
-                                <?php endif; ?>
-                            </td>
+                           
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

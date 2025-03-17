@@ -25,7 +25,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         .widget {
             width: 100%;
@@ -85,14 +85,17 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
     </style>
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Program Officer Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">PROGRAM OFFICER PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
    
 <div class="nav">
         <div class="ham-menu">

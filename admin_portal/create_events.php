@@ -17,15 +17,19 @@ if(!$_SESSION['admin_id']){
     header("Location: ../login.html");
 }
 
+<<<<<<< Updated upstream
 // Create connection
 $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+=======
+$conn = new mysqli($servername, $username, $password, $dbname);
+>>>>>>> Stashed changes
 
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Collect form data
+// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $event_name = $_POST['event_name'];
     $event_date = $_POST['event_date'];
@@ -37,81 +41,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $student_incharge = $_POST['student_incharge'];
     $event_venue = $_POST['event_venue'];
     $event_unit = $_POST['event_unit'];
-
+    
     $poster_path = null;
-    $budget_pdf_path = null;
+    $uploadDir = '../assets/uploads/event_posters/';
+
+    // Ensure upload directory exists
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
 
     // Handle poster upload
-    if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
+    if (!empty($_FILES['poster']['name']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
         $posterTmpPath = $_FILES['poster']['tmp_name'];
-        $posterName = $_FILES['poster']['name'];
+        $posterName = basename($_FILES['poster']['name']);
         $posterSize = $_FILES['poster']['size'];
         $posterType = mime_content_type($posterTmpPath);
         $allowedPosterTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         $maxPosterSize = 2 * 1024 * 1024; // 2MB
 
-        if ($posterSize > $maxPosterSize || !in_array($posterType, $allowedPosterTypes)) {
+        if ($posterSize <= $maxPosterSize && in_array($posterType, $allowedPosterTypes)) {
+            $filePath = $uploadDir . time() . "_" . $posterName; // Prevent filename conflicts
+            if (move_uploaded_file($posterTmpPath, $filePath)) {
+                $poster_path = str_replace('../', '', $filePath);
+            } else {
+                echo "<script>alert('Error: Failed to upload the poster.'); window.location.href = 'view_events.php';</script>";
+                exit;
+            }
+        } else {
             echo "<script>alert('Error: Invalid poster file type or size exceeds 2MB.'); window.location.href = 'view_events.php';</script>";
             exit;
         }
-
-        $posterDir = '../uploads/event_posters/';
-        if (!is_dir($posterDir)) {
-            mkdir($posterDir, 0777, true);
-        }
-
-        $poster_path = $posterDir . basename($posterName);
-        if (!move_uploaded_file($posterTmpPath, $poster_path)) {
-            echo "<script>alert('Error: Failed to upload the poster. Please try again.'); window.location.href = 'view_events.php';</script>";
-            exit;
-        }
     }
 
-    // Handle budget PDF upload
-    if (isset($_FILES['budget_pdf']) && $_FILES['budget_pdf']['error'] === UPLOAD_ERR_OK) {
-        $budgetTmpPath = $_FILES['budget_pdf']['tmp_name'];
-        $budgetName = $_FILES['budget_pdf']['name'];
-        $budgetSize = $_FILES['budget_pdf']['size'];
-        $budgetType = mime_content_type($budgetTmpPath);
-        $allowedBudgetTypes = ['application/pdf'];
-        $maxBudgetSize = 2 * 1024 * 1024; // 2MB
-
-        if ($budgetSize > $maxBudgetSize || !in_array($budgetType, $allowedBudgetTypes)) {
-            echo "<script>alert('Error: Invalid PDF file type or size exceeds 2MB.'); window.location.href = 'view_events.php';</script>";
-            exit;
-        }
-
-        $budgetDir = '../uploads/budget_pdfs/';
-        if (!is_dir($budgetDir)) {
-            mkdir($budgetDir, 0777, true);
-        }
-
-        $budget_pdf_path = $budgetDir . basename($budgetName);
-        if (!move_uploaded_file($budgetTmpPath, $budget_pdf_path)) {
-            echo "<script>alert('Error: Failed to upload the budget PDF. Please try again.'); window.location.href = 'view_events.php';</script>";
-            exit;
-        }
-    }
-
-    // Prepare SQL statement to insert data
+    // Prepare SQL statement
     $sql = "INSERT INTO events 
-            (event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, budget_pdf_path, event_unit) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            (event_name, event_date, event_time, event_duration, poster_path, event_type, event_desc, teacher_incharge, student_incharge, event_venue, event_unit) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param(
-        "sssissssssss",
-        $event_name,
-        $event_date,
-        $event_time,
-        $event_duration,
-        $poster_path,
-        $event_type,
-        $description,
-        $teacher_incharge,
-        $student_incharge,
-        $event_venue,
-        $budget_pdf_path,
-        $event_unit
+    $stmt->bind_param("sssisssssss", 
+        $event_name, $event_date, $event_time, $event_duration, $poster_path, $event_type, 
+        $description, $teacher_incharge, $student_incharge, $event_venue, $event_unit
     );
 
     if ($stmt->execute()) {
@@ -127,6 +97,7 @@ $conn->close();
 ?>
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -134,18 +105,21 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
    
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Admin Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">ADMIN PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
    
 <div class="nav">
         <div class="ham-menu">
@@ -166,8 +140,8 @@ $conn->close();
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
-            <li><a class="active"  href="view_events.php">View Events</a></li>
-            <li><a  href="view_grievances.php">View Grievances</a></li>
+            <li><a class="active"  href="view_events.php">Events</a></li>
+            <li><a  href="view_grievances.php">Grievances</a></li>
             <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
             <li><a href="manage_images.php">Upload Images to gallery</a></li>
             
@@ -225,8 +199,7 @@ $conn->close();
     <label for="poster">Event Poster (JPEG, PNG, JPG, max size: 2MB):</label>
     <input type="file" id="poster" name="poster" accept="image/jpeg, image/png, image/jpg" required>
 
-    <label for="budget_pdf">Budget PDF (PDF, max size: 5MB):</label>
-    <input type="file" id="budget_pdf" name="budget_pdf" accept="application/pdf" required>
+    
 
     
 
@@ -239,4 +212,9 @@ $conn->close();
 </div>
 <script src="script.js"></script>
 </body>
+<<<<<<< Updated upstream
 </html>
+=======
+</html>
+
+>>>>>>> Stashed changes

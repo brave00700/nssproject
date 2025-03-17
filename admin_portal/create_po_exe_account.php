@@ -61,24 +61,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
 
-        // Define the upload directory
-        $uploadDir = '../uploads/profile_photos/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true); // Create directory if not exists
-        }
-
-        // Define the path where the photo will be saved
-        $filePath = $uploadDir . basename($fileName);
-
-        // Move the uploaded file to the specified directory
-        if (move_uploaded_file($fileTmpPath, $filePath)) {
-            $profilePhoto = $filePath;
-            echo "<script>alert('{$profilePhoto}');</script>";
-        } else {
-            echo "<script>alert('Error: Failed to upload the profile photo. Please try again.');</script>";
-            exit;
-        }
+         // Handle file upload
+$profilePhoto = '';
+if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
+    $uploadDir = '../assets/uploads/profile_photo/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
     }
+    $fileName = basename($_FILES['profile_photo']['name']);
+    $filePath = $uploadDir . $fileName;
+
+    if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $filePath)) {
+        // Store path in database without '../'
+        $profilePhoto = 'assets/uploads/profile_photo/' . $fileName;
+    }
+    
+
+      
+    }
+  }
 
     // Prepare SQL statement to insert data
     $sql = "INSERT INTO staff
@@ -103,7 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute query
     if ($stmt->execute()) {
-        echo "<script>alert('Application submitted successfully!'); window.location.href = 'view_po.php';</script>";
+        echo "<script>alert('Application submitted successfully!'); window.location.href = 'manage_staff.php';</script>";
     } else {
         echo "<script>alert('Error: " . $stmt->error . "');</script>";
     }
@@ -125,18 +126,21 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
    
 </head>
 <body>
-<div class="logo-container">
-        <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-        <h1>  <b style="font-size: 2.9rem;">National Service Scheme </b> <br>
-            <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Admin Portal</b><br>
-        </h1> 
-        <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">ADMIN PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
    
 <div class="nav">
         <div class="ham-menu">
@@ -157,9 +161,9 @@ $conn->close();
         <div class="about_nav">
           <ul>
             
-            <li><a class="active" href="view_po.php">View PO & Executive Account</a></li>
+            <li><a class="active" href="view_po.php">PO & Executive Account</a></li>
             
-            <li><a href="po_leave.php">View PO leave</a></li> 
+            <li><a href="po_leave.php">PO leave</a></li> 
             <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
             
           </ul>
@@ -196,8 +200,8 @@ $conn->close();
         <label for="role">Role:</label>
         <select id="role" name="role" required >
           <option value="" disabled selected>Select </option>
-          <option value="Executive">Executive</option>
-          <option value="Program_Officer">Program Officer</option>
+          <option value="EXECUTIVE">Executive</option>
+          <option value="PO">Program Officer</option>
         </select>
 
         <label for="unit">Unit:</label>

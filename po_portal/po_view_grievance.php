@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
         
         // Update status in the database
         $ids = implode(",", array_map('intval', $selected_grievances));
-        $sql_update = "UPDATE grievance SET status = ? WHERE id IN ($ids)";
+        $sql_update = "UPDATE grievance SET status = ? WHERE grievance_id IN ($ids)";
         
         $stmt_update = $conn->prepare($sql_update);
         $stmt_update->bind_param("s", $new_status);
@@ -49,7 +49,7 @@ $status_filter = isset($_POST['status']) ? $_POST['status'] : "";
 
 $unit = $_SESSION['unit'];
 
-$sql = "SELECT id, unit, activity_type, subject, body, send_to, photo_pdf_path, status 
+$sql = "SELECT grievance_id, unit, activity_type, subject, body, send_to, photo_pdf_path, status 
         FROM grievance 
         WHERE send_to IN ('BOTH', 'PO') 
         AND unit = ?";
@@ -85,7 +85,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Grievance</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         /* Table styling */
 .table-container {
@@ -167,14 +167,17 @@ table th {
     </style>
 </head>
 <body>
-<div class="logo-container">
-    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-    <h1><b style="font-size: 2.9rem;">National Service Scheme</b> <br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-        <b style="font-size: 1.3rem">Program Officer Portal</b><br>
-    </h1> 
-    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">PROGRAM OFFICER PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
    
 <div class="nav">
         <div class="ham-menu">
@@ -238,8 +241,8 @@ table th {
                         <tbody>
                             <?php foreach ($grievances as $row): ?>
                                 <tr>
-                                    <td><input type="checkbox" name="selected_grievances[]" value="<?= $row['id'] ?>"></td>
-                                    <td><?= htmlspecialchars($row['id']) ?></td>
+                                    <td><input type="checkbox" name="selected_grievances[]" value="<?= $row['grievance_id'] ?>"></td>
+                                    <td><?= htmlspecialchars($row['grievance_id']) ?></td>
                                     <td><?= htmlspecialchars($row['unit']) ?></td>
                                     <td><?= htmlspecialchars($row['activity_type']) ?></td>
                                     <td><?= htmlspecialchars($row['subject']) ?></td>

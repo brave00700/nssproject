@@ -18,6 +18,15 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
 }            
    
 
+<<<<<<< Updated upstream
+=======
+
+// Database connection
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "nss_db";
+>>>>>>> Stashed changes
 
 
 $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
@@ -63,38 +72,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
     $student_incharge = $_POST['student_incharge'];
     $event_unit = $_POST['event_unit'];
 
-    // Handle file uploads
-    $posterPath = $event['poster_path'] ?? '';
-    $budgetPdfPath = $event['budget_pdf_path'] ?? '';
+   // Handle file uploads
+$posterPath = $event['poster_path'] ?? '';
 
-    if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../uploads/event_posters/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-        $posterPath = $uploadDir . basename($_FILES['poster']['name']);
-        move_uploaded_file($_FILES['poster']['tmp_name'], $posterPath);
-    }
 
-    if (isset($_FILES['budget_pdf']) && $_FILES['budget_pdf']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../uploads/budget_pdfs/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
-        }
-        $budgetPdfPath = $uploadDir . basename($_FILES['budget_pdf']['name']);
-        move_uploaded_file($_FILES['budget_pdf']['tmp_name'], $budgetPdfPath);
+if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
+    $uploadDir = '../assets/uploads/event_posters/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
     }
+    $fileName = basename($_FILES['poster']['name']);
+    $filePath = $uploadDir . $fileName;
+
+    if (move_uploaded_file($_FILES['poster']['tmp_name'], $filePath)) {
+        // Store path in database without '../'
+        $posterPath = 'assets/uploads/event_posters/' . $fileName;
+    }
+}
+
+
+
 
     $sql = "UPDATE events SET event_name = ?, event_desc = ?, event_date = ?, event_time = ?, 
             event_duration = ?, event_type = ?, event_venue = ?, teacher_incharge = ?, 
-            student_incharge = ?, event_unit = ?, poster_path = ?, budget_pdf_path = ?
+            student_incharge = ?, event_unit = ?, poster_path = ?
             WHERE event_id = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssisssssssi", $event_name, $event_desc, $event_date, $event_time, 
+    $stmt->bind_param("ssssissssssi", $event_name, $event_desc, $event_date, $event_time, 
                       $event_duration, $event_type, $event_venue, $teacher_incharge, 
-                      $student_incharge, $event_unit, $posterPath, $budgetPdfPath, $event_id);
+                      $student_incharge, $event_unit, $posterPath, $event_id);
 
+    
     if ($stmt->execute()) {
         echo "<script>alert('Event details updated successfully!'); window.location.href = 'po_view_events.php';</script>";
     } else {
@@ -113,19 +122,22 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NSS Home</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../adminportal.css">
 
 </head>
 <body>
-<div class="logo-container">
-    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-    <h1><b style="font-size: 2.9rem;">National Service Scheme</b><br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru.<br>
-        <b style="font-size: 1.3rem">Program Officer Portal</b><br>
-    </h1>
-    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">PROGRAM OFFICER PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
 
 <div class="nav">
         <div class="ham-menu">

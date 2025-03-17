@@ -164,7 +164,7 @@ function sendEmail($to, $password) {
         <div class="about_nav">
           <ul>
             
-            <li><a  href="manage_staff.php">View PO & Executive Account</a></li>
+            <li><a  href="manage_staff.php">PO & Executive Account</a></li>
             <li><a  href="po_leave.php">View PO leave</a></li> 
             
             <li><a class="active" href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>

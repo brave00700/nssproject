@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Define the upload directory
-        $uploadDir = '../uploads/profile_photos/';
+        $uploadDir = 'assets/uploads/profile_photo/';
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir, 0777, true); // Create directory if not exists
         }

@@ -100,17 +100,20 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modify Credit Application</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-<div class="logo-container">
-    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-    <h1><b style="font-size: 2.9rem;">National Service Scheme</b> <br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-        <b style="font-size: 1.3rem">Admin Portal</b><br>
-    </h1> 
-    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
+<header>
+  <div class="header-container">
+    <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
+    <div class="header-content">
+      <div class="header-text">NATIONAL SERVICE SCHEME</div>
+      <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
+      <div class="header-subtext">ADMIN PORTAL</div>
+    </div>
+    <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
+  </div>
+</header>
    
 <div class="nav">
         <div class="ham-menu">
@@ -131,8 +134,8 @@ $conn->close();
         <div class="about_nav">
             
             <ul>
-                <li><a href="manage_students.php">View Admitted Students</a></li>
-                <li><a class="active"  href="view_credit_application.php">View Credits Application</a></li>
+                <li><a href="manage_students.php">Admitted Students</a></li>
+                <li><a class="active"  href="view_credit_application.php">Credits Application</a></li>
                 <li><a href="change_student_password.php">Change Student Password</a></li>
             
             
