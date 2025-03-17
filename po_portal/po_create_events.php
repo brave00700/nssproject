@@ -23,12 +23,9 @@ $po_unit = $_SESSION['unit'];        ?>
 <?php
 
 
-<<<<<<< Updated upstream
+
 // Create connection
 $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
-=======
-$conn = new mysqli($servername, $username, $password, $dbname);
->>>>>>> Stashed changes
 
 // Check connection
 if ($conn->connect_error) {
