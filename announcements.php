@@ -26,7 +26,20 @@ $result_student = $stmt->get_result();
     <title>Home</title>
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/custom.css" />
-    <style></style>
+    <style>
+      @media (max-width: 576px) {
+  .ann {
+    width: 100% !important;
+    height: auto;
+    padding: 5px;
+  }
+
+  .d-flex {
+    flex-direction: column;
+  }
+}
+
+    </style>
   </head>
   <body>
     <!-- Header -->
@@ -81,8 +94,8 @@ $result_student = $stmt->get_result();
         <p class="fs-3 mb-4">Announcements</p>
         <?php
           while($row = $result_student->fetch_assoc()){
-            $date = date("F j, Y", strtotime($row['created_at']));
-            echo "<div class='shadow-sm mb-3 border border-5 p-2 rounded d-flex'><div class='me-2' style='width: 14%; height: 30px; background-color: #dee2e6; text-align: center'>{$date}</div><a href='announcement_fetch.php?id=" . intval($row["id"]) . "'>{$row["name"]}</a></div>";
+            $date = date("M j, Y", strtotime($row['created_at']));
+            echo "<div class='shadow-sm mb-3 border border-5 p-2 rounded d-flex'><div class='me-2 ann' style='width: 25%; height: 30px; background-color: #dee2e6; text-align: center'>{$date}</div><a href='announcement_fetch.php?id=" . intval($row["id"]) . "'>{$row["name"]}</a></div>";
           }
         ?>
      </div>

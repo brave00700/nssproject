@@ -150,7 +150,7 @@ $conn = getDatabaseConnection();
                     <td>{$sl_no}</td>
                     <td>{$row['event_name']}</td>
                     <td>{$row['event_date']}</td>
-                    <td><a href='{$row['photo_path']}' target='_blank'>Click Here</a></td>
+                    <td><a href='..{$row['photo_path']}' target='_blank'>Click Here</a></td>
                     <td>{$row['status']}</td>
                 </tr>";
                 }

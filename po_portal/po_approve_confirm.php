@@ -15,9 +15,34 @@ session_start();
 // Storing session variable
 if(!$_SESSION['po_id'] || !$_SESSION['unit']){
     header("Location: ../login.html");
-}            
-?>
+}      
+if(isset($_POST['approve'])){
+        $selectedStudents = $_POST['selected_students'] ?? [];
+        if (empty($selectedStudents)) {
+            echo "<script>alert('Please select at least one student.');</script>";
+            exit;
+        }
 
+        $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        foreach ($selectedStudents as $reg_no) {
+            $stmt_update = $conn->prepare("UPDATE attendance SET status = 'PO_APPROVED' WHERE register_no = ? AND event_id = ?");
+            $stmt_update->bind_param("si", $reg_no, $event_id);
+            $stmt_update->execute();
+        }
+
+        $stmt_update->close();
+        $conn->close();
+
+        // echo "<script>alert('Attendance approved successfully.');</script>";
+
+        header("Location: po_approve_attendance.php");
+        exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -187,32 +212,3 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
 <script src="script.js"></script>
 </body>
 </html>
-
-<?php
-if(isset($_POST['approve'])){
-        $selectedStudents = $_POST['selected_students'] ?? [];
-        if (empty($selectedStudents)) {
-            echo "<script>alert('Please select at least one student.');</script>";
-            exit;
-        }
-
-        $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-
-        foreach ($selectedStudents as $reg_no) {
-            $stmt_update = $conn->prepare("UPDATE attendance SET status = 'PO_APPROVED' WHERE register_no = ? AND event_id = ?");
-            $stmt_update->bind_param("si", $reg_no, $event_id);
-            $stmt_update->execute();
-        }
-
-        $stmt_update->close();
-        $conn->close();
-
-        // echo "<script>alert('Attendance approved successfully.');</script>";
-
-        header("Location: po_approve_attendance.php");
-        exit();
-}
-?>

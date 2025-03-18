@@ -117,15 +117,10 @@ $result = getStudentData($conn, $reg);
             if ($result) {
                 $photoPath = $result['profile_photo'];?>
                         <div class="profile-header">
-<<<<<<< Updated upstream
                             <img src="..<?php echo $photoPath; ?>" alt="Profile Picture" class="profile-img">
                             <h2><?php echo $result['name']; ?></h2>
                             <p><strong>Register No:</strong> <?php echo $result['register_no']; ?></p>
-=======
-                            <img src="../<?php echo $photoPath; ?>" alt="Profile Picture" class="profile-img">
-                            <h2><?php echo $row['name']; ?></h2>
-                            <p><strong>Register No:</strong> <?php echo $row['register_no']; ?></p>
->>>>>>> Stashed changes
+
                         </div>
                         
                         <div class="profile-info">

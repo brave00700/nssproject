@@ -74,7 +74,7 @@ if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPL
 
     if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $filePath)) {
         // Store path in database without '../'
-        $profilePhoto = 'assets/uploads/profile_photo/' . $fileName;
+        $profilePhoto = '/assets/uploads/profile_photo/' . $fileName;
     }
 
     // Build the SQL query dynamically

@@ -236,11 +236,11 @@ table th {
                                     <td><?= htmlspecialchars($row['unit']) ?></td>
                                     <td><?= htmlspecialchars($row['activity_type']) ?></td>
                                     <td><?= htmlspecialchars($row['subject']) ?></td>
-                                    <td><?= htmlspecialchars($row['body']) ?></td>
+                                    <td style="text-align: justify; line-height: normal"><?= $row['body'] ?></td>
                                     <td><?= htmlspecialchars($row['send_to']) ?></td>
                                     <td>
                                         <?php if (!empty($row['photo_pdf_path'])): ?>
-                                            <a href="<?= htmlspecialchars($row['photo_pdf_path']) ?>" download>Download</a>
+                                            <a href="..<?= htmlspecialchars($row['photo_pdf_path']) ?>" download>Download</a>
                                         <?php else: ?>
                                             No Attachment
                                         <?php endif; ?>

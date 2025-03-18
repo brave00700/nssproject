@@ -12,7 +12,7 @@
       <div class="row align-items-center text-center py-1">
         <!-- Logo 1 -->
         <div class="col-1 mx-auto">
-          <div class="ratio ratio-1x1" style="max-width: 150px">
+          <div class="ratio ratio-1x1" style="max-width: 150px; min-width: 25px">
             <img
               src="assets/icons/sju_logo.png"
               class="img-fluid"
@@ -35,7 +35,7 @@
 
         <!-- Logo 2 -->
         <div class="col-1 mx-auto">
-          <div class="ratio ratio-1x1" style="max-width: 150px">
+          <div class="ratio ratio-1x1" style="max-width: 150px; min-width: 25px">
             <img
               src="assets/icons/nss_logo.png"
               class="img-fluid"

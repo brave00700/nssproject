@@ -16,17 +16,6 @@ session_start();
 if(!$_SESSION['po_id'] || !$_SESSION['unit']){
     header("Location: ../login.html");
 }            
-   
-
-<<<<<<< Updated upstream
-=======
-
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "nss_db";
->>>>>>> Stashed changes
 
 
 $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
@@ -86,7 +75,7 @@ if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
 
     if (move_uploaded_file($_FILES['poster']['tmp_name'], $filePath)) {
         // Store path in database without '../'
-        $posterPath = 'assets/uploads/event_posters/' . $fileName;
+        $posterPath = '/assets/uploads/event_posters/' . $fileName;
     }
 }
 

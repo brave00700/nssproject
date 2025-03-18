@@ -234,9 +234,10 @@ if(isset($_POST['att_submit'])){
         }
 
         // Define the upload directory
-        $uploadDir = "../assets/uploads/attendance/{$a_event_name}/";
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true); // Create directory if not exists
+        $uploadDir = "/assets/uploads/attendance/{$a_event_name}/";
+        if (!is_dir(".." . $uploadDir)) {
+            echo "<script>alert('Directory');</script>";
+            mkdir(".." . $uploadDir, 0777, true); // Create directory if not exists
         }
 
         // Define the path where the photo will be saved
@@ -244,10 +245,10 @@ if(isset($_POST['att_submit'])){
 
 
         // Move the uploaded file to the specified directory
-        if (move_uploaded_file($fileTmpPath, $filePath)) {
+        if (move_uploaded_file($fileTmpPath, ".." . $filePath)) {
             $a_photo = $filePath;
         } else {
-            echo "<script>alert('Error: Failed to upload the profile photo. Please try again.');</script>";
+            echo "<script>alert('Error: Failed to upload the profile photo. Please try again." . $filePath . "');</script>";
             exit;
         }
     }

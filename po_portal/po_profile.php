@@ -87,7 +87,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
                 echo "<table>
                         <tr>
                             <td>Profile</td>
-                           <td><img src=\"./$photoPath\" style=\"width: 50px; height: 50px;\"></td>
+                           <td><img src=\"..$photoPath\" style=\"width: 50px; height: 50px;\"></td>
 
                         </tr>
                         

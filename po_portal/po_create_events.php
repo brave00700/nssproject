@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($posterSize <= $maxPosterSize && in_array($posterType, $allowedPosterTypes)) {
             $filePath = $uploadDir . time() . "_" . $posterName; // Prevent filename conflicts
             if (move_uploaded_file($posterTmpPath, $filePath)) {
-                $poster_path = str_replace('../', '', $filePath);
+                $poster_path = str_replace('..', '', $filePath);
             } else {
                 echo "<script>alert('Error: Failed to upload the poster.'); window.location.href = 'po_view_events.php';</script>";
                 exit;
@@ -88,9 +88,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     );
 
     if ($stmt->execute()) {
-        echo "<script>alert('Event created successfully!'); window.location.href = 'view_events.php';</script>";
+        echo "<script>alert('Event created successfully!'); window.location.href = 'po_view_events.php';</script>";
     } else {
-        echo "<script>alert('Error: " . $stmt->error . "'); window.location.href = 'view_events.php';</script>";
+        echo "<script>alert('Error: " . $stmt->error . "'); window.location.href = 'po_view_events.php';</script>";
     }
 
     $stmt->close();
@@ -186,7 +186,7 @@ $conn->close();
     <input type="text" id="event_venue" name="event_venue" required>
 
     <label for="event_unit">Unit:</label>
-        <select id="event_unit" name="event_unit" required disabled >
+        <select id="event_unit" name="event_unit" required readonly >
         <option value="<?php echo $po_unit; ?>" selected>Unit <?php echo $po_unit; ?></option>
           
         </select>
@@ -210,4 +210,3 @@ $conn->close();
 <script src="script.js"></script>
 </body>
 </html>
-+

@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['carousel_image']) && 
         if (move_uploaded_file($_FILES["carousel_image"]["tmp_name"], $targetFilePath)) {
             // Insert image file name into database
             $stmt = $conn->prepare("INSERT INTO carousel (name, photo_path) VALUES (?, ?)");
-            $photoPath = "./assets/carousel/" . $fileName;
+            $photoPath = "/assets/carousel/" . $fileName;
             $stmt->bind_param("ss", $imageName, $photoPath);
             
             if ($stmt->execute()) {
@@ -87,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['gallery_image']) && i
         if (move_uploaded_file($_FILES["gallery_image"]["tmp_name"], $targetFilePath)) {
             // Insert image file name into database
             $stmt = $conn->prepare("INSERT INTO gallery (name, photo_path, event_date) VALUES (?, ?, ?)");
-            $photoPath = "./assets/gallery/" . $fileName;
+            $photoPath = "/assets/gallery/" . $fileName;
             $stmt->bind_param("sss", $imageName, $photoPath, $eventDate);
             
             if ($stmt->execute()) {
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['carousel_id_delete']))
     
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $filePath = "../" . $row['photo_path'];
+        $filePath = ".." . $row['photo_path'];
         
         // Delete from database
         $deleteStmt = $conn->prepare("DELETE FROM carousel WHERE id = ?");
@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['gallery_id_delete'])) 
     
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $filePath = "../" . $row['photo_path'];
+        $filePath = ".." . $row['photo_path'];
         
         // Delete from database
         $deleteStmt = $conn->prepare("DELETE FROM gallery WHERE id = ?");
@@ -386,7 +386,7 @@ $galleryResult = $conn->query($gallerySql);
                 <?php 
                 if ($carouselResult->num_rows > 0) {
                     while ($row = $carouselResult->fetch_assoc()) { 
-                        $imagePath = "../" . $row['photo_path'];
+                        $imagePath = ".." . $row['photo_path'];
                 ?>
                     <div class="image-box">
                         <img src="<?php echo $imagePath; ?>" alt="<?php echo $row['name']; ?>">
@@ -411,7 +411,7 @@ $galleryResult = $conn->query($gallerySql);
                 <?php 
                 if ($galleryResult->num_rows > 0) {
                     while ($row = $galleryResult->fetch_assoc()) { 
-                        $imagePath = "../" . $row['photo_path'];
+                        $imagePath = ".." . $row['photo_path'];
                 ?>
                     <div class="image-box">
                         <img src="<?php echo $imagePath; ?>" alt="<?php echo $row['name']; ?>">

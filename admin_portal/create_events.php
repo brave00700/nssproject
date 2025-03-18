@@ -17,12 +17,9 @@ if(!$_SESSION['admin_id']){
     header("Location: ../login.html");
 }
 
-<<<<<<< Updated upstream
+
 // Create connection
 $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
-=======
-$conn = new mysqli($servername, $username, $password, $dbname);
->>>>>>> Stashed changes
 
 // Check connection
 if ($conn->connect_error) {
@@ -62,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($posterSize <= $maxPosterSize && in_array($posterType, $allowedPosterTypes)) {
             $filePath = $uploadDir . time() . "_" . $posterName; // Prevent filename conflicts
             if (move_uploaded_file($posterTmpPath, $filePath)) {
-                $poster_path = str_replace('../', '', $filePath);
+                $poster_path = str_replace('..', '', $filePath);
             } else {
                 echo "<script>alert('Error: Failed to upload the poster.'); window.location.href = 'view_events.php';</script>";
                 exit;
@@ -212,9 +209,4 @@ $conn->close();
 </div>
 <script src="script.js"></script>
 </body>
-<<<<<<< Updated upstream
 </html>
-=======
-</html>
-
->>>>>>> Stashed changes

@@ -77,7 +77,7 @@ if (isset($_FILES['poster']) && $_FILES['poster']['error'] === UPLOAD_ERR_OK) {
 
     if (move_uploaded_file($_FILES['poster']['tmp_name'], $filePath)) {
         // Store path in database without '../'
-        $posterPath = 'assets/uploads/event_posters/' . $fileName;
+        $posterPath = '/assets/uploads/event_posters/' . $fileName;
     }
 }
 

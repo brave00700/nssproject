@@ -307,8 +307,8 @@ table td:hover:last-child {
                             <td><?= htmlspecialchars($row['event_duration']) ?></td>
                             <td>
                                 <?php if (!empty($row['poster_path'])): ?>
-                                    <img src="../<?= htmlspecialchars($row['poster_path']) ?>" alt="Poster" style="width: 50px; height: 50px; object-fit: cover; border-radius: 20%;">
-                                    <a href="../<?= htmlspecialchars($row['poster_path']) ?>" target="_blank">Download</a>
+                                    <img src="..<?= htmlspecialchars($row['poster_path']) ?>" alt="Poster" style="width: 50px; height: 50px; object-fit: cover; border-radius: 20%;">
+                                    <a href="..<?= htmlspecialchars($row['poster_path']) ?>" target="_blank">Download</a>
                                 <?php else: ?>
                                     No Poster
                                 <?php endif; ?>

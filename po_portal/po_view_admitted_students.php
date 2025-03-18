@@ -347,7 +347,7 @@ select:focus {
                             <td><input type="checkbox" name="register_no[]" value="<?= htmlspecialchars($row['register_no']) ?>"></td>
                             <td>
                                 <?php if (!empty($row['profile_photo'])): ?>
-                                    <img src="../<?= htmlspecialchars($row['profile_photo']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
+                                    <img src="..<?= htmlspecialchars($row['profile_photo']) ?>" alt="Profile Photo" style='width: 50px; height: 50px; object-fit: cover; border-radius: 20%;'>
                                 <?php else: ?>
                                     No Photo
                                 <?php endif; ?>
