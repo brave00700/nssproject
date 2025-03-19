@@ -92,12 +92,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!is_dir('.' . $uploadDir)) {
             mkdir('.' . $uploadDir, 0777, true); // Create directory if not exists
         }
-
+        
         // Define the path where the photo will be saved
         $filePath = $uploadDir . basename($fileName);
 
         // Move the uploaded file to the specified directory
-        if (move_uploaded_file('.' . $fileTmpPath, $filePath)) {
+        if (move_uploaded_file($fileTmpPath, '.' . $filePath)) {
             $profilePhoto = $filePath;
         } else {
             echo "<script>alert('Error: Failed to upload the profile photo. Please try again.');</script>";
@@ -208,7 +208,7 @@ $conn->close();
         <form action="" method="post" class="nss-form" enctype="multipart/form-data"  onsubmit="calculateAge();return validateForm();">
         <div class="mb-3">
             <label for="name" class="form-label">Full Name:</label>
-            <input type="text" maxlength="25" class="form-control" id="name" name="name" required />
+            <input type="text"  class="form-control" id="name" name="name" required />
             </div>
             <div class="mb-3">
             <label for="register_no" class="form-label">Register Number:</label>
@@ -216,11 +216,11 @@ $conn->close();
             </div>
             <div class="mb-3">
             <label for="mother_name" class="form-label">Mother's Name:</label>
-            <input type="text"  maxlength="25" class="form-control" id="mother_name" name="mother_name" required />
+            <input type="text" class="form-control" id="mother_name" name="mother_name" required />
             </div>
             <div class="mb-3">
             <label for="name" class="form-label">Father's Name:</label>
-            <input type="text" maxlength="25" class="form-control" id="father_name" name="father_name" required placeholder="Angel">
+            <input type="text" class="form-control" id="father_name" name="father_name" required placeholder="Angel">
             </div>
             <div class="mb-3">
             <label for="phone" class="form-label">Phone Number:</label>
