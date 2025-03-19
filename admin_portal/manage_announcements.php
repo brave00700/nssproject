@@ -32,24 +32,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload']) && isset($_F
     $fileName = $_POST['pdf_name'];
     $fileTmpName = $_FILES['pdf_file']['tmp_name'];
     $fileType = $_FILES['pdf_file']['type'];
+    $fileSize = $_FILES['pdf_file']['size']; // Get file size
 
     if ($fileType == "application/pdf") {
-        $fileData = file_get_contents($fileTmpName);
+        if ($fileSize <= 512000) { // 500 KB limit
+            $fileData = file_get_contents($fileTmpName);
 
-        $stmt = $conn->prepare("INSERT INTO announcements (name, file) VALUES (?, ?)");
-        $stmt->bind_param("sb", $fileName, $null);
+            $stmt = $conn->prepare("INSERT INTO announcements (name, file) VALUES (?, ?)");
+            $stmt->bind_param("sb", $fileName, $null);
 
-        $stmt->send_long_data(1, $fileData);
+            $stmt->send_long_data(1, $fileData);
 
-        if ($stmt->execute()) {
-            echo "<script>alert('Announcement pdf uploaded successfully!');</script>";
+            if ($stmt->execute()) {
+                echo "<script>alert('Announcement PDF uploaded successfully!');</script>";
+            } else {
+                echo "<script>alert('Error: ' . $stmt->error);</script>";
+            }
+
+            $stmt->close();
         } else {
-            echo "<script>alert('Error: ');</script>" . $stmt->error;
+            echo "<script>alert('File size exceeds 500KB. Please upload a smaller file.');</script>";
         }
-
-        $stmt->close();
     } else {
-        echo " <script>alert('Please upload a PDF file.')</script>";
+        echo "<script>alert('Please upload a PDF file.');</script>";
     }
 }
 
@@ -143,18 +148,32 @@ flexviewcol{
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-        <li><a  href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="manage_students.php"> Manage Students</a></li>
+            <li><a href="manage_applications.php">Manage Applications</a></li>
+            <li><a href="manage_students.php">Manage Students</a></li>
             <li><a href="manage_staff.php">Manage Staff</a></li>
-            <li><a class="active" href="manage_announcements.php"> Announcements</a></li>
-            <li><a  href="manage_more.php"> More</a></li>
-
+            <li><a href="manage_reports.php">Reports & Register</a></li>            
+            <li><a class="active" href="manage_more.php">More</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
 
-<div class="main">
-<div class="special_widget">
+    <div class="main">
+    <div class="about_main_divide">
+        <div class="about_nav">
+          <ul>
+            
+            <li><a href="view_events.php">Events</a></li>
+            <li><a href="view_grievances.php">Grievances</a></li>
+            <li><a class="active" href="manage_announcements.php">Announcements</a></li>
+
+            <li><a   href="manage_images.php">Upload Images to gallery</a></li>
+
+
+
+            
+          </ul>
+        </div>
+<div class="widget">
        
             <div class="flexview">
             <div class="flexviewcol">

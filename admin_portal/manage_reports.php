@@ -48,8 +48,8 @@ if(!$_SESSION['admin_id']){
         <li><a  href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_students.php"> Manage Students</a></li>
            <li><a href="manage_staff.php">Manage Staff</a></li>
-           <li><a href="manage_reports.php">Reports & Register</a></li>
-                       <li><a class="active" href="manage_more.php"> More</a></li>
+           <li><a class="active" href="manage_reports.php">Reports & Register</a></li>
+                       <li><a href="manage_more.php"> More</a></li>
 
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
@@ -62,8 +62,7 @@ if(!$_SESSION['admin_id']){
             
             <li><a href="view_events.php">Events</a></li>
             <li><a href="view_grievances.php">Grievances</a></li>
-            <li><a href="manage_announcements.php">Announcements</a></li>
-
+             
             <li><a href="manage_images.php">Upload Images to gallery</a></li>
 
 

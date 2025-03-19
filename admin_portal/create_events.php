@@ -126,7 +126,7 @@ $conn->close();
         <li><a href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_students.php"> Manage Students</a></li>
             <li><a href="manage_staff.php"> Manage Staff</a></li>
-            <li><a href="manage_announcements.php"> Announcements</a></li>
+            <li><a href="manage_reports.php">Reports & Register</a></li>
                         <li><a class="active" href="manage_more.php"> More</a></li>
 
             <li><a href="admin_logout.php">Logout</a></li>
@@ -139,7 +139,8 @@ $conn->close();
           <ul>
             <li><a class="active"  href="view_events.php">Events</a></li>
             <li><a  href="view_grievances.php">Grievances</a></li>
-            <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
+            <li><a href="manage_announcements.php">Announcements</a></li>
+
             <li><a href="manage_images.php">Upload Images to gallery</a></li>
             
             
@@ -149,7 +150,7 @@ $conn->close();
         <div class="widget">
     <div class="mainapply">
       <h2>Create event</h2>
-      <form action="" method="post" class="nss-form" enctype="multipart/form-data">
+      <form action="" method="post" class="nss-form" enctype="multipart/form-data" onsubmit="return validateForm();">
       <label for="event_name">Event Name:</label>
     <input type="text" id="event_name" name="event_name" required>
 
@@ -207,6 +208,80 @@ $conn->close();
       </div>
     </div>
 </div>
+<script>
+        function validateForm() {
+    let eventName = document.getElementById("event_name")?.value.trim();
+    let eventDesc = document.getElementById("event_desc")?.value.trim();
+    let eventDate = document.getElementById("event_date")?.value;
+    let eventTime = document.getElementById("event_time")?.value;
+    let eventDuration = document.getElementById("event_duration")?.value;
+    let eventVenue = document.getElementById("event_venue")?.value.trim();
+    let teacherIncharge = document.getElementById("teacher_incharge")?.value.trim();
+    let studentIncharge = document.getElementById("student_incharge")?.value.trim();
+
+    let today = new Date();
+    let selectedDate = new Date(eventDate);
+    let selectedTime = eventTime ? parseInt(eventTime.split(":")[0]) : null;
+
+    // Validate Event Name (Required)
+    if (!eventName) {
+        alert("Event Name is required.");
+        return false;
+    }
+
+    // Validate Event Description (Required)
+    if (!eventDesc) {
+        alert("Event Description is required.");
+        return false;
+    }
+
+    // Validate Event Date (Should be after today)
+    if (!eventDate) {
+        alert("Event Date is required.");
+        return false;
+    }
+    if (selectedDate <= today) {
+        alert("Event Date must be after today's date.");
+        return false;
+    }
+
+    // Validate Event Time (Between 6 AM and 10 PM)
+    if (!eventTime) {
+        alert("Event Time is required.");
+        return false;
+    }
+    if (selectedTime < 6 || selectedTime >= 22) {
+        alert("Event Time must be between 6 AM and 10 PM.");
+        return false;
+    }
+
+    // Validate Event Duration (Must be positive)
+    if (!eventDuration || eventDuration <= 0) {
+        alert("Event Duration must be a positive number.");
+        return false;
+    }
+
+    // Validate Event Venue (Required)
+    if (!eventVenue) {
+        alert("Event Venue is required.");
+        return false;
+    }
+
+    // Validate Teacher In-Charge (Required)
+    if (!teacherIncharge) {
+        alert("Teacher In-Charge is required.");
+        return false;
+    }
+
+    // Validate Student In-Charge (Required)
+    if (!studentIncharge) {
+        alert("Student In-Charge is required.");
+        return false;
+    }
+
+    return true; // ✅ Form is valid, allow submission
+}
+    </script>
 <script src="script.js"></script>
 </body>
 </html>

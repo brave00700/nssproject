@@ -438,8 +438,7 @@ $requestsResult = $conn->query($requestsSql);
             <li><a href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_students.php">Manage Students</a></li>
             <li><a href="manage_staff.php">Manage Staff</a></li>
-            <li><a href="manage_announcements.php">Announcements</a></li>
-            
+            <li><a href="manage_reports.php">Reports & Register</a></li>            
             <li><a href="manage_more.php">More</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
@@ -450,11 +449,12 @@ $requestsResult = $conn->query($requestsSql);
         <div class="about_nav">
           <ul>
             
-            <li><a href="view_events.php">Events</a></li>
-            <li><a href="view_grievances.php">Grievances</a></li>
+          <li><a  href="manage_students.php">Admitted Students</a></li>
+            
             <li><a class="active" href="manage_profile_requests.php">Profile Requests</a></li>
-            <li><a href="manage_images.php">Upload Images to gallery</a></li>
+            <li><a  href="view_credit_application.php">Credits Application</a></li>
 
+                <li><a href="change_student_password.php">Change Student Password</a></li>
 
 
             

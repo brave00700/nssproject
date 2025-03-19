@@ -208,7 +208,7 @@ $conn->close();
         <form action="" method="post" class="nss-form" enctype="multipart/form-data"  onsubmit="calculateAge();return validateForm();">
         <div class="mb-3">
             <label for="name" class="form-label">Full Name:</label>
-            <input type="text"  class="form-control" id="name" name="name" required />
+            <input type="text" maxlength="25" class="form-control" id="name" name="name" required />
             </div>
             <div class="mb-3">
             <label for="register_no" class="form-label">Register Number:</label>
@@ -216,11 +216,11 @@ $conn->close();
             </div>
             <div class="mb-3">
             <label for="mother_name" class="form-label">Mother's Name:</label>
-            <input type="text" class="form-control" id="mother_name" name="mother_name" required />
+            <input type="text"  maxlength="25" class="form-control" id="mother_name" name="mother_name" required />
             </div>
             <div class="mb-3">
             <label for="name" class="form-label">Father's Name:</label>
-            <input type="text" class="form-control" id="father_name" name="father_name" required placeholder="Angel">
+            <input type="text" maxlength="25" class="form-control" id="father_name" name="father_name" required placeholder="Angel">
             </div>
             <div class="mb-3">
             <label for="phone" class="form-label">Phone Number:</label>

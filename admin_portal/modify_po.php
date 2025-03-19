@@ -18,8 +18,6 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
-
-
 $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 
 // Check connection
@@ -37,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modify']) && isset($_
 }
 
 if ($user_id) {
-    $sql = "SELECT * FROM staff WHERE user_id = '$user_id'";
+    $sql = "SELECT * FROM staff WHERE user_id = '" . $conn->real_escape_string($user_id) . "'";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows > 0) {
@@ -49,49 +47,45 @@ if ($user_id) {
 
 // Handle form submission for update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_details'])) {
-    // Fetch and validate input fields
     $user_id = $_POST['user_id'];
-    $name = $_POST['name'];
-    
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $dob = $_POST['dob'];
-    $gender = $_POST['gender'];
-    $address = $_POST['address'];
-    $role = $_POST['role'];
+    $name = $_POST['name'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $dob = $_POST['dob'] ?? '';
+    $gender = $_POST['gender'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $role = $_POST['role'] ?? '';
     $unit = isset($_POST['unit']) ? intval($_POST['unit']) : null;
-
-   
+    
     // Handle file upload
-$profilePhoto = '';
-if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
-    $uploadDir = '../assets/uploads/profile_photo/';
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
-    $fileName = basename($_FILES['profile_photo']['name']);
-    $filePath = $uploadDir . $fileName;
+    $profilePhoto = '';
+    if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = '../assets/uploads/profile_photo/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+        $fileName = basename($_FILES['profile_photo']['name']);
+        $filePath = $uploadDir . $fileName;
 
-    if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $filePath)) {
-        // Store path in database without '../'
-        $profilePhoto = '/assets/uploads/profile_photo/' . $fileName;
+        if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $filePath)) {
+            $profilePhoto = '/assets/uploads/profile_photo/' . $fileName;
+        }
     }
-
+    
     // Build the SQL query dynamically
     $updates = [];
-    if (!empty($name)) $updates[] = "name = '$name'";
-    
-    if (!empty($phone)) $updates[] = "phone = '$phone'";
-    if (!empty($email)) $updates[] = "email = '$email'";
-    if (!empty($dob)) $updates[] = "dob = '$dob'";
-    if (!empty($gender)) $updates[] = "gender = '$gender'";
-    if (!empty($address)) $updates[] = "address = '$address'";
-    if (!empty($role)) $updates[] = "role = '$role'";
-    if (!is_null($unit)) $updates[] = "unit = $unit";
-    if (!empty($profilePhoto)) $updates[] = "profile_photo = '$profilePhoto'";
+    if (!empty($name)) $updates[] = "name = '" . $conn->real_escape_string($name) . "'";
+    if (!empty($phone)) $updates[] = "phone = '" . $conn->real_escape_string($phone) . "'";
+    if (!empty($email)) $updates[] = "email = '" . $conn->real_escape_string($email) . "'";
+    if (!empty($dob)) $updates[] = "dob = '" . $conn->real_escape_string($dob) . "'";
+    if (!empty($gender)) $updates[] = "gender = '" . $conn->real_escape_string($gender) . "'";
+    if (!empty($address)) $updates[] = "address = '" . $conn->real_escape_string($address) . "'";
+    if (!empty($role)) $updates[] = "role = '" . $conn->real_escape_string($role) . "'";
+    if (!is_null($unit)) $updates[] = "unit = " . intval($unit);
+    if (!empty($profilePhoto)) $updates[] = "profile_photo = '" . $conn->real_escape_string($profilePhoto) . "'";
 
     if (count($updates) > 0) {
-        $sql = "UPDATE staff SET " . implode(", ", $updates) . " WHERE user_id = '$user_id'";
+        $sql = "UPDATE staff SET " . implode(", ", $updates) . " WHERE user_id = '" . $conn->real_escape_string($user_id) . "'";
 
         if ($conn->query($sql) === TRUE) {
             echo "<script>alert('Staff details updated successfully!'); window.location.href = 'manage_staff.php';</script>";
@@ -102,10 +96,10 @@ if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === UPL
         echo "<script>alert('No changes were made.'); window.location.href = 'manage_staff.php';</script>";
     }
 }
-}
 
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -137,8 +131,8 @@ $conn->close();
             <li><a href="manage_applications.php">Manage Applications</a></li>
             <li><a href="manage_students.php">Manage Students</a></li>
             <li><a class="active" href="manage_staff.php">Manage Staff</a></li>
-            <li><a href="manage_announcements.php">Announcements</a></li>
-            <li><a href="manage_more.php">More</a></li>
+            <li><a href="manage_reports.php">Reports & Register</a></li>
+                        <li><a href="manage_more.php">More</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
@@ -148,7 +142,7 @@ $conn->close();
             <div class="about_nav">
                 <ul>
                    
-                    <li><a class="active" href="view_po.php">PO & Executive Account</a></li>
+                    <li><a class="active" href="manage_staff.php">PO & Executive Account</a></li>
                     <li><a  href="po_leave.php">PO leave</a></li> 
                     <li><a href="change_EXE_PO_password.php">Change PO & Executive Password</a></li>
                 </ul>
@@ -156,12 +150,12 @@ $conn->close();
             <div class="widget">
             <div class="mainapply">
     <h2>Modify PO & Executive Details</h2>
-    <form action="" method="POST" enctype="multipart/form-data"  class="nss-form">
+    <form action="" method="POST" enctype="multipart/form-data"  class="nss-form" onsubmit="return validateForm();">
         <label for="user_id">User ID:</label>
         <input type="text" id="user_id" name="user_id" value="<?= $staff['user_id'] ?? '' ?>" required readonly><br><br>
 
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" value="<?= $staff['name'] ?? '' ?>"><br><br>
+        <input type="text" id="name" name="name" maxlength="25" value="<?= $staff['name'] ?? '' ?>"><br><br>
 
         
         <label for="phone">Phone:</label>
@@ -211,6 +205,72 @@ $conn->close();
             </div>
         </div>
     </div>
+    <script>
+        function validateForm() {
+            const nameRegex = /^[A-Za-z\s]+$/;
+            const courseRegex = /^[A-Za-z1-3\s]+$/;
+            const phoneRegex = /^[0-9]{10}$/;
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+
+            
+            let name = document.getElementById("name").value;
+           
+            
+            let phone = document.getElementById("phone").value;
+            let email = document.getElementById("email").value;
+            let dob = document.getElementById("dob").value;
+            
+           
+
+             // Validate Name
+            if (!nameRegex.test(name)) {
+                alert("Name should contain only letters and spaces.");
+                return false;
+            }
+           
+            
+
+            // Validate Phone Number
+            if (!phoneRegex.test(phone)) {
+                alert("Phone number must be exactly 10 digits.");
+                return false;
+            }
+
+            // Validate Email
+            if (!emailRegex.test(email)) {
+                alert("Enter a valid email address.");
+                return false;
+            }
+           
+           
+
+        
+            if (dob) {
+            let dobDate = new Date(dob);
+            let today = new Date();
+            let age = today.getFullYear() - dobDate.getFullYear();
+            let monthDiff = today.getMonth() - dobDate.getMonth();
+            let dayDiff = today.getDate() - dobDate.getDate();
+
+            // Adjust age if birth date hasn't occurred yet this year
+            if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                age--;
+            }
+
+            if (age < 17 || age > 50) {
+                alert("Enter proper DoB details.");
+                return false;
+            }
+        } else {
+            alert("Please enter your Date of Birth.");
+            return false;
+        }
+            
+            return true;
+        }
+
+       
+    </script>
 <script src="script.js"></script>
 </body>
 </html>
