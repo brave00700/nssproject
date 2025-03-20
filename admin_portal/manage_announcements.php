@@ -102,33 +102,7 @@ $result = $conn->query($sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../adminportal.css">
-    <style>
-        .flexview {
-    display: flex;
     
-    justify-content: space-around;
-    align-items: flex-start;
-    gap: 20px; /* Space between the forms */
-    margin: 20px auto;
-    padding: 20px;
-    width: 90%; /* Adjust width as needed */
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-flexviewcol{
-    display: flex;
-    flex-direction:column;
-}
-
-
-
-
-
-
-    </style>
 </head>
 <body>
 <header>

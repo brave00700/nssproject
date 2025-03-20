@@ -77,135 +77,9 @@ $stmt->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admincss/view_credit_application.css">
     <style>
-        /* Table styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table th, table td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-
-        table th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            overflow-y: auto;
-            max-height: 400px;
-            max-width: 100%;
-            border: 1px solid #ccc;
-            padding: 5px;
-            background-color: #f9f9f9;
-        }
-
-        /* Container for both forms */
-.search_form_container {
-    display: flex;
-    align-items: center; /* Vertically align forms */
-    justify-content: space-between; /* Space forms evenly */
-    gap: 20px; /* Space between the two forms */
-    flex-wrap: wrap; /* Allow wrapping on small screens */
-    max-width: 100%; /* Ensure the container fits the screen */
-    margin: 10px auto; /* Center on the page */
-}
-
-/* Individual form styling */
-.search_form {
-    display: flex;
-    align-items: center; /* Vertically align items */
-    gap: 8px; /* Space between items */
-    padding: 5px; /* Reduced padding for compactness */
-    background-color: #f9f9f9; /* Light background color */
-    border: 1px solid #ddd; /* Subtle border */
-    border-radius: 5px; /* Rounded corners */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    flex: 1; /* Allow forms to share space equally */
-    min-width: 300px; /* Ensure a minimum width for forms */
-}
-
-/* Labels inside the form */
-.search_form label {
-    font-weight: bold; /* Emphasize labels */
-    font-size: 14px; /* Standard font size */
-    margin-right: 5px; /* Add space to the right */
-}
-
-/* Input fields and dropdown */
-.search_form input,
-.search_form select {
-    padding: 5px; /* Reduced padding */
-    font-size: 14px; /* Consistent font size */
-    border: 1px solid #ccc; /* Border for input fields */
-    border-radius: 3px; /* Rounded edges */
-    flex: 1; /* Allow fields to stretch */
-    max-width: 200px; /* Restrict maximum width */
-}
-
-/* Buttons */
-.search_form button {
-    padding: 5px 10px; /* Reduced padding */
-    font-size: 14px; /* Consistent font size */
-    background-color: #007bff; /* Primary blue */
-    color: #ffffff; /* White text for contrast */
-    border: none; /* Remove default border */
-    border-radius: 3px; /* Rounded edges */
-    cursor: pointer; /* Pointer cursor for button */
-    transition: background-color 0.3s ease; /* Smooth hover effect */
-}
-
-/* Hover effect for buttons */
-.search_form button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-}
-
-/* Adjust spacing on small screens */
-@media (max-width: 768px) {
-    .search_form_container {
-        flex-direction: column; /* Stack forms vertically on small screens */
-        gap: 10px; /* Reduce gap between forms */
-    }
-
-    .search_form {
-        min-width: unset; /* Remove minimum width on smaller screens */
-        width: 100%; /* Make forms full width */
-    }
-}
-
-        .admit-buttons, .delete-button {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .admit-buttons {
-            background-color: #007bff;
-        }
-
-        .admit-buttons:hover {
-            background-color: #0056b3;
-        }
-
-        .delete-button {
-            background-color: #dc3545;
-        }
-
-        .delete-button:hover {
-            background-color: #a71d2a;
-        }
+       
     </style>
 </head>
 <body>
@@ -307,7 +181,7 @@ $stmt->close();
     </div>
     <br>
     <button type="submit" formaction="view_report_approve.php" name="modify" class="admit-buttons">View Report and Approve</button>
-    <button type="submit" name="delete" class="delete-button">Delete Selected Application</button>
+    
 </form>
 
 <script>
@@ -331,20 +205,4 @@ $stmt->close();
 </body>
 </html>
 
-<?php
-// Handle delete request
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['delete'])) {
-    if (!empty($_POST['credit_id'])) {
-        $credit_ids = array_map('intval', $_POST['credit_id']);
-        $placeholders = implode(',', array_fill(0, count($credit_ids), '?'));
-        $stmt = $conn->prepare("DELETE FROM credits WHERE credit_id IN ($placeholders)");
-        $stmt->bind_param(str_repeat('i', count($credit_ids)), ...$credit_ids);
 
-        if ($stmt->execute()) {
-            echo "<script>alert('Selected applications deleted successfully.'); window.location.href='view_credit_application.php';</script>";
-        }
-        $stmt->close();
-    }
-}
-$conn->close();
-?>

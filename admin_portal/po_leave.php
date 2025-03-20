@@ -76,90 +76,10 @@ $conn->close();
     <title>Leave Approvals</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admincss/manage_staff.css">
+
     <style>
-        /* Table Styling */
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-            max-height: 400px;
-            border: 1px solid #ccc;
-            padding: 5px;
-            background-color: #f9f9f9;
-            white-space: nowrap;
-        }
-
-        table {
-            width: 100%;
-            min-width: 900px;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table th, table td {
-            padding: 10px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-
-        table th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        /* Search Form */
-        .search_form {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            max-width: 400px;
-            margin: 20px auto;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .search_form select, .search_form button {
-            padding: 5px;
-            font-size: 14px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .search_form button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-        }
-
-        .search_form button:hover {
-            background-color: #0056b3;
-        }
-
-        /* Update Status Form */
-        .update_status_form {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .update_status_form select, .update_status_form button {
-            padding: 8px;
-            font-size: 14px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .update_status_form button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-        }
-
-        .update_status_form button:hover {
-            background-color: #218838;
-        }
+        
     </style>
 </head>
 <body>

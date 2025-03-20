@@ -268,8 +268,9 @@ table td:hover:last-child {
             </ul>
         </div>
         <div class="widget">
+        <h1 style="text-align: center;">View Events</h1>
         <div class="search_form">
-        <h1>View Events</h1>
+        
         <form method="post">
         <label for="event_unit">Select Unit:</label>
         <select name="event_unit" id="event_unit" required>

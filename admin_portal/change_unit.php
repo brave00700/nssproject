@@ -88,6 +88,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['register_no'])) {
     <title>NSS Admin Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admincss/manage_student.css">
+
+        
+
     <body>
 <header>
   <div class="header-container">
@@ -163,9 +167,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['register_no'])) {
             <option value="5">Unit 5</option>
         </select>
         <br><br>
+        <div class="button-container">
         <button type="submit" class="submit-button">Update Unit</button>
         <a href="manage_students.php" class="cancel-button">Cancel</a>
+        </div>
+
     </form>
+    </div>
+        </div>
+    </div>
 </div>
 <script src="script.js"></script>
 </body>

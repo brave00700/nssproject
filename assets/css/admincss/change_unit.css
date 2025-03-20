@@ -1,0 +1,114 @@
+.widget button,
+.widget a {
+    display: block;
+    width: 50%;
+    padding: 12px;
+    margin: 10px 0;
+    background: #ff9800;
+    border: none;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.widget a {
+    background: #34495e;
+}
+
+.widget a:hover {
+    background: #1a252f;
+}
+
+/* Main Container */
+.main-container {
+    width: 70%;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: #fff;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background: #007bff;
+    color: #fff;
+}
+
+/* Form Controls */
+label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+select {
+    width: 50%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Buttons */
+button, .cancel-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button {
+    background: #28a745;
+    color: white;
+}
+
+.submit-button:hover {
+    background: #218838;
+}
+
+.cancel-button {
+    background: #dc3545;
+    color: white;
+    text-decoration: none;
+}
+
+.cancel-button:hover {
+    background: #c82333;
+}
+/* Centering Buttons */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Adjust spacing between buttons */
+    margin-top: 15px;
+}
+
+/* Ensure buttons have equal width */
+button, .cancel-button {
+    width: 150px; /* Adjust width as needed */
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}

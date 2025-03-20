@@ -60,11 +60,12 @@ if(!$_SESSION['admin_id']){
         <div class="about_nav">
           <ul>
             
-            <li><a href="view_events.php">Events</a></li>
-            <li><a href="view_grievances.php">Grievances</a></li>
+            <li><a href="work_reports.php">Work Reports</a></li>
+            <li><a href="stock_items.php">Stock Items</a></li>
              
-            <li><a href="manage_images.php">Upload Images to gallery</a></li>
-
+            <li><a href="mom.php">Minutes of Meeting Records</a></li>
+            <li><a href="budget.php">Budget</a></li>
+            <li><a href="work_done_diary.php">Work Done Diary</a></li>
 
             
           </ul>

@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Widget Container */
+.widget {
+    width: 80%;
+    max-width: 800px;
+    background: white;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+/* Heading */
+.widget h1, .widget h2 {
+    text-align: center;
+    color: #333;
+}
+
+/* Student Info */
+p {
+    font-size: 16px;
+    color: #555;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #007BFF;
+    color: white;
+}
+
+/* No Data Message */
+td[colspan="3"] {
+    color: red;
+    font-weight: bold;
+}
+
+/* Form Styling */
+form {
+    width: 60%; /* Reduce form width */
+    max-width: 400px; /* Limit max width */
+    margin: 20px auto;
+    background: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Label Styling */
+label {
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Select Fields */
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Disabled Dropdown */
+select:disabled {
+    background: #e0e0e0;
+    color: #777;
+}
+
+/* Buttons */
+button {
+    display: block;
+    width: 80%; /* Reduce button width */
+    max-width: 250px; /* Limit button size */
+    padding: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin: 10px auto; /* Center buttons */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
