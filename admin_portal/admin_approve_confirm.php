@@ -12,14 +12,15 @@ $DB_NAME = getenv("DB_NAME");
 
 session_start();
 
-// Storing session variable
-if(!$_SESSION['po_id'] || !$_SESSION['unit']){
+// Ensure the admin is logged in
+if (!isset($_SESSION['admin_id'])) {
     header("Location: ../login.html");
-}      
+    exit();
+}   
 if(isset($_POST['approve'])){
         $selectedStudents = $_POST['selected_students'] ?? [];
         if (empty($selectedStudents)) {
-            echo "<script>alert('Please select at least one student.');  window.location.href='po_approve_confirm.php';</script>";
+            echo "<script>alert('Please select at least one student.');  window.location.href='admin_approve_confirm.php';</script>";
             exit;
         }
 
@@ -29,7 +30,7 @@ if(isset($_POST['approve'])){
         }
 
         foreach ($selectedStudents as $reg_no) {
-            $stmt_update = $conn->prepare("UPDATE attendance SET status = 'PO_APPROVED' WHERE register_no = ? AND event_id = ?");
+            $stmt_update = $conn->prepare("UPDATE attendance SET status = 'APPROVED' WHERE register_no = ? AND event_id = ?");
             $stmt_update->bind_param("si", $reg_no, $event_id);
             $stmt_update->execute();
         }
@@ -39,7 +40,7 @@ if(isset($_POST['approve'])){
 
         echo "<script>alert('Attendance approved successfully.');</script>";
 
-        header("Location: po_approve_attendance.php");
+        header("Location: admin_approve_attendance.php");
         exit();
 }
 ?>
@@ -48,9 +49,11 @@ if(isset($_POST['approve'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSS Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>NSS Admin Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/admincss/manage_student.css">
+
     <style>
         .widget {
             width: 100%;
@@ -110,43 +113,49 @@ if(isset($_POST['approve'])){
     </style>
 </head>
 <body>
+
 <header>
   <div class="header-container">
     <img src="../assets/icons/sju_logo.png" class="logo" alt="SJU Logo" />
     <div class="header-content">
       <div class="header-text">NATIONAL SERVICE SCHEME</div>
       <div class="header-text">ST JOSEPH'S UNIVERSITY</div>
-      <div class="header-subtext">PROGRAM OFFICER PORTAL</div>
+      <div class="header-subtext">ADMIN PORTAL</div>
     </div>
     <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
   </div>
 </header>
-   
+
 <div class="nav">
         <div class="ham-menu">
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-            <li><a   href="po_profile.php">Profile</a></li>
-            <li><a   href="po_manage_application.php">Manage Applications</a></li>
-            <li><a class="active" href="po_view_admitted_students.php"> Manage Students</a></li>
-            <li><a  href="po_manage_reports.php">Reports & Registers</a></li>
-            
-            <li><a  href="po_view_events.php"> More</a></li>
+        <li><a  href="manage_applications.php">Manage Applications</a></li>
+            <li><a class="active" href="manage_students.php"> Manage Students</a></li>
+            <li><a href="manage_staff.php"> Manage Staff</a></li>
+            <li><a href="manage_reports.php">Reports & Register</a></li>
+                                    <li><a href="manage_more.php"> More</a></li>
 
-            <li><a href="po_logout.php">Logout</a></li>
+            <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
 
-    <div class="main">
-    <div class="about_main_divide">
-    <div class="about_nav">
-          <ul>
-          <li><a  href="po_view_admitted_students.php">View Admitted Students</a></li>
-            <li><a class="active" href="po_approve_attendance.php">View Attendance</a></li>
-            <li><a  href="po_view_credit_application.php">View Credit Application</a></li>
-          </ul>
-        </div>
+
+
+<div class="main">
+<div class="about_main_divide">
+        <div class="about_nav">
+            <ul>
+                <li><a   href="manage_students.php">Admitted Students</a></li>
+                <li><a class="active" href="admin_approve_attendance.php">Approve Attendance</a></li>
+                <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
+                <li><a  href="view_credit_application.php">Credits Application</a></li>
+                
+                <li><a href="change_student_password.php">Change Student Password</a></li>
+            </ul>
+            </div>
+
         <div class="widget">
             <form method="POST">
             <table class="styled-table">
@@ -157,8 +166,7 @@ if(isset($_POST['approve'])){
                 </tr>
             <?php
           
-            $po_id = $_SESSION['po_id'];
-            $po_unit = $_SESSION['unit'];
+            
             $event_id = intval($_SESSION['att_evt_id']);
             // Create a connection object
             $conn_attendance = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
@@ -169,8 +177,8 @@ if(isset($_POST['approve'])){
             FROM attendance 
             JOIN students ON attendance.register_no = students.user_id
             JOIN events ON attendance.event_id = events.event_id
-            WHERE events.event_id = ? AND students.unit = ? AND attendance.status='PENDING'");
-            $stmt_attendance->bind_param("is", $event_id, $po_unit);
+            WHERE events.event_id = ? AND attendance.status='PO_APPROVED'");
+            $stmt_attendance->bind_param("i", $event_id);
             $stmt_attendance->execute();
             $result = $stmt_attendance->get_result();
 

@@ -201,7 +201,7 @@ $conn->close();
             <select name="new_status">
                 <option value="APPROVED">APPROVED</option>
                 <option value="PENDING">PENDING</option>
-                <option value="PO_APPROVED">PO APPROVED</option>
+                
             </select>
             <button type="submit" name="update_status">Update Status</button>
         </div>

@@ -190,6 +190,8 @@ $conn->close();
         <div class="about_nav">
             <ul>
                 <li><a  class="active" href="manage_students.php">Admitted Students</a></li>
+                <li><a href="admin_approve_attendance.php">Approve Attendance</a></li>
+
                 <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
                 <li><a  href="view_credit_application.php">Credits Application</a></li>
 

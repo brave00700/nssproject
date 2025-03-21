@@ -49,7 +49,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
             <li><a  class="active" href="po_profile.php">Profile</a></li>
             <li><a  href="po_manage_application.php">Manage Applications</a></li>
             <li><a  href="po_view_admitted_students.php"> Manage Students</a></li>
-            <li><a href="po_approve_attendance.php">Attendance</a></li>
+            <li><a  href="po_manage_reports.php">Reports & Registers</a></li>
             
             <li><a  href="po_view_events.php"> More</a></li>
 
@@ -63,7 +63,7 @@ if(!$_SESSION['po_id'] || !$_SESSION['unit']){
         <div class="about_nav">
           <ul>
             <li><a class="active" href="po_profile.php">View Profile</a></li>
-            <li><a href="">Change Password</a></li>
+            <li><a href="po_pass_change.php">Change Password</a></li>
             
           </ul>
         </div>

@@ -115,6 +115,8 @@ $stmt->close();
             
             <ul>
                 <li><a href="manage_students.php">Admitted Students</a></li>
+                <li><a href="admin_approve_attendance.php">Approve Attendance</a></li>
+
                 <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
                 <li><a class="active"  href="view_credit_application.php">Credits Application</a></li>
                 <li><a href="change_student_password.php">Change Student Password</a></li>

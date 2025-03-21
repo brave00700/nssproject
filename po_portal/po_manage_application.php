@@ -246,7 +246,7 @@ select:focus {
             <li><a   href="po_profile.php">Profile</a></li>
             <li><a  class="active" href="po_manage_application.php">Manage Applications</a></li>
             <li><a  href="po_view_admitted_students.php"> Manage Students</a></li>
-            <li><a href="po_approve_attendance.php">Attendance</a></li>
+            <li><a  href="po_manage_reports.php">Reports & Registers</a></li>
             
             <li><a  href="po_view_events.php"> More</a></li>
 

@@ -88,7 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['register_no'])) {
     <title>NSS Admin Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" crossorigin="anonymous" />
     <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="../assets/css/admincss/manage_student.css">
+    <link rel="stylesheet" href="../assets/css/admincss/change_unit.css">
 
         
 
@@ -127,6 +127,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['register_no'])) {
         <div class="about_nav">
             <ul>
                 <li><a  class="active" href="manage_students.php">Admitted Students</a></li>
+                <li><a href="admin_approve_attendance.php">Approve Attendance</a></li>
+
                 <li><a  href="manage_profile_requests.php">Profile Requests</a></li>
                 <li><a  href="view_credit_application.php">Credits Application</a></li>
                 
