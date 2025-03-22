@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Change Password</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../style.css">
     <style>
         input, .label {
             font-size: 1.1rem;
@@ -45,11 +45,7 @@
     </div>
     <ul>
             <li><a  class="active" href="exe_profile.php">Profile</a></li>
-            <li><a  href=".php">###</a></li>
-            <li><a  href=".php"> ### </a></li>
-            <li><a href=".php">###</a></li>
-            
-            <li><a href=".php"> ####</a></li>
+           
             <li><a href="exe_logout.php">Logout</a></li>
         </ul>
 </div>
@@ -115,22 +111,22 @@
                     echo '<p style="color:red; text-align:center;">New passwords do not match</p>';
                 } else {
                     // Create a connection
-                    $conn = new mysqli("localhost", "root", "", "staff_db");
+                    $conn = new mysqli("localhost", "root", "", "nss_db");
                     if ($conn->connect_error) {
                         die("Connection failed: " . $conn->connect_error);
                     }
 
-                    $stmt = $conn->prepare("SELECT Password FROM staff_details WHERE User_id = ?");
+                    $stmt = $conn->prepare("SELECT password FROM staff WHERE user_id = ?");
                     $stmt->bind_param("s", $exec_id);
                     $stmt->execute();
                     $result = $stmt->get_result();
 
                     if ($result->num_rows > 0) {
                         $row = $result->fetch_assoc();
-                        if ($row['Password'] != $old_pass) {
+                        if ($row['password'] != $old_pass) {
                             echo '<p style="color:red; text-align:center;">Incorrect Old Password</p>';
                         } else {
-                            $stmt2 = $conn->prepare("UPDATE staff_details SET Password = ? WHERE User_id = ?");
+                            $stmt2 = $conn->prepare("UPDATE staff SET password = ? WHERE user_id = ?");
                             $stmt2->bind_param("ss", $new_pass, $exec_id);
                             if ($stmt2->execute()) {
                                 echo '<p style="color:green; text-align:center;">Password Updated Successfully</p>';

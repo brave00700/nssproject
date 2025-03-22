@@ -1,11 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Executive Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../style.css">
     <style>
         form {
             background-color: #ffffff;
@@ -113,23 +115,24 @@
             $exec_pass = $_POST['pass'];
 
             // Connect to database
-            $conn = new mysqli("localhost", "root", "", "staff_db");
+            $conn = new mysqli("localhost", "root", "", "nss_db");
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $stmt = $conn->prepare("SELECT User_id, Password, role FROM staff_details WHERE User_id = ?");
+            $stmt = $conn->prepare("SELECT user_id, password, role, unit FROM staff WHERE user_id = ?");
             $stmt->bind_param("s", $exec_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
                 $cred = $result->fetch_assoc();
-                if ($cred['Password'] == $exec_pass) {
+                if ($cred['password'] == $exec_pass) {
                     $_SESSION['exec_id'] = $exec_id;
                     $_SESSION['role'] = $cred['role'];
                     $_SESSION['last_seen'] = time();
-                    $_SESSION['timeout'] = 180;
+                    $_SESSION['timeout'] = 18000;
+                    $_SESSION['unit'] = $cred['unit'];
 
                     header("Location: exe_profile.php");
                     exit();

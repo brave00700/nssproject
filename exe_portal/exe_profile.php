@@ -1,38 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Executive Profile</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-<body>
-<div class="logo-container">
-    <img class="sjulogo" src="../sjulogo.png" alt="sjulogo" />
-    <h1>  <b style="font-size: 2.9rem;">National Service Scheme</b> <br>
-        <div style="font-size: 1.5rem;color: black;">St Joseph's University, Bengaluru. <br>
-            <b style="font-size: 1.3rem">Executive Portal</b><br>
-        </h1>
-    <img class="nsslogo" src="../nss_logo.png" alt="logo" />
-</div>
-
-<div class="nav">
-    <div class="ham-menu">
-        <a><i class="fa-solid fa-bars ham-icon"></i></a>
-    </div>
-    
-    <ul>
-            <li><a  class="active" href="exe_profile.php">Profile</a></li>
-            <li><a  href=".php">###</a></li>
-            <li><a  href=".php"> ### </a></li>
-            <li><a href=".php">###</a></li>
-            
-            <li><a href=".php"> ####</a></li>
-            <li><a href="exe_logout.php">Logout</a></li>
-        </ul>
-    
-</div>
+<?php 
+    include "exe_header.php"
+?>
 
 <div class="main">
     <div class="about_main_divide">
@@ -40,7 +8,7 @@
             <ul>
                 <li><a class="active" href="exec_profile.php">View Profile</a></li>
                 <li><a href="exe_pass_change.php">Change Password</a></li>
-                
+                <li><a href="exe_logout.php">Logout</a></li>
             </ul>
         </div>
         <div class="widget">
@@ -66,32 +34,32 @@
             $exec_id = $_SESSION['exec_id'];
 
             // Create a connection
-            $conn = new mysqli("localhost", "root", "", "staff_db");
+            $conn = new mysqli("localhost", "root", "", "nss_db");
             if ($conn->connect_error) {
                 die("Connection failed: " . $conn->connect_error);
             }
 
-            $stmt = $conn->prepare("SELECT Name, Register_no, Phone, Email, DoB, Gender, Address, role, ProfilePhoto, Unit FROM staff_details WHERE User_id = ?");
+            $stmt = $conn->prepare("SELECT name, user_id, phone, email, dob, gender, address, role, profile_photo, unit FROM staff WHERE user_id = ?");
             $stmt->bind_param("s", $exec_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
-                $photoPath = $row['ProfilePhoto'];
+                $photoPath = $row['profile_photo'];
 
                 echo "<table>
                         <tr>
                             <td>Profile</td>
-                            <td><img src=\"../$photoPath\" style=\"width: 50px; height: 50px;\"></td>
+                            <td><img src=\"./$photoPath\" style=\"width: 50px; height: 50px;\"></td>
                         </tr>
                         <tr>
                             <td>Register No</td>
-                            <td>{$row['Register_no']}</td>
+                            <td>{$row['user_id']}</td>
                         </tr>
                         <tr>
                             <td>Name</td>
-                            <td>{$row['Name']}</td>
+                            <td>{$row['name']}</td>
                         </tr>
                         <tr>
                             <td>Role</td>
@@ -99,27 +67,27 @@
                         </tr>
                         <tr>
                             <td>Unit</td>
-                            <td>{$row['Unit']}</td>
+                            <td>{$row['unit']}</td>
                         </tr>
                         <tr>
                             <td>Date of Birth</td>
-                            <td>{$row['DoB']}</td>
+                            <td>{$row['dob']}</td>
                         </tr>
                         <tr>
                             <td>Gender</td>
-                            <td>{$row['Gender']}</td>
+                            <td>{$row['gender']}</td>
                         </tr>
                         <tr>
                             <td>Phone</td>
-                            <td>{$row['Phone']}</td>
+                            <td>{$row['phone']}</td>
                         </tr>
                         <tr>
                             <td>Email</td>
-                            <td>{$row['Email']}</td>
+                            <td>{$row['email']}</td>
                         </tr>
                         <tr>
                             <td>Address</td>
-                            <td>{$row['Address']}</td>
+                            <td>{$row['address']}</td>
                         </tr>
                     </table>";
             } else {
