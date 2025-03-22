@@ -12,6 +12,8 @@ $DB_NAME = getenv("DB_NAME");
 
 session_start();
 
+$event_id = intval($_SESSION['att_evt_id']);
+
 // Ensure the admin is logged in
 if (!isset($_SESSION['admin_id'])) {
     header("Location: ../login.html");
@@ -167,7 +169,7 @@ if(isset($_POST['approve'])){
             <?php
           
             
-            $event_id = intval($_SESSION['att_evt_id']);
+            
             // Create a connection object
             $conn_attendance = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
             if($conn_attendance->connect_error){

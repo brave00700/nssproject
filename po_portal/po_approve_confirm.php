@@ -16,6 +16,9 @@ session_start();
 if(!$_SESSION['po_id'] || !$_SESSION['unit']){
     header("Location: ../login.html");
 }      
+$po_id = $_SESSION['po_id'];
+            $po_unit = $_SESSION['unit'];
+            $event_id = intval($_SESSION['att_evt_id']);
 if(isset($_POST['approve'])){
         $selectedStudents = $_POST['selected_students'] ?? [];
         if (empty($selectedStudents)) {
@@ -157,9 +160,7 @@ if(isset($_POST['approve'])){
                 </tr>
             <?php
           
-            $po_id = $_SESSION['po_id'];
-            $po_unit = $_SESSION['unit'];
-            $event_id = intval($_SESSION['att_evt_id']);
+            
             // Create a connection object
             $conn_attendance = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
             if($conn_attendance->connect_error){

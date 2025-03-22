@@ -236,7 +236,6 @@ if(isset($_POST['att_submit'])){
         // Define the upload directory
         $uploadDir = "/assets/uploads/attendance/{$a_event_name}/";
         if (!is_dir(".." . $uploadDir)) {
-            echo "<script>alert('Directory');</script>";
             mkdir(".." . $uploadDir, 0777, true); // Create directory if not exists
         }
 
