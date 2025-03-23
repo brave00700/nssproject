@@ -1,0 +1,9 @@
+# Block execution of PHP files
+<FilesMatch "\.(php|php\d+)$">
+    Deny from all
+</FilesMatch>
+
+# Block .htaccess file uploads (attackers can't override security)
+<Files ".htaccess">
+    Deny from all
+</Files>

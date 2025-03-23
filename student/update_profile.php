@@ -135,17 +135,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_request'])) {
             $fileSize = $_FILES['new_value']['size'];
             $fileType = mime_content_type($fileTmpPath);
             $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-            $maxFileSize = 2 * 1024 * 1024; //2MB
+            $maxFileSize = 512 * 1024; //2MB
 
             // Validate file size
             if($fileSize > $maxFileSize) {
-                $errorMessage = 'Error: File size exceeds 2MB limit.';
+                $errorMessage = 'Error: File size exceeds 512KB limit.';
                 exit();
             }
 
             // Validate file type
             if(!in_array($fileType, $allowedFileTypes)) {
                 $errorMessage = 'Error: Invalid file type. Only JPEG, PNG and JPG are allowed.';
+                exit();
             }
 
             // Define the upload directory

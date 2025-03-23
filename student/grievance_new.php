@@ -145,15 +145,6 @@ select:hover, select:focus {
                     <option value="OTHER">Other</option>
                 </select>
             </div>
-            <div class="input-group" style="width: 100%">
-                <label for="type">Send To:</label>
-                <select id="type" name="send_to" required>
-                    <option value="" selected hidden>Select</option>
-                    <option value="PO" >Program Officer</option>
-                    <option value="ADMIN">Program Coordinator</option>
-                    <option value="BOTH">Both</option>
-                </select>
-            </div>
             </div>
             <div class="input-group">
                 <label for="subject">Subject:</label>
@@ -166,7 +157,7 @@ select:hover, select:focus {
         
         </div>
         <div class="input-group" style="width: 100%; border: 1px solid #CCC; margin-top: 10px; border-radius: 3px; padding: 3px">
-            <label>Upload Photo/PDF :</label>
+            <label>Upload Photo/PDF (Max. Size = 512KB):</label>
             <input type="file" name="uploadpf" id="uploadpf" accept="image/jpeg, image/png, image/jpg, application/pdf"/>
         </div>
         <button type="submit" name="submit" id="send">Send</button>
@@ -213,7 +204,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $subject = $_POST['subject'];
     $body = $_POST['body'];
     $type = $_POST['grievance_type'];
-    $send_to = $_POST['send_to'];
     $proof = null;
 
     // Handle file upload
@@ -224,11 +214,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $fileSize = $_FILES['uploadpf']['size'];
         $fileType = mime_content_type($fileTmpPath);
         $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
-        $maxFileSize = 2 * 1024 * 1024; // 2MB
+        $maxFileSize = 1024 * 512; // 512KB
 
         // Validate file size
         if ($fileSize > $maxFileSize) {
-            echo "<script>alert('Error: File size exceeds 2MB limit.');</script>";
+            echo "<script>alert('Error: File size exceeds 512KB limit.');</script>";
             exit;
         }
 
@@ -260,8 +250,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     // Create a connection object 
     $conn = getDatabaseConnection();
     $created_at = date('Y-m-d H:i:s');
-    $stmt = $conn->prepare("INSERT INTO grievance (student_id, unit, activity_type, subject, body, send_to, photo_pdf_path, created_at) VALUES(?,?,?,?,?,?,?,?);");
-    $stmt->bind_param("ssssssss", $reg, $unit, $type, $subject, $body, $send_to, $proof, $created_at);
+    $stmt = $conn->prepare("INSERT INTO grievance (student_id, unit, activity_type, subject, body, photo_pdf_path, created_at) VALUES(?,?,?,?,?,?,?);");
+    $stmt->bind_param("sssssss", $reg, $unit, $type, $subject, $body, $proof, $created_at);
     if($stmt->execute()){
         echo "<script>alert('Grievance sent successfully');</script>";
     }else{

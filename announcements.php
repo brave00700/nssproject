@@ -80,7 +80,7 @@ $result_student = $stmt->get_result();
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="student/login.php" target="_blank">Student Login</a>
                 <a class="dropdown-item" href="exe_portal/exe_login.php" target="_blank">Executive Login</a>
-                <a class="dropdown-item" href="po_portal/po_login.php" target="_blank">Program Officer Login</a>
+                <a class="dropdown-item" href="po_portal/po_login.php" target="_blank">Programme Officer Login</a>
                 <a class="dropdown-item" href="admin_portal/admin_login.php" target="_blank">Admin Login</a>
               </div>
             </div>

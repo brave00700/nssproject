@@ -219,11 +219,11 @@ if(isset($_POST['att_submit'])){
         $fileSize = $_FILES['photo']['size'];
         $fileType = mime_content_type($fileTmpPath);
         $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        $maxFileSize = 2 * 1024 * 1024; // 2MB
+        $maxFileSize = 512 * 1024; // 512KB
 
         // Validate file size
         if ($fileSize > $maxFileSize) {
-            echo "<script>alert('Error: File size exceeds 2MB limit.');</script>";
+            echo "<script>alert('Error: File size exceeds 512KB limit.');</script>";
             exit;
         }
 

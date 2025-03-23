@@ -32,6 +32,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $age = $today->diff($dob_date)->y; // Calculate age from DOB
 
     $category = $_POST['category'];
+    if ($category === 'other' && !empty($_POST['otherCategory'])) {
+        $category = $_POST['otherCategory'];
+    }
+    
+    $religion = $_POST['religion'];
+    if ($religion === 'other' && !empty($_POST['otherReligion'])) {
+        $religion = $_POST['otherReligion'];
+    }
+
     $bloodgroup = $_POST['bloodgroup'];
     $shift = $_POST['shift'];
     $gender = $_POST['gender'];
@@ -72,18 +81,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fileName = $_FILES['profile_photo']['name'];
         $fileSize = $_FILES['profile_photo']['size'];
         $fileType = mime_content_type($fileTmpPath);
-        $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        $maxFileSize = 2 * 1024 * 1024; // 2MB
+        $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+        $maxFileSize = 512 * 1024; // 512kb
 
         // Validate file size
         if ($fileSize > $maxFileSize) {
-            echo "<script>alert('Error: File size exceeds 2MB limit.');</script>";
+            echo "<script>alert('Error: File size exceeds 512kb limit.');</script>";
             exit;
         }
 
         // Validate file type
         if (!in_array($fileType, $allowedFileTypes)) {
-            echo "<script>alert('Error: Invalid file type. Only JPEG, PNG, JPG are allowed.');</script>";
+            echo "<script>alert('Error: Invalid file type. Only JPEG, PNG, JPG and WEBP are allowed.');</script>";
             exit;
         }
 
@@ -107,11 +116,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Prepare SQL statement to insert data
     $sql = "INSERT INTO applications 
-            (Name, Register_no, Phone, Email, DoB, Age, Bloodgroup, Shift, Gender, Course, Address, Mother_name, Father_name, Category,  profile_photo) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+            (Name, Register_no, Phone, Email, DoB, Age, Bloodgroup, Shift, Gender, Course, Address, Mother_name, Father_name, Category, religion, profile_photo) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
-        "sssssisssssssss",
+        "sssssissssssssss",
         $name,
         $register_no,
         $phone,
@@ -126,6 +135,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mother_name,
         $father_name,
         $category,
+        $religion,
         $profilePhoto
     );
 
@@ -193,7 +203,7 @@ $conn->close();
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="student/login.php" target="_blank">Student Login</a>
                 <a class="dropdown-item" href="exe_portal/exe_login.php" target="_blank">Executive Login</a>
-                <a class="dropdown-item" href="po_portal/po_login.php" target="_blank">Program Officer Login</a>
+                <a class="dropdown-item" href="po_portal/po_login.php" target="_blank">Programme Officer Login</a>
                 <a class="dropdown-item" href="admin_portal/admin_login.php" target="_blank">Admin Login</a>
               </div>
             </div>
@@ -247,16 +257,45 @@ $conn->close();
                 <option value="OTHER">Other</option>
             </select>
             </div>
-            <div class="mb-3">
-                <label for="category" class="form-label">Category</label>
-            <select class="form-select" id="category"  name="category" aria-label="Default select example">
-                <option selected disabled>Select Category</option>
-                <option value="general">General</option>
-                <option value="obc">OBC</option>
-                <option value="sc">SC</option>
-                <option value="st">ST</option>
-            </select>
-            </div>
+            
+    
+
+<div class="mb-3">
+    <label for="religion" class="form-label">Religion</label>
+    <select class="form-select" id="religion" name="religion" onchange="toggleOtherField('religion')" aria-label="Select Religion">
+        <option selected disabled>Select Religion</option>
+        <option value="hinduism">Hinduism</option>
+        <option value="islam">Islam</option>
+        <option value="christianity">Christianity</option>
+        <option value="sikhism">Sikhism</option>
+        <option value="buddhism">Buddhism</option>
+        <option value="jainism">Jainism</option>
+        <option value="other">Other</option>
+    </select>
+</div>
+
+<div class="mb-3" id="other_religion_field" style="display: none;">
+    <label for="otherReligion" class="form-label">Specify Religion:</label>
+    <input type="text" class="form-control" id="otherReligion" name="otherReligion">
+</div>
+
+<div class="mb-3">
+    <label for="category" class="form-label">Category</label>
+    <select class="form-select" id="category" name="category" onchange="toggleOtherField('category')" aria-label="Default select example">
+        <option selected disabled>Select Category</option>
+        <option value="general">General</option>
+        <option value="obc">OBC</option>
+        <option value="sc">SC</option>
+        <option value="st">ST</option>
+        <option value="other">Other</option>
+    </select>
+</div>
+
+<div class="mb-3" id="other_category_field" style="display: none;">
+    <label for="otherCategory" class="form-label">Specify Category:</label>
+    <input type="text" class="form-control" id="otherCategory" name="otherCategory">
+</div>
+
             <div class="mb-3">
                 <label for="shift" class="form-label">Shift</label>
             <select class="form-select" id="shift" name="shift"  aria-label="Default select example">
@@ -289,7 +328,7 @@ $conn->close();
                 <input type="text" class="form-control" name="course" id="course" placeholder="BCA">
             </div>
             <div class="mb-3">
-                <label for="profile_photo" class="form-label">Profile Photo (JPEG, PNG, JPG, max size: 2MB):</label>
+                <label for="profile_photo" class="form-label">Photo (JPEG, PNG, JPG, max size: 512KB):</label>
                 <input type="file" class="form-control"  id="profile_photo" name="profile_photo" accept="image/jpeg, image/png, image/jpg" required  />
             </div>
             <div class="mb-3">
@@ -304,6 +343,7 @@ $conn->close();
     <script>
         function validateForm() {
             const nameRegex = /^[A-Za-z\s]+$/;
+            const otherRegex = /^[A-Za-z\s]{1,15}$/;
             const phoneRegex = /^[0-9]{10}$/;
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             
@@ -357,6 +397,35 @@ $conn->close();
                 return false;
             }
 
+            // Validate fields that may have "other" option
+            const fieldsToValidate = [
+                { name: "category", otherName: "otherCategory", label: "Category" },
+                { name: "religion", otherName: "otherReligion", label: "Religion" }
+            ];
+            
+            for (const field of fieldsToValidate) {
+                const value = document.getElementById(field.name).value;
+                
+                if (value === "" || value === null) {
+                    alert(`Please select your ${field.label.toLowerCase()}.`);
+                    return false;
+                }
+                
+                if (value === "other") {
+                    const otherValue = document.getElementById(field.otherName).value.trim();
+                    
+                    if (otherValue === "") {
+                        alert(`Please specify your ${field.label.toLowerCase()}.`);
+                        return false;
+                    }
+                    
+                    if (!otherRegex.test(otherValue)) {
+                        alert(`${field.label} should contain only letters and spaces, with maximum of 15 characters.`);
+                        return false;
+                    }
+                }
+            }
+
             return true;
         }
 
@@ -372,6 +441,18 @@ $conn->close();
             }
 
             document.getElementById("age").value = age;
+        }
+        function toggleOtherField(fieldName) {
+            const selectField = document.getElementById(fieldName);
+            const otherField = document.getElementById(`other_${fieldName}_field`);
+            const otherInput = document.getElementById(`other${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}`);
+            
+            if (selectField.value === "other") {
+                otherField.style.display = "block";
+            } else {
+                otherField.style.display = "none";
+                otherInput.value = "";
+            }
         }
     </script>
   <script src="script.js"></script>

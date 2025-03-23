@@ -141,7 +141,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $pdf->Cell(130, 10, 'Date: ' . date('d / m / Y'), 0, 0);
 
         $pdf->SetXY(-88, -25);
-        $pdf->Cell(130, 10, 'Signature of Program Officer', 0, 0);
+        $pdf->Cell(130, 10, 'Signature of Programme Officer', 0, 0);
 
         // Output PDF
         $pdf->Output('certificate.pdf', 'I'); 
@@ -323,7 +323,7 @@ button.generate:hover {
             }
             else{
                 // Show hours after form submission
-                if($status == 'PO_APPROVED') $status = 'Approved by Program Officer';
+                if($status == 'PO_APPROVED') $status = 'Approved by Programme Officer';
                 echo "<p>Working Hours: " . $hours . " hours.</p>
                 <p>Credits Claimable: " . $credits . "</p>
                 <p>Approval Status: " . $status . "</p>";
