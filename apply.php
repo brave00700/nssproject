@@ -230,7 +230,7 @@ $conn->close();
             </div>
             <div class="mb-3">
             <label for="name" class="form-label">Father's Name:</label>
-            <input type="text" class="form-control" id="father_name" name="father_name" required placeholder="Angel">
+            <input type="text" class="form-control" id="father_name" name="father_name" required >
             </div>
             <div class="mb-3">
             <label for="phone" class="form-label">Phone Number:</label>

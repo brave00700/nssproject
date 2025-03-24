@@ -175,6 +175,7 @@ $conn->close();
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Address</th>
+                        <th>Religion</th>
                         <th>Category</th>
                         <th>Bloodgroup</th>
                     </tr>
@@ -203,6 +204,7 @@ $conn->close();
                             <td><?= htmlspecialchars($row['age']) ?></td>
                             <td><?= htmlspecialchars($row['gender']) ?></td>
                             <td><?= htmlspecialchars($row['address']) ?></td>
+                            <td><?= htmlspecialchars($row['religion']) ?></td>
                             <td><?= htmlspecialchars($row['category']) ?></td>
                             <td><?= htmlspecialchars($row['bloodgroup']) ?></td>
                         </tr>

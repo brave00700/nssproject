@@ -37,9 +37,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['resolve_grievance'])) 
     $stmt_update->close();
 }
 
-// Fetch grievances from the database
+// Fetch grievances without the 'send_to' filter
 $grievances = [];
-$sql = "SELECT grievance_id, unit, activity_type, subject, body, send_to, photo_pdf_path, status, comment FROM grievance WHERE send_to IN ('BOTH', 'ADMIN')";
+$sql = "SELECT grievance_id, unit, activity_type, subject, body, photo_pdf_path, status, comment FROM grievance";
 $result = $conn->query($sql);
 while ($row = $result->fetch_assoc()) {
     $grievances[] = $row;
@@ -47,6 +47,7 @@ while ($row = $result->fetch_assoc()) {
 
 $conn->close();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -226,7 +227,7 @@ table th {
                     <th>Activity Type</th>
                     <th>Subject</th>
                     <th>Description</th>
-                    <th>Send To</th>
+                    
                     <th>Status</th>
                     <th>Comment</th>
                     <th>Resolve</th>
@@ -240,7 +241,7 @@ table th {
                         <td><?= htmlspecialchars($row['activity_type']) ?></td>
                         <td><?= htmlspecialchars($row['subject']) ?></td>
                         <td><?= htmlspecialchars($row['body']) ?></td>
-                        <td><?= htmlspecialchars($row['send_to']) ?></td>
+                        
                         <td><?= htmlspecialchars($row['status']) ?></td>
                         <td><?= htmlspecialchars($row['comment'] ?? 'No comment yet') ?></td>
                         <td><button class="resolve-btn" data-id="<?= $row['grievance_id'] ?>">Resolve</button></td>

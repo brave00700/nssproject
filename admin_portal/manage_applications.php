@@ -183,11 +183,11 @@ if(!$_SESSION['admin_id']){
                     $student = $result->fetch_assoc();
                     $hashedPassword = password_hash($student['register_no'], PASSWORD_DEFAULT);
                     $insertSQL = "INSERT INTO students
-                                  (register_no, name, father_name, mother_name, phone, email, age, dob, gender, address, category, bloodgroup, shift, course, profile_photo, user_id, password, unit) 
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                                  (register_no, name, father_name, mother_name, phone, email, age, dob, gender, address, category, bloodgroup, shift, course, profile_photo, religion,user_id, password, unit) 
+                                  VALUES (?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $insertStmt = $conn->prepare($insertSQL);
                     $insertStmt->bind_param(
-                        "ssssssissssssssssi",
+                        "ssssssisssssssssssi",
                         $student['register_no'],
                         $student['name'],
                         $student['father_name'],
@@ -203,6 +203,7 @@ if(!$_SESSION['admin_id']){
                         $student['shift'],
                         $student['course'],
                         $student['profile_photo'],
+                        $student['religion'],
                         $student['register_no'], 
                         $hashedPassword, 
                         $commonUnit

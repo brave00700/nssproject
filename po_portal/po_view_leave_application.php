@@ -193,7 +193,7 @@ table th {
             <ul>
             <li><a  href="po_view_events.php"> View Events</a></li>
             <li><a class="active" href="po_view_leave_application.php"> View Leave Application</a></li>
-            <li><a   href="po_view_grievance.php">View Grievance</a></li>
+           
 
             </ul>
         </div>
