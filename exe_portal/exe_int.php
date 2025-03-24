@@ -1,5 +1,41 @@
 <?php 
-    include "exe_header.php"
+    session_start();
+    include "exe_header.php";
+
+    require_once __DIR__ . "/../config_db.php";
+
+    // Load the environment variables
+    loadEnv(__DIR__ . '/../.env');
+
+    // Fetch environment variables
+    $DB_HOST = getenv("DB_HOST");
+    $DB_USER = getenv("DB_USER");
+    $DB_PASS = getenv("DB_PASS");
+    $DB_NAME = getenv("DB_NAME");
+
+    if (isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']) {
+        session_unset();
+        session_destroy();
+        header("Location: exec_login.php");
+        exit();
+    }
+    $_SESSION['last_seen'] = time();
+    if (!isset($_SESSION['exec_id'])) {
+        header("Location: exec_login.php");
+        exit();
+    }
+
+    $exec_id = $_SESSION['exec_id'];
+    $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
+    $type = isset($_GET['type']) ? $_GET['type'] : 'housekeeping';
+    $stmt = $conn->prepare("SELECT * FROM inventory WHERE stock_type = ?");
+    $stmt->bind_param("s", $type);
+    $stmt->execute();
+    $result = $stmt->get_result();
 ?>
 
 
@@ -33,30 +69,8 @@
         </div>
         <div class="widget">
             <?php
-            session_start();
-            if (isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']) {
-                session_unset();
-                session_destroy();
-                header("Location: exec_login.php");
-                exit();
-            }
-            $_SESSION['last_seen'] = time();
-            if (!isset($_SESSION['exec_id'])) {
-                header("Location: exec_login.php");
-                exit();
-            }
-
-            $exec_id = $_SESSION['exec_id'];
-            $conn = new mysqli("localhost", "root", "", "nss_db");
-            if ($conn->connect_error) {
-                die("Connection failed: " . $conn->connect_error);
-            }
-
-            $type = isset($_GET['type']) ? $_GET['type'] : 'housekeeping';
-            $stmt = $conn->prepare("SELECT * FROM inventory WHERE stock_type = ?");
-            $stmt->bind_param("s", $type);
-            $stmt->execute();
-            $result = $stmt->get_result();
+            
+            
 
             echo "<h2>Viewing $type Inventory</h2>";
             if ($result->num_rows > 0) {

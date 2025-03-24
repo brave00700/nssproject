@@ -126,7 +126,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['event_submit'])){
                 </tr>
             <?php
             
-            $stmt3 = $conn->prepare("SELECT event_name, event_date, event_duration FROM events WHERE event_unit = 'All' OR event_unit = ?");
+            $stmt3 = $conn->prepare("SELECT event_name, event_id, event_date, event_duration FROM events WHERE event_unit = 'All' OR event_unit = ?");
             $stmt3->bind_param("s", $_SESSION['unit']);
             $stmt3->execute();
             $result_event = $stmt3->get_result();
@@ -162,7 +162,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['event_submit'])){
                             <td>{$row['event_date']}</td>
                             <td>{$row['event_duration']}</td>
                             <td><button name='event_submit' type='submit'>Apply</button></td>
-                            <input type='hidden' name='event_name' value='{$row['event_name']}'>
+                            <input type='hidden' name='event_name' value='{$row['event_id']}'>
                         </tr>";
                         $inc++;
                     }

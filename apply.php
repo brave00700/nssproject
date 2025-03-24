@@ -264,13 +264,13 @@ $conn->close();
     <label for="religion" class="form-label">Religion</label>
     <select class="form-select" id="religion" name="religion" onchange="toggleOtherField('religion')" aria-label="Select Religion">
         <option selected disabled>Select Religion</option>
-        <option value="hinduism">Hinduism</option>
-        <option value="islam">Islam</option>
-        <option value="christianity">Christianity</option>
-        <option value="sikhism">Sikhism</option>
-        <option value="buddhism">Buddhism</option>
-        <option value="jainism">Jainism</option>
-        <option value="other">Other</option>
+        <option value="Hinduism">Hinduism</option>
+        <option value="Islam">Islam</option>
+        <option value="Christianity">Christianity</option>
+        <option value="Sikhism">Sikhism</option>
+        <option value="Buddhism">Buddhism</option>
+        <option value="Jainism">Jainism</option>
+        <option value="Other">Other</option>
     </select>
 </div>
 
@@ -283,11 +283,11 @@ $conn->close();
     <label for="category" class="form-label">Category</label>
     <select class="form-select" id="category" name="category" onchange="toggleOtherField('category')" aria-label="Default select example">
         <option selected disabled>Select Category</option>
-        <option value="general">General</option>
-        <option value="obc">OBC</option>
-        <option value="sc">SC</option>
-        <option value="st">ST</option>
-        <option value="other">Other</option>
+        <option value="General">General</option>
+        <option value="OBC">OBC</option>
+        <option value="SC">SC</option>
+        <option value="ST">ST</option>
+        <option value="Other">Other</option>
     </select>
 </div>
 
@@ -411,7 +411,7 @@ $conn->close();
                     return false;
                 }
                 
-                if (value === "other") {
+                if (value === "Other") {
                     const otherValue = document.getElementById(field.otherName).value.trim();
                     
                     if (otherValue === "") {
@@ -447,7 +447,7 @@ $conn->close();
             const otherField = document.getElementById(`other_${fieldName}_field`);
             const otherInput = document.getElementById(`other${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}`);
             
-            if (selectField.value === "other") {
+            if (selectField.value === "Other") {
                 otherField.style.display = "block";
             } else {
                 otherField.style.display = "none";

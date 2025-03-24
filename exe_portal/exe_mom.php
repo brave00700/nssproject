@@ -2,6 +2,17 @@
     include "exe_header.php";
     session_start();
 
+    require_once __DIR__ . "/../config_db.php";
+
+    // Load the environment variables
+    loadEnv(__DIR__ . '/../.env');
+
+    // Fetch environment variables
+    $DB_HOST = getenv("DB_HOST");
+    $DB_USER = getenv("DB_USER");
+    $DB_PASS = getenv("DB_PASS");
+    $DB_NAME = getenv("DB_NAME");
+
     // Checking session timeout
     if (isset($_SESSION['last_seen']) && (time() - $_SESSION['last_seen']) > $_SESSION['timeout']) {
         session_unset();
@@ -21,7 +32,7 @@
     $unit = $_SESSION['unit'];
 
     // Database connection
-    $conn = new mysqli("localhost", "root", "", "nss_db");
+    $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }

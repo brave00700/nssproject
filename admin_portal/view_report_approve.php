@@ -79,12 +79,11 @@ $stmt->close();
 
 // Handle update request
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update'])) {
-    $new_credits = $_POST['credits'];
     $new_status = $_POST['status'];
 
-    $updateQuery = "UPDATE credits SET credits = ?, status = ? WHERE credit_id = ?";
+    $updateQuery = "UPDATE credits SET status = ? WHERE credit_id = ?";
     $stmt = $conn->prepare($updateQuery);
-    $stmt->bind_param("ssi", $new_credits, $new_status, $credit_id);
+    $stmt->bind_param("si", $new_status, $credit_id);
     
     if ($stmt->execute()) {
         echo "<script>alert('Credit details updated successfully.'); window.location.href='view_credit_application.php';</script>";

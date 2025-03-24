@@ -1,5 +1,17 @@
 <?php
 session_start();
+
+require_once __DIR__ . "/../config_db.php";
+
+// Load the environment variables
+loadEnv(__DIR__ . '/../.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+
 if (!isset($_SESSION['exec_id'])) {
     header("Location: exec_login.php");
     exit();
@@ -9,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['report'])) {
     $event_id = $_POST['event_id'];
     $exec_id = $_SESSION['exec_id'];
     
-    $conn = new mysqli("localhost", "root", "", "nss_db");
+    $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }

@@ -170,7 +170,7 @@ if(isset($_POST['approve'])){
             FROM attendance 
             JOIN students ON attendance.register_no = students.user_id
             JOIN events ON attendance.event_id = events.event_id
-            WHERE events.event_id = ? AND students.unit = ? AND attendance.status='PENDING'");
+            WHERE events.event_id = ? AND (events.event_unit = ? OR events.event_unit = 'All') AND attendance.status='PENDING'");
             $stmt_attendance->bind_param("is", $event_id, $po_unit);
             $stmt_attendance->execute();
             $result = $stmt_attendance->get_result();

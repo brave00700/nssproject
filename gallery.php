@@ -90,7 +90,7 @@ $result_2 = $stmt1->get_result();
             echo "<div class='col-md-4 mb-2'>
             <div class='card' style='height: 250px; border-radius: 0'>
                <div class='card-header text-white' style='background-color: var(--primary_blue); border-radius: 0'>" . $row["event_date"] . " - ". $row["name"] . "</div>
-                  <div class='card-body' style='background: url(". $row["photo_path"] .") center/cover;'></div>
+                  <div class='card-body' style='background: url(.". $row["photo_path"] .") center/cover;'></div>
               </div>
         </div>";
           }

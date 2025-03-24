@@ -6,6 +6,7 @@
 /assets/uploads/event_posters/*
 /assets/uploads/profile_photo/*
 /assets/uploads/student_req/*
+/assets/uploads/reports/*
 
 # Allow specific files
 !/assets/carousel/

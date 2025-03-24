@@ -45,7 +45,7 @@ $count = 1;
           $sliders .= "<div class='carousel-item active'>
           <img
             class='d-block w-100'
-            src='{$row3["photo_path"]}'
+            src='.{$row3["photo_path"]}'
             alt='Image {$count}'
           />
         </div>";
@@ -60,7 +60,7 @@ $count = 1;
         $sliders .= "<div class='carousel-item'>
         <img
           class='d-block w-100'
-          src='{$row3["photo_path"]}'
+          src='.{$row3["photo_path"]}'
           alt='Image {$count}'
             />
           </div>";
@@ -225,7 +225,7 @@ $count = 1;
                       <div class="row" style="height: 100%;">
                         <?php
                           while($row2 = $result_2->fetch_assoc()){
-                            echo "<div class='col-4' ><img src='{$row2["photo_path"]}' class='img-fluid rounded' style='object-fit: cover; height: 100%;' alt='Image 1'></div>";
+                            echo "<div class='col-4' ><img src='.{$row2["photo_path"]}' class='img-fluid rounded' style='object-fit: cover; height: 100%;' alt='Image 1'></div>";
                           }
                         ?>
                       </div>

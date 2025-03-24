@@ -1,4 +1,15 @@
 <?php
+require_once __DIR__ . "/../config_db.php";
+
+// Load the environment variables
+loadEnv(__DIR__ . '/../.env');
+
+// Fetch environment variables
+$DB_HOST = getenv("DB_HOST");
+$DB_USER = getenv("DB_USER");
+$DB_PASS = getenv("DB_PASS");
+$DB_NAME = getenv("DB_NAME");
+
     include "exe_header.php";
     session_start();
 
@@ -7,7 +18,7 @@
         exit();
     }
 
-    $conn = new mysqli("localhost", "root", "", "nss_db");
+    $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
