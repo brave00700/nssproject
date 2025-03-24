@@ -17,6 +17,7 @@ $updateableFields = [
     'phone' => 'Phone',
     'email' => 'Email',
     'dob' => 'Date of Birth',
+    'religion' => 'Religion',
     'gender' => 'Gender',
     'address' => 'Address',
     'category' => 'Category',
@@ -24,9 +25,6 @@ $updateableFields = [
     'course' => 'Course',
     'shift' => 'Shift',
     'profile_photo' => 'Profile Photo'
-];
-$categoryList = [
-    'GENERAL', 'OBC', 'SC', 'ST'
 ];
 $bloodgroupList = [
     'B+', 'B-', 'A+', 'A-', 'AB+', 'AB-', 'O-', 'O+'
@@ -111,8 +109,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_request'])) {
             $errorMessage = "Please enter a reasonable date of birth (between 16 and 50 years old).";
             $isValid = false;
         }
-    } else if ($field == 'category' && !in_array($newValue, $categoryList)) {
-        $errorMessage = "Invalid Category. Allowed values: " . implode(", ",$categoryList);
+    } else if ($field == 'category' && !preg_match('/^[A-Za-z ]{1,15}$/', $newValue)) {
+        $errorMessage = "Invalid Category length. Max length - 15";
+        $isValid = false;
+    } else if ($field == 'religion' && !preg_match('/^[A-Za-z ]{1,15}$/', $newValue)) {
+        $errorMessage = "Invalid Religion length. Max length - 15.";
         $isValid = false;
     } else if ($field == 'bloodgroup' && !in_array($newValue, $bloodgroupList)) {
         $errorMessage = "Invalid Bloodgroup. Allowed values: " . implode(", ",$bloodgroupList);
@@ -493,9 +494,9 @@ $allRequests = $allRequestsStmt->get_result();
                     } else if (selectedField === 'name' || selectedField === 'mother_name' || selectedField === 'father_name') {
                         newValueInput.type = 'text';
                         fieldHelp.textContent = `${selectedField.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')} should contain only alphabets from A-Z or a-z`;
-                    } else if (selectedField === 'category') {
+                    } else if (selectedField === 'category' || selectedField == 'religion') {
                         newValueInput.type = 'text';
-                        fieldHelp.textContent = 'Allowed values: <?php echo implode(", ", $categoryList) ?>';
+                        fieldHelp.textContent = 'Max length - 15 characters';
                     } else if (selectedField === 'bloodgroup') {
                         newValueInput.type = 'text';
                         fieldHelp.textContent = 'Allowed values: <?php echo implode(", ", $bloodgroupList) ?>';

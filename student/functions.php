@@ -102,7 +102,7 @@ function loginStudent($userid, $password){
     return $message;
 }
 function getStudentData($conn, $user_id){
-    $stmt = $conn->prepare("SELECT register_no, name, father_name, mother_name, phone, email, dob, gender, category, bloodgroup, shift, course, profile_photo, unit, address FROM students WHERE user_id = ?");
+    $stmt = $conn->prepare("SELECT register_no, name, father_name, mother_name, phone, email, dob, gender, category, bloodgroup, shift, course, profile_photo, unit, address, religion FROM students WHERE user_id = ?");
     $stmt->bind_param("s", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();

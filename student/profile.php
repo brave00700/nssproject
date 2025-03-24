@@ -120,11 +120,11 @@ $result = getStudentData($conn, $reg);
                             <img src="..<?php echo $photoPath; ?>" alt="Profile Picture" class="profile-img">
                             <h2><?php echo $result['name']; ?></h2>
                             <p><strong>Register No:</strong> <?php echo $result['register_no']; ?></p>
+                            <p><strong>Unit:</strong> <?php echo $result['unit']; ?></p>
 
                         </div>
                         
                         <div class="profile-info">
-                            <div><strong>Unit:</strong> <?php echo $result['unit']; ?></div>
                             <div><strong>Shift:</strong> <?php echo $result['shift']; ?></div>
                             <div><strong>Course:</strong> <?php echo $result['course']; ?></div>
                             <div><strong>Phone:</strong> <?php echo $result['phone']; ?></div>
@@ -134,6 +134,7 @@ $result = getStudentData($conn, $reg);
                             <div><strong>Mother's Name:</strong> <?php echo $result['mother_name']; ?></div>
                             <div><strong>Date of Birth:</strong> <?php echo $result['dob']; ?></div>
                             <div><strong>Gender:</strong> <?php echo $result['gender']; ?></div>
+                            <div><strong>Religion:</strong> <?php echo $result['religion']; ?></div>
                             <div><strong>Category:</strong> <?php echo $result['category']; ?></div>
                             <div><strong>Blood Group:</strong> <?php echo $result['bloodgroup']; ?></div>
                         </div>

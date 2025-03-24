@@ -42,6 +42,7 @@ $fieldDisplayNames = [
     'phone' => 'Phone',
     'email' => 'Email',
     'dob' => 'Date of Birth',
+    'religion' => 'Religion',
     'gender' => 'Gender',
     'address' => 'Address',
     'category' => 'Category',
