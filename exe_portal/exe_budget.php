@@ -53,18 +53,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["file"])) {
         echo "<p class='error-msg'>❌ File size should be less than 5MB.</p>";
     } else {
         // Upload directory
-        $upload_dir = "uploads/";
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
+        $upload_dir = "/assets/uploads/budget/";
+        if (!is_dir(".." . $upload_dir)) {
+            mkdir(".." . $upload_dir, 0777, true);
         }
 
         // Save file with a unique name
         $file_path = $upload_dir . uniqid() . "_" . basename($file_name);
-        move_uploaded_file($file_tmp, $file_path);
+        move_uploaded_file($file_tmp, ".." . $file_path);
         
 
         // Store file in database
-        $stmt = $conn->prepare("INSERT INTO budget (event_name, pdf_file, status, uploaded_at,unit) VALUES (?, ?, 'Pending', NOW(), ?)");
+        $stmt = $conn->prepare("INSERT INTO budget (event_name, pdf_file, uploaded_at,unit) VALUES (?, ?, NOW(), ?)");
         $stmt->bind_param("ssi", $event_name, $file_path,$unit);
         
         if ($stmt->execute()) {
@@ -224,7 +224,7 @@ $result = $stmt->get_result();
                     echo "<tr>
                             <td>{$sl}</td>
                             <td class='event-name'>{$row['event_name']}</td>
-                            <td><a href='{$row['pdf_file']}' target='_blank' class='view-btn'>📄 View PDF</a></td>
+                            <td><a href='..{$row['pdf_file']}' target='_blank' class='view-btn'>📄 View PDF</a></td>
                             <td>{$row['status']}</td>
                             <td class='event-date'>{$row['uploaded_at']}</td>
                           </tr>";

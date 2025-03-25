@@ -19,7 +19,12 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 ?>
-
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_id'])){
+    $_SESSION['att_evt_id'] = $_POST['event_id'];
+    header("Location: admin_approve_confirm.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,9 +119,3 @@ if (!isset($_SESSION['admin_id'])) {
 </body>
 </html>
 
-<?php
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['event_id'])){
-    $_SESSION['att_evt_id'] = $_POST['event_id'];
-    header("Location: admin_approve_confirm.php");
-}
-?>

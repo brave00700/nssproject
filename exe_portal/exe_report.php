@@ -41,16 +41,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['report'])) {
     } else {
         // Preserve the original file name
         $new_file_name = basename($file_name); 
-        $target_path = "../assets/uploads/reports/" . $new_file_name;
+        $target_path = "/assets/uploads/reports/" . $new_file_name;
         if (!is_dir("../assets/uploads/reports/")) {
             mkdir("../assets/uploads/reports/", 0777, true); // Create directory if not exists
         }
     
         // Move the uploaded file
-        if (move_uploaded_file($file_tmp, $target_path)) {
+        if (move_uploaded_file($file_tmp, ".." . $target_path)) {
             // Store the original file name in the database
-            $stmt = $conn->prepare("INSERT INTO work_reports (exec_id, wr_file, wr_status, upload_date, unit) VALUES (?, ?, 'Uploaded', NOW(), ?)");
-            $stmt->bind_param("sss", $exec_id, $new_file_name, $unit);
+            $stmt = $conn->prepare("INSERT INTO work_reports (exec_id, wr_file, upload_date, unit) VALUES (?, ?, NOW(), ?)");
+            $stmt->bind_param("sss", $exec_id, $target_path, $unit);
             $stmt->execute();
     
             echo "<p style='color:green;'>Report uploaded successfully.</p>";
@@ -72,7 +72,7 @@ if (isset($_GET['delete'])) {
     
     if ($result->num_rows > 0) {
         $report = $result->fetch_assoc();
-        $file_path = "../assets/uploads/reports/" . $report['wr_file'];
+        $file_path = ".." . $report['wr_file'];
 
         // Delete file from server
         if (file_exists($file_path)) {
@@ -111,9 +111,9 @@ if (isset($_GET['delete'])) {
                 if ($report_result->num_rows > 0) {
                     while ($report = $report_result->fetch_assoc()) {
                         echo "<div class='grid-item'>
-                                <a href='../assets/uploads/reports/" . $report['wr_file'] . "' target='_blank'>
+                                <a href='.." . $report['wr_file'] . "' target='_blank'>
                                     <img src='do_ic.png' alt='Document' class='doc-icon'>
-                                    <p>" . htmlspecialchars($report['wr_file']) . "</p>
+                                    <p>" . htmlspecialchars(basename($report['wr_file'])) . "</p>
                                 </a>
                                 <br>
                                 <a href='?delete=" . $report['wr_id'] . "' class='delete-btn' onclick='return confirm(\"Are you sure you want to delete this report?\");'>Delete</a>

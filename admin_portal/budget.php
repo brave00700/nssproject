@@ -174,7 +174,7 @@ $conn->close();
                         <td><input type="checkbox" name="selected_items[]" value="<?= $row['id'] ?>"></td>
                         <td><?= htmlspecialchars($row['id']) ?></td>
                         <td><?= htmlspecialchars($row['event_name']) ?></td>
-                        <td><a href="../uploads/<?= htmlspecialchars($row['pdf_file']) ?>" target="_blank">View PDF</a></td>
+                        <td><a href="..<?= htmlspecialchars($row['pdf_file']) ?>" target="_blank">View PDF</a></td>
                         <td><?= htmlspecialchars($row['status']) ?></td>
                         <td><?= htmlspecialchars($row['uploaded_at']) ?></td>
                         <td><?= htmlspecialchars($row['Unit']) ?></td>
