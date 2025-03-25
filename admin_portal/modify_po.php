@@ -195,7 +195,7 @@ $conn->close();
             <option value="5" <?= ($staff['unit'] === '5') ? 'selected' : '' ?>>Unit 5</option>
         </select><br><br>
 
-        <label for="profile_photo">Profile Photo:</label>
+        <label for="profile_photo">Profile Photo (Max 500KB):</label>
         <input type="file" id="profile_photo" name="profile_photo"><br><br>
 
         <button type="submit" name="update_details">Update Details</button>
@@ -221,7 +221,22 @@ $conn->close();
             let dob = document.getElementById("dob").value;
             
            
-
+            // Validate Profile Photo size (client-side)
+            const profilePhoto = document.getElementById("profile_photo").files[0];
+            if (profilePhoto) {
+                const maxSize = 500 * 1024; // 500KB in bytes
+                if (profilePhoto.size > maxSize) {
+                    alert("Profile photo must be less than 500KB in size.");
+                    return false;
+                }
+                
+                // Optional: Validate file type
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(profilePhoto.type)) {
+                    alert("Only JPG, PNG, or GIF images are allowed.");
+                    return false;
+                }
+            }
              // Validate Name
             if (!nameRegex.test(name)) {
                 alert("Name should contain only letters and spaces.");

@@ -278,7 +278,7 @@ $conn->close();
                         <option value="5" <?= isset($student['unit']) && $student['unit'] == '5' ? 'selected' : '' ?>>Unit 5</option>
                     </select><br><br>
 
-                    <label for="profile_photo">Profile Photo:</label>
+                    <label for="profile_photo">Profile Photo (Max 500KB):</label>
                     <input type="file" id="profile_photo" name="profile_photo"><br><br>
 
                     <div class="form-buttons">
@@ -340,7 +340,22 @@ $conn->close();
                 alert("Course name should contain only letters and spaces.");
                 return false;
             }
-
+            // Validate Profile Photo size (client-side)
+            const profilePhoto = document.getElementById("profile_photo").files[0];
+            if (profilePhoto) {
+                const maxSize = 500 * 1024; // 500KB in bytes
+                if (profilePhoto.size > maxSize) {
+                    alert("Profile photo must be less than 500KB in size.");
+                    return false;
+                }
+                
+                // Optional: Validate file type
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(profilePhoto.type)) {
+                    alert("Only JPG, PNG, or GIF images are allowed.");
+                    return false;
+                }
+            }
             // Validate Age
             if (age < 17 || age > 50) {
                 alert("Enter proper Age details.");

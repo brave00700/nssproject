@@ -62,7 +62,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/admincss/report_registers.css">
-    </head>
+</head>
 <body>
 <header>
   <div class="header-container">
@@ -81,82 +81,103 @@ $conn->close();
             <a><i class="fa-solid fa-bars ham-icon"></i></a>
         </div>
         <ul>
-        <li><a  href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="manage_students.php"> Manage Students</a></li>
-           <li><a href="manage_staff.php">Manage Staff</a></li>
-           <li><a class="active" href="manage_reports.php">Reports & Register</a></li>
-                       <li><a href="manage_more.php"> More</a></li>
-
+            <li><a href="manage_applications.php">Manage Applications</a></li>
+            <li><a href="manage_students.php">Manage Students</a></li>
+            <li><a href="manage_staff.php">Manage Staff</a></li>
+            <li><a class="active" href="manage_reports.php">Reports & Register</a></li>
+            <li><a href="manage_more.php">More</a></li>
             <li><a href="admin_logout.php">Logout</a></li>
         </ul>
     </div>
 
-    <div class="main">
+<div class="main">
     <div class="about_main_divide">
         <div class="about_nav">
           <ul>
-            
             <li><a href="work_reports.php">Work Reports</a></li>
             <li><a href="stock_items.php">Stock Items</a></li>
-             
             <li><a href="mom.php">Minutes of Meeting Records</a></li>
             <li><a href="budget.php">Budget</a></li>
             <li><a class="active" href="work_done_diary.php">Work Done Diary</a></li>
-
-            
           </ul>
         </div>
+
         <div class="widget">
-        <div class="container">
-        <h1>Work Done Diary</h1>
+            <div class="container">
+                <h1>Work Done Diary</h1>
 
-        <!-- Search Form -->
-        <form method="post" class="search-form">
-            <label for="unit">Filter by Unit:</label>
-            <select name="unit" id="unit">
-                <option value="">All</option>
-                <option value="1">Unit 1</option>
-                <option value="2">Unit 2</option>
-                <option value="3">Unit 3</option>
-                <option value="4">Unit 4</option>
-                <option value="5">Unit 5</option>
-            </select>
-            <button type="submit">Search</button>
-        </form>
+                <!-- Search Form -->
+                <form method="post" class="search-form">
+                    <label for="unit">Filter by Unit:</label>
+                    <select name="unit" id="unit-filter">
+                        <option value="">All</option>
+                        <option value="1">Unit 1</option>
+                        <option value="2">Unit 2</option>
+                        <option value="3">Unit 3</option>
+                        <option value="4">Unit 4</option>
+                        <option value="5">Unit 5</option>
+                    </select>
+                    <button type="submit">Apply Filters</button>
+                    <button type="button" onclick="exportToCSV()">Generate CSV</button>
+                </form>
 
-        <!-- Work Done Table -->
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Event Name</th>
-                        <th>Event Date</th>
-                        <th>Venue</th>
-                        <th>Work Done</th>
-                        <th>Beneficiaries</th>
-                        <th>Unit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($work_done_entries as $entry): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($entry['id']) ?></td>
-                            <td><?= htmlspecialchars($entry['event_name']) ?></td>
-                            <td><?= htmlspecialchars($entry['event_date']) ?></td>
-                            <td><?= htmlspecialchars($entry['venue']) ?></td>
-                            <td><?= htmlspecialchars($entry['work_done']) ?></td>
-                            <td><?= htmlspecialchars($entry['beneficiaries']) ?></td>
-                            <td><?= htmlspecialchars($entry['Unit']) ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                <!-- Work Done Table -->
+                <div class="table-container">
+                    <table id="work-done-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Event Name</th>
+                                <th>Event Date</th>
+                                <th>Venue</th>
+                                <th>Work Done</th>
+                                <th>Beneficiaries</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($work_done_entries as $entry): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($entry['id']) ?></td>
+                                    <td><?= htmlspecialchars($entry['event_name']) ?></td>
+                                    <td><?= htmlspecialchars($entry['event_date']) ?></td>
+                                    <td><?= htmlspecialchars($entry['venue']) ?></td>
+                                    <td><?= htmlspecialchars($entry['work_done']) ?></td>
+                                    <td><?= htmlspecialchars($entry['beneficiaries']) ?></td>
+                                    <td><?= htmlspecialchars($entry['Unit']) ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<script src="script.js"></script>
+
+<script>
+    // Export to CSV function with filtering logic
+    function exportToCSV() {
+        const table = document.getElementById('work-done-table');
+        let csvContent = '';
+        const rows = table.getElementsByTagName('tr');
+
+        for (let row of rows) {
+            const visible = row.style.display !== 'none';
+            if (visible || row === table.rows[0]) {
+                const rowData = Array.from(row.cells).map(cell => cell.innerText).join(',');
+                csvContent += rowData + '\n';
+            }
+        }
+
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'work_done_diary.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+</script>
 </body>
 </html>

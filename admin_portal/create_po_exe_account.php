@@ -47,11 +47,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fileSize = $_FILES['profile_photo']['size'];
         $fileType = mime_content_type($fileTmpPath);
         $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        $maxFileSize = 2 * 1024 * 1024; // 2MB
+        $maxFileSize = 5  * 1024; // 500kb
 
         // Validate file size
         if ($fileSize > $maxFileSize) {
-            echo "<script>alert('Error: File size exceeds 2MB limit.');</script>";
+            echo "<script>alert('Error: File size exceeds 500kb limit.');</script>";
             exit;
         }
 
@@ -231,6 +231,128 @@ $conn->close();
       </div>
     </div>
 </div>
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    // Prevent form submission if validation fails
+    if (!validateForm()) {
+        e.preventDefault();
+    }
+});
+
+function validateForm() {
+    // Regular expressions for validation
+    const nameRegex = /^[A-Za-z\s]{2,50}$/;
+    const phoneRegex = /^[6-9]\d{9}$/;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const userIdRegex = /^[a-zA-Z0-9_]{4,20}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/;
+
+    // Get form elements
+    const name = document.getElementById('name');
+    const phone = document.getElementById('phone');
+    const email = document.getElementById('email');
+    const dob = document.getElementById('dob');
+    const gender = document.getElementById('gender');
+    const role = document.getElementById('role');
+    const unit = document.getElementById('unit');
+    const userId = document.getElementById('user_id');
+    const password = document.getElementById('password');
+    const profilePhoto = document.getElementById('profile_photo');
+    
+    // Validate Name
+    if (!nameRegex.test(name.value)) {
+        alert('Name must be 2-50 letters only (no numbers or special characters)');
+        name.focus();
+        return false;
+    }
+
+    // Validate Phone
+    if (!phoneRegex.test(phone.value)) {
+        alert('Please enter a valid 10-digit Indian phone number starting with 6-9');
+        phone.focus();
+        return false;
+    }
+
+    // Validate Email
+    if (!emailRegex.test(email.value)) {
+        alert('Please enter a valid email address');
+        email.focus();
+        return false;
+    }
+
+    // Validate Date of Birth
+    const dobDate = new Date(dob.value);
+    const today = new Date();
+    const minAgeDate = new Date();
+    minAgeDate.setFullYear(today.getFullYear() - 18); // Minimum 18 years old
+    
+    if (dobDate >= today || dobDate >= minAgeDate) {
+        alert('Staff must be at least 18 years old');
+        dob.focus();
+        return false;
+    }
+
+    // Validate Gender
+    if (gender.value === '') {
+        alert('Please select gender');
+        gender.focus();
+        return false;
+    }
+
+    // Validate Role
+    if (role.value === '') {
+        alert('Please select role');
+        role.focus();
+        return false;
+    }
+
+    // Validate Unit
+    if (unit.value === '') {
+        alert('Please select unit');
+        unit.focus();
+        return false;
+    }
+
+    // Validate User ID
+    if (!userIdRegex.test(userId.value)) {
+        alert('User ID must be 4-20 characters (letters, numbers, underscores only)');
+        userId.focus();
+        return false;
+    }
+
+    // Validate Password
+    if (!passwordRegex.test(password.value)) {
+        alert('Password must be at least 8 characters with at least one letter and one number');
+        password.focus();
+        return false;
+    }
+
+    // Validate Profile Photo
+    if (profilePhoto.files.length > 0) {
+        const file = profilePhoto.files[0];
+        const maxSize = 5 * 1024; // 500kb
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        
+        if (file.size > maxSize) {
+            alert('Profile photo must be less than 2MB');
+            profilePhoto.focus();
+            return false;
+        }
+        
+        if (!allowedTypes.includes(file.type)) {
+            alert('Only JPG, JPEG, and PNG images are allowed');
+            profilePhoto.focus();
+            return false;
+        }
+    } else {
+        alert('Please upload a profile photo');
+        profilePhoto.focus();
+        return false;
+    }
+
+    return true;
+}
+</script>
 <script src="script.js"></script>
 </body>
 </html>

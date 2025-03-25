@@ -227,6 +227,22 @@ $conn->close();
     let selectedDate = new Date(eventDate);
     let selectedTime = eventTime ? parseInt(eventTime.split(":")[0]) : null;
 
+    // Validate Profile Photo size (client-side)
+const profilePhoto = document.getElementById("poster").files[0];
+if (poster) {
+    const maxSize = 500 * 1024; // 500KB in bytes
+    if (poster.size > maxSize) {
+        alert("Poster must be less than 500KB in size.");
+        return false;
+    }
+    
+    // Optional: Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(poster.type)) {
+        alert("Only JPG, PNG, or GIF images are allowed.");
+        return false;
+    }
+}
     // Validate Event Name (Required)
     if (!eventName) {
         alert("Event Name is required.");

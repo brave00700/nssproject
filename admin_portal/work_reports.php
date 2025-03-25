@@ -25,55 +25,16 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle status update request
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
-    if (!empty($_POST['selected_reports']) && isset($_POST['new_status'])) {
-        $new_status = $_POST['new_status'];
-        $selected_reports = $_POST['selected_reports'];
-        
-        // Update status in the database
-        $ids = implode(",", array_map('intval', $selected_reports));
-        $sql_update = "UPDATE work_reports SET wr_status = ? WHERE wr_id IN ($ids)";
-        
-        $stmt_update = $conn->prepare($sql_update);
-        $stmt_update->bind_param("s", $new_status);
-        $stmt_update->execute();
-        $stmt_update->close();
-    }
-}
-
-// Fetch work reports based on search filters or display all by default
+// Fetch all work reports from the database (this will be filtered client-side)
 $work_reports = [];
-$status_filter = isset($_POST['wr_status']) ? $_POST['wr_status'] : "";
-$unit_filter = isset($_POST['unit']) ? $_POST['unit'] : "";
 
-$sql = "SELECT wr_id, exec_id, wr_file, upload_date, unit, wr_status FROM work_reports WHERE 1=1";
-$params = [];
-$types = "";
-
-if (!empty($status_filter)) {
-    $sql .= " AND wr_status = ?";
-    $params[] = $status_filter;
-    $types .= "s";
-}
-if (!empty($unit_filter)) {
-    $sql .= " AND unit = ?";
-    $params[] = $unit_filter;
-    $types .= "s";
-}
-
-$stmt = $conn->prepare($sql);
-if (!empty($params)) {
-    $stmt->bind_param($types, ...$params);
-}
-$stmt->execute();
-$result = $stmt->get_result();
+$sql = "SELECT wr_id, exec_id, wr_file, upload_date, unit, wr_status FROM work_reports";
+$result = $conn->query($sql);
 
 while ($row = $result->fetch_assoc()) {
     $work_reports[] = $row;
 }
 
-$stmt->close();
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -85,7 +46,7 @@ $conn->close();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/admincss/report_registers.css">
-    </head>
+</head>
 <body>
 <header>
   <div class="header-container">
@@ -98,21 +59,18 @@ $conn->close();
     <img src="../assets/icons/nss_logo.png" class="logo" alt="NSS Logo" />
   </div>
 </header>
-   
-<div class="nav">
-        <div class="ham-menu">
-            <a><i class="fa-solid fa-bars ham-icon"></i></a>
-        </div>
-        <ul>
-        <li><a  href="manage_applications.php">Manage Applications</a></li>
-            <li><a href="manage_students.php"> Manage Students</a></li>
-           <li><a href="manage_staff.php">Manage Staff</a></li>
-           <li><a class="active" href="manage_reports.php">Reports & Register</a></li>
-                       <li><a href="manage_more.php"> More</a></li>
 
-            <li><a href="admin_logout.php">Logout</a></li>
-        </ul>
-    </div>
+<div class="nav">
+    <ul>
+        <li><a href="manage_applications.php">Manage Applications</a></li>
+        <li><a href="manage_students.php">Manage Students</a></li>
+        <li><a href="manage_staff.php">Manage Staff</a></li>
+        <li><a class="active" href="manage_reports.php">Reports & Register</a></li>
+        <li><a href="manage_more.php">More</a></li>
+        <li><a href="admin_logout.php">Logout</a></li>
+    </ul>
+</div>
+
 
     <div class="main">
     <div class="about_main_divide">
@@ -130,37 +88,37 @@ $conn->close();
           </ul>
         </div>
         <div class="widget">
-        <div class="container">
-        <header>
-    <h1 style="text-align: center;">Work Reports</h1>
-</header>
+       
+        
 
-<!-- Search Form -->
-<form method="post" class="search-form">
-        <label for="wr_status">Filter by Status:</label>
-    <select name="wr_status" id="wr_status">
-        <option value="">All</option>
-        <option value="Pending">Pending</option>
-        <option value="Approved">Approved</option>
-        <option value="PO_Approved">PO Approved</option>
-    </select>
-    <label for="unit">Filter by Unit:</label>
-    <select name="unit" id="unit">
-        <option value="">All</option>
-        <option value="1">Unit 1</option>
-        <option value="2">Unit 2</option>
-        <option value="3">Unit 3</option>
-        <option value="4">Unit 4</option>
-        <option value="5">Unit 5</option>
-    </select>
-    <button type="submit">Search</button>
-</form>
+    <div class="container">
+        <header><h1 style="text-align: center;">Work Reports</h1></header>
 
-<!-- Work Reports Table -->
-<form method="post">
-    <div class="table-container">
-        <?php if (!empty($work_reports)): ?>
-            <table>
+        <!-- Filters -->
+        <form class="search-form">
+            <label for="wr_status">Filter by Status:</label>
+            <select id="wr_status">
+                <option value="">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="PO_Approved">PO Approved</option>
+            </select>
+            <label for="unit">Filter by Unit:</label>
+            <select id="unit">
+                <option value="">All</option>
+                <option value="1">Unit 1</option>
+                <option value="2">Unit 2</option>
+                <option value="3">Unit 3</option>
+                <option value="4">Unit 4</option>
+                <option value="5">Unit 5</option>
+            </select>
+            <button type="button" onclick="filterTable()">Apply Filter</button>
+            <button type="button" onclick="exportToCSV()">Generate CSV</button>
+        </form>
+
+        <!-- Work Reports Table -->
+        <div class="table-container">
+            <table id="workReportsTable">
                 <thead>
                     <tr>
                         <th>Select</th>
@@ -186,21 +144,53 @@ $conn->close();
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        <?php else: ?>
-            <p style="text-align: center;">No work reports found.</p>
-        <?php endif; ?>
-    </div>
-    <div class="update-form">
-        <label for="new_status">Change Status To:</label>
-        <select name="new_status">
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approve</option>
-        </select>
-        <button type="submit" name="update_status">Update Status</button>
-    </div>
         </div>
     </div>
 </div>
-<script src="script.js"></script>
+
+<script>
+// JavaScript for filtering table rows based on dropdown selections
+function filterTable() {
+    let statusFilter = document.getElementById("wr_status").value.toLowerCase();
+    let unitFilter = document.getElementById("unit").value.toLowerCase();
+    let table = document.getElementById("workReportsTable");
+    let rows = table.getElementsByTagName("tr");
+
+    // Loop through rows and hide those that don't match filters
+    for (let i = 1; i < rows.length; i++) {
+        let status = rows[i].getElementsByTagName("td")[6].innerText.toLowerCase();
+        let unit = rows[i].getElementsByTagName("td")[5].innerText.toLowerCase();
+        rows[i].style.display =
+            (statusFilter === "" || status === statusFilter) &&
+            (unitFilter === "" || unit === unitFilter)
+                ? ""
+                : "none";
+    }
+}
+
+// Function to export visible table rows to CSV
+function exportToCSV() {
+    let table = document.getElementById("workReportsTable");
+    let rows = table.getElementsByTagName("tr");
+    let csvContent = "data:text/csv;charset=utf-8,";
+
+    for (let i = 0; i < rows.length; i++) {
+        if (rows[i].style.display !== "none") {
+            let cols = rows[i].querySelectorAll("td, th");
+            let csvRow = Array.from(cols)
+                .map(col => col.innerText)
+                .join(",");
+            csvContent += csvRow + "\r\n";
+        }
+    }
+
+    let encodedUri = encodeURI(csvContent);
+    let link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "work_reports.csv");
+    document.body.appendChild(link);
+    link.click();
+}
+</script>
 </body>
 </html>

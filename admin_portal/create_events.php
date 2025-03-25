@@ -53,8 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $posterName = basename($_FILES['poster']['name']);
         $posterSize = $_FILES['poster']['size'];
         $posterType = mime_content_type($posterTmpPath);
-        $allowedPosterTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
-        $maxPosterSize = 2 * 1024 * 1024; // 2MB
+        $allowedPosterTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        $maxPosterSize = 5* 1024; // 500kb
 
         if ($posterSize <= $maxPosterSize && in_array($posterType, $allowedPosterTypes)) {
             $filePath = $uploadDir . time() . "_" . $posterName; // Prevent filename conflicts
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit;
             }
         } else {
-            echo "<script>alert('Error: Invalid poster file type or size exceeds 2MB.'); window.location.href = 'view_events.php';</script>";
+            echo "<script>alert('Error: Invalid poster file type or size exceeds 500kb.'); window.location.href = 'view_events.php';</script>";
             exit;
         }
     }
@@ -194,8 +194,8 @@ $conn->close();
           <option value="All">All </option>
         </select>
 
-    <label for="poster">Event Poster (JPEG, PNG, JPG, WEBP max size: 2MB):</label>
-    <input type="file" id="poster" name="poster" accept="image/jpeg, image/png, image/jpg, image/webp" required>
+    <label for="poster">Event Poster (JPEG, PNG, JPG, max size: 500kb):</label>
+    <input type="file" id="poster" name="poster" accept="image/jpeg, image/png, image/jpg" required>
 
     
 
@@ -211,7 +211,7 @@ $conn->close();
 <script>
         function validateForm() {
     let eventName = document.getElementById("event_name")?.value.trim();
-    let eventDesc = document.getElementById("description")?.value.trim();
+    let eventDesc = document.getElementById("event_desc")?.value.trim();
     let eventDate = document.getElementById("event_date")?.value;
     let eventTime = document.getElementById("event_time")?.value;
     let eventDuration = document.getElementById("event_duration")?.value;
