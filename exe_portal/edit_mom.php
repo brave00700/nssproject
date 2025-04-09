@@ -57,6 +57,8 @@ $DB_NAME = getenv("DB_NAME");
             echo "<p style='color:red;'>Error updating MoM.</p>";
         }
     }
+    $stmt->close();
+    $conn->close();
 ?>
 
 <div class="main">
@@ -90,7 +92,41 @@ $DB_NAME = getenv("DB_NAME");
     </form>
 </div>
 
-<?php
-    $stmt->close();
-    $conn->close();
-?>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", function (event) {
+        let isValid = true;
+
+        // Get input values
+        const meetingDate = new Date(document.querySelector("input[name='meeting_date']").value);
+        const currentDate = new Date();
+        const maxDate = new Date();
+        maxDate.setDate(currentDate.getDate() + 30);
+
+        currentDate.setHours(0, 0, 0, 0);
+        meetingDate.setHours(0, 0, 0, 0);
+        maxDate.setHours(0, 0, 0, 0);
+
+        // Validate date (should be today or within 30 days)
+        if (meetingDate < currentDate || meetingDate > maxDate) {
+            alert("Meeting date should be today or within the next 30 days.");
+            isValid = false;
+        }
+
+        // Validate time (should be between 9 AM and 6 PM)
+        const timeInput = document.querySelector("input[name='time']").value;
+        const [hours, minutes] = timeInput.split(":").map(Number);
+        if (hours < 9 || hours > 18 || (hours === 18 && minutes > 0)) {
+            alert("Meeting time should be between 9:00 AM and 6:00 PM.");
+            isValid = false;
+        }
+
+        // Prevent form submission if validation fails
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+});
+</script>

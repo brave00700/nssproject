@@ -95,36 +95,52 @@ $selected_category = isset($_GET['category']) ? $_GET['category'] : '';
         <div class="widget">
             <h2>Manage Stock</h2>
             <form method="POST" class="stock-form">
-                <label>Category:</label>
-                <select name="category" required>
-                    <?php foreach ($categories as $cat) { echo "<option value='$cat'>$cat</option>"; } ?>
-                </select>
+    <div>
+        <label>Category:</label>
+        <select name="category" required>
+            <?php foreach ($categories as $cat) { echo "<option value='$cat'>$cat</option>"; } ?>
+        </select>
+    </div>
 
-                <label>Item Name:</label>
-                <input type="text" name="item_name" required>
+    <div>
+        <label>Item Name:</label>
+        <input type="text" name="item_name" required>
+    </div>
 
-                <label>Quantity:</label>
-                <input type="number" name="quantity" required>
+    <div>
+        <label>Quantity:</label>
+        <input type="number" name="quantity" required>
+    </div>
 
-                <label>Damaged Stock:</label>
-                <input type="number" name="damaged_stock" value="0" required>
+    <div>
+        <label>Damaged Stock:</label>
+        <input type="number" name="damaged_stock" value="0" required>
+    </div>
 
-                <label>Replaced Stock:</label>
-                <input type="number" name="replaced_stock" value="0" required>
+    <div>
+        <label>Replaced Stock:</label>
+        <input type="number" name="replaced_stock" value="0" required>
+    </div>
 
-                <label>Purchase Date:</label>
-                <input type="date" name="purchase_date" required>
-                
-                <label>Stock Status:</label>
-                <select name="status" required>
-                    <option value="Available">Available</option>
-                    <option value="Issued">Issued</option>
-                    <option value="Low Stock">Low Stock</option>
-                    <option value="Damaged">Damaged</option>
-                </select>
-                
-                <button type="submit" name="add_stock">Add Stock</button>
-            </form>
+    <div>
+        <label>Purchase Date:</label>
+        <input type="date" name="purchase_date" required>
+    </div>
+
+    <div>
+        <label>Stock Status:</label>
+        <select name="status" required>
+            <option value="Available">Available</option>
+            <option value="Issued">Issued</option>
+            <option value="Low Stock">Low Stock</option>
+            <option value="Damaged">Damaged</option>
+        </select>
+    </div>
+    
+    <button type="submit" name="add_stock">Add Stock</button>
+</form>
+
+
 
             <h3>Filter by Category</h3>
             <form method="GET" class="filter-form">
@@ -179,6 +195,27 @@ $selected_category = isset($_GET['category']) ? $_GET['category'] : '';
         </div>
     </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".stock-form");
+
+    form.addEventListener("submit", function (event) {
+        let isValid = true;
+
+        // Validate quantity (should be between 1 and 50)
+        const quantity = document.querySelector("input[name='quantity']").value;
+        if (quantity < 1 || quantity > 50) {
+            alert("Quantity should be between 1 and 50.");
+            isValid = false;
+        }
+
+        // Prevent form submission if validation fails
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+});
+</script>
 
 </body>
 </html>
@@ -236,4 +273,74 @@ body {
     color: red;
     font-weight: bold;
 }
+/* Widget Container */
+.widget {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 800px; /* Adjusted width */
+    overflow-x: auto; /* Enable horizontal scrolling on smaller screens */
+}
+
+/* Form Container */
+.stock-form, .filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Arrange Fields in Two Columns */
+.stock-form div, .filter-form div {
+    display: flex;
+    flex: 1 1 48%; /* Two equal columns */
+    flex-direction: column;
+    min-width: 280px; /* Prevent items from getting too small */
+}
+
+/* Inputs & Select */
+.stock-form input, .stock-form select,
+.filter-form select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+}
+
+/* Submit Button */
+.stock-form button {
+    background: #ff6600;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.stock-form button:hover {
+    background: #e55d00;
+}
+
+/* Responsive: Enable Horizontal Scrolling */
+@media (max-width: 600px) {
+    .widget {
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .stock-form, .filter-form {
+        display: block; /* Stack fields in one column for small screens */
+    }
+}
+
 </style>

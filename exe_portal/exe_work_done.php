@@ -92,7 +92,7 @@ if (isset($_GET['delete'])) {
         }
 
         .about_nav ul li a.active {
-            background:rgba(252, 143, 0, 0.88);
+            background:#ffa200;
             border-radius: 5px;
         }
 

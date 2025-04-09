@@ -68,9 +68,16 @@ $result = $stmt->get_result(); // Store the query result
 
 <style>
 /* General Styles */
+*{
+    box-sizing: border-box;
+}
 body {
     font-family: Arial, sans-serif;
 }
+.widget, .about_main_divide {
+    overflow: auto;
+}
+
 
 .top-bar {
     display: flex;
@@ -100,31 +107,89 @@ button:hover {
     background: #0056b3;
 }
 
+
+
+/* General Table Styling */
 #momTable {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* Ensures proper alignment */
 }
 
+/* Header and Cell Styling */
 #momTable th, #momTable td {
     border: 1px solid #ddd;
-    padding: 8px;
-    white-space: nowrap; /* Prevent text from wrapping */
+    padding: 10px;
+    text-align: left;
+    vertical-align: top; /* Ensures content stays aligned properly */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal; /* Allows wrapping */
 }
 
-#momTable th {
-    background-color: #f2f2f2;
-    position: sticky;
-    top: 0;
-    z-index: 2;
+/* Set Specific Column Widths for Better Alignment */
+#momTable th:nth-child(1), 
+#momTable td:nth-child(1) {
+    width: 50px; /* Sl No */
+    text-align: center;
 }
 
+#momTable th:nth-child(2), 
+#momTable td:nth-child(2) {
+    width: 120px; /* Date */
+}
+
+#momTable th:nth-child(3), 
+#momTable td:nth-child(3) {
+    width: 100px; /* Time */
+}
+
+#momTable th:nth-child(4), 
+#momTable td:nth-child(4) {
+    width: 150px; /* Venue */
+}
+
+#momTable th:nth-child(5), 
+#momTable td:nth-child(5) {
+    width: 80px; /* Unit */
+    text-align: center;
+}
+
+/* Allow Text Wrapping for Longer Fields */
+#momTable th:nth-child(6), 
+#momTable td:nth-child(6),
+#momTable th:nth-child(7), 
+#momTable td:nth-child(7),
+#momTable th:nth-child(8), 
+#momTable td:nth-child(8),
+#momTable th:nth-child(9), 
+#momTable td:nth-child(9),
+#momTable th:nth-child(10), 
+#momTable td:nth-child(10) {
+    width: 200px; /* Adjust width for text-heavy fields */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Action Links Column */
+#momTable th:nth-child(11), 
+#momTable td:nth-child(11) {
+    width: 120px;
+    text-align: center;
+}
+
+/* Ensure Table is Scrollable */
 .table-container {
     width: 100%;
-    max-height: 400px; /* Adjust height as needed */
-    overflow-x: auto;
+    max-width: 100%;
+    max-height: 400px;
+    overflow-x: auto; /* Allows horizontal scrolling */
     overflow-y: auto;
     border: 1px solid #ddd;
+    padding: 5px;
 }
+
+
 
 
 .no-records {
@@ -165,6 +230,47 @@ button:hover {
     visibility: hidden;
 }
 
+/* Adjust the form container */
+form {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Grid layout */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px; /* Space between columns */
+}
+
+/* Ensure input and textarea fields are properly sized */
+form input, 
+form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+}
+
+/* Full-width fields for textareas */
+.full-width {
+    grid-column: span 2;
+}
+
+/* Ensure no overflow hides the right side */
+input, textarea {
+    overflow: visible;
+}
+
+.form-grid div{
+    padding:5px;
+}
+
 </style>
 
 <div class="main">
@@ -186,30 +292,49 @@ button:hover {
 
             <!-- Form to add MoM -->
             <form action="" method="POST">
-                <h3>Add New MoM</h3>
-                <label>Date:</label>
-                <input type="date" name="meeting_date" required>
+    <h3>Add New MoM</h3>
+    <div class="form-grid">
+        <div>
+            <label>Date:</label>
+            <input type="date" name="meeting_date" required>
+        </div>
+        
+        <div>
+            <label>Time:</label>
+            <input type="time" name="time" required>
+        </div>
+        
+        <div>
+            <label>Venue:</label>
+            <input type="text" name="venue" required>
+        </div>
+        
+        <div>
+            <label>Minutes Recorded By:</label>
+            <input type="text" name="recorder" required>
+        </div>
 
-                <label>Time:</label>
-                <input type="time" name="time" required>
+        <div class="full-width">
+            <label>Attendees:</label>
+            <textarea name="attendees" required></textarea>
+        </div>
+        
+        <div class="full-width">
+            <label>Agenda:</label>
+            <textarea name="agenda" required></textarea>
+        </div>
 
-                <label>Venue:</label>
-                <input type="text" name="venue" required>
+        <div class="full-width">
+            <label>Discussion & Decisions:</label>
+            <textarea name="discussion" required></textarea>
+        </div>
+        
+        <div class="full-width">
+            <button type="submit">Save Minutes</button>
+        </div>
+    </div>
+</form>
 
-                <label>Attendees:</label>
-                <textarea name="attendees" required></textarea>
-
-                <label>Minutes Recorded By:</label>
-                <input type="text" name="recorder" required>
-
-                <label>Agenda:</label>
-                <textarea name="agenda" required></textarea>
-
-                <label>Discussion & Decisions:</label>
-                <textarea name="discussion" required></textarea>
-
-                <button type="submit">Save Minutes</button>
-            </form>
 
             <!-- Search bar -->
             <div class="top-bar">
@@ -287,6 +412,44 @@ function searchTable() {
         }
     }
 }
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", function (event) {
+        let isValid = true;
+
+        // Get input values
+        const meetingDate = new Date(document.querySelector("input[name='meeting_date']").value);
+        const currentDate = new Date();
+        const maxDate = new Date();
+        maxDate.setDate(currentDate.getDate() + 30);
+
+        currentDate.setHours(0, 0, 0, 0);
+        meetingDate.setHours(0, 0, 0, 0);
+        maxDate.setHours(0, 0, 0, 0);
+
+        // Validate date (should be today or within 30 days)
+        if (meetingDate < currentDate || meetingDate > maxDate) {
+            alert("Meeting date should be today or within the next 30 days.");
+            isValid = false;
+        }
+
+        // Validate time (should be between 9 AM and 6 PM)
+        const timeInput = document.querySelector("input[name='time']").value;
+        const [hours, minutes] = timeInput.split(":").map(Number);
+        if (hours < 9 || hours > 18 || (hours === 18 && minutes > 0)) {
+            alert("Meeting time should be between 9:00 AM and 6:00 PM.");
+            isValid = false;
+        }
+
+        // Prevent form submission if validation fails
+        if (!isValid) {
+            event.preventDefault();
+        }
+    });
+});
 </script>
 
 <?php 
