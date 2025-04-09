@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $posterSize = $_FILES['poster']['size'];
         $posterType = mime_content_type($posterTmpPath);
         $allowedPosterTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        $maxPosterSize = 5* 1024; // 500kb
+        $maxPosterSize = 512 * 1024; // 500kb
 
         if ($posterSize <= $maxPosterSize && in_array($posterType, $allowedPosterTypes)) {
             $filePath = $uploadDir . time() . "_" . $posterName; // Prevent filename conflicts
@@ -211,7 +211,7 @@ $conn->close();
 <script>
         function validateForm() {
     let eventName = document.getElementById("event_name")?.value.trim();
-    let eventDesc = document.getElementById("event_desc")?.value.trim();
+    let eventDesc = document.getElementById("description")?.value.trim();
     let eventDate = document.getElementById("event_date")?.value;
     let eventTime = document.getElementById("event_time")?.value;
     let eventDuration = document.getElementById("event_duration")?.value;

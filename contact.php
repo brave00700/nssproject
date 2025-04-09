@@ -46,7 +46,7 @@
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="student/login.php" target="_blank">Student Login</a>
                 <a class="dropdown-item" href="exe_portal/exe_login.php" target="_blank">Executive Login</a>
-                <a class="dropdown-item" href="po_portal/po_login.php" target="_blank">Programme Officer Login</a>
+                <a class="dropdown-item" href="po_portal/po_login.php" target="_blank">Program Officer Login</a>
                 <a class="dropdown-item" href="admin_portal/admin_login.php" target="_blank">Admin Login</a>
               </div>
             </div>
@@ -78,10 +78,10 @@
             <th scope="col">Sl.No.</th>
             <th scope="col" >NSS Unit</th>
             <th scope="col" >
-              NSS Programme Officer
+              NSS Program Officer
             </th>
             <th scope="col" >
-              Assistant NSS Programme Officer
+              Assistant NSS Program Officer
             </th>
             <th scope="col" >Shift</th>
             <th scope="col">University Code</th>

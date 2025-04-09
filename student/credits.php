@@ -28,7 +28,7 @@ if($result3->num_rows > 0){
 $stmt = $conn->prepare("SELECT events.event_duration 
 FROM attendance
 JOIN events on attendance.event_id = events.event_id
-WHERE register_no = ?");
+WHERE register_no = ? AND attendance.status = 'APPROVED'");
 $stmt->bind_param("s", $reg);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -141,7 +141,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $pdf->Cell(130, 10, 'Date: ' . date('d / m / Y'), 0, 0);
 
         $pdf->SetXY(-88, -25);
-        $pdf->Cell(130, 10, 'Signature of Programme Officer', 0, 0);
+        $pdf->Cell(130, 10, 'Signature of Program Officer', 0, 0);
 
         // Output PDF
         $pdf->Output('certificate.pdf', 'I'); 
@@ -323,7 +323,7 @@ button.generate:hover {
             }
             else{
                 // Show hours after form submission
-                if($status == 'PO_APPROVED') $status = 'Approved by Programme Officer';
+                if($status == 'PO_APPROVED') $status = 'Approved by Program Officer';
                 echo "<p>Working Hours: " . $hours . " hours.</p>
                 <p>Credits Claimable: " . $credits . "</p>
                 <p>Approval Status: " . $status . "</p>";

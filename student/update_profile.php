@@ -136,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_request'])) {
             $fileSize = $_FILES['new_value']['size'];
             $fileType = mime_content_type($fileTmpPath);
             $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-            $maxFileSize = 512 * 1024; //2MB
+            $maxFileSize = 512 * 1024; //512 kb
 
             // Validate file size
             if($fileSize > $maxFileSize) {
