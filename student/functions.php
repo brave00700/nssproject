@@ -169,7 +169,7 @@ function forgotPassRequest($user_id){
 }
 function sendEmail($to, $token) {
     global $EMAIL_USER, $EMAIL_PASS;
-    $reset_url = "http://" . ($_SERVER['HTTP_HOST'] ? $_SERVER['HTTP_HOST'] : 'localhost') . "/student/forgot_pass_change.php?token=$token";
+    $reset_url = "http://" . ($_SERVER['HTTP_HOST'] ? $_SERVER['HTTP_HOST'] : 'localhost') . dirname($_SERVER['SCRIPT_NAME']) . "/forgot_pass_change.php?token=$token";
     $mail = new PHPMailer(true);
 
     try {
