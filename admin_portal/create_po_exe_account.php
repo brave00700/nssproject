@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fileSize = $_FILES['profile_photo']['size'];
         $fileType = mime_content_type($fileTmpPath);
         $allowedFileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        $maxFileSize = 2 * 1024  * 1024; // 500kb
+        $maxFileSize = 512  * 1024; // 500kb
 
         // Validate file size
         if ($fileSize > $maxFileSize) {
@@ -330,7 +330,7 @@ function validateForm() {
     // Validate Profile Photo
     if (profilePhoto.files.length > 0) {
         const file = profilePhoto.files[0];
-        const maxSize = 2 * 1024 * 1024; // 2mb
+        const maxSize = 512 * 1024; // 512kb
         const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
         
         if (file.size > maxSize) {

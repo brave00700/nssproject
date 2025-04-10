@@ -155,7 +155,7 @@ $conn->close();
         <div class="widget">
             <div class="mainapply">
                 <h2>Modify Event Details</h2>
-        <form action="" method="POST" enctype="multipart/form-data" class="nss-form">
+        <form action="" method="POST" enctype="multipart/form-data" class="nss-form" onsubmit="return validateForm();">
             <label for="event_id">Event ID:</label>
             <input type="number" id="event_id" name="event_id" value="<?= $event['event_id'] ?? '' ?>" required readonly><br><br>
 
@@ -208,6 +208,96 @@ $conn->close();
             <button type="submit" name="update_details">Update Event Details</button>
         </form>
     </div>
+    <script>
+        function validateForm() {
+    let eventName = document.getElementById("event_name")?.value.trim();
+    let eventDesc = document.getElementById("event_desc")?.value.trim();
+    let eventDate = document.getElementById("event_date")?.value;
+    let eventTime = document.getElementById("event_time")?.value;
+    let eventDuration = document.getElementById("event_duration")?.value;
+    let eventVenue = document.getElementById("event_venue")?.value.trim();
+    let teacherIncharge = document.getElementById("teacher_incharge")?.value.trim();
+    let studentIncharge = document.getElementById("student_incharge")?.value.trim();
+
+    let today = new Date();
+    let selectedDate = new Date(eventDate);
+    let selectedTime = eventTime ? parseInt(eventTime.split(":")[0]) : null;
+
+    // Validate Profile Photo size (client-side)
+const profilePhoto = document.getElementById("poster").files[0];
+if (poster) {
+    const maxSize = 500 * 1024; // 500KB in bytes
+    if (poster.size > maxSize) {
+        alert("Poster must be less than 500KB in size.");
+        return false;
+    }
+    
+    // Optional: Validate file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(poster.type)) {
+        alert("Only JPG, PNG, or GIF images are allowed.");
+        return false;
+    }
+}
+    // Validate Event Name (Required)
+    if (!eventName) {
+        alert("Event Name is required.");
+        return false;
+    }
+
+    // Validate Event Description (Required)
+    if (!eventDesc) {
+        alert("Event Description is required.");
+        return false;
+    }
+
+    // Validate Event Date (Should be after today)
+    if (!eventDate) {
+        alert("Event Date is required.");
+        return false;
+    }
+    if (selectedDate <= today) {
+        alert("Event Date must be after today's date.");
+        return false;
+    }
+
+    // Validate Event Time (Between 6 AM and 10 PM)
+    if (!eventTime) {
+        alert("Event Time is required.");
+        return false;
+    }
+    if (selectedTime < 6 || selectedTime >= 22) {
+        alert("Event Time must be between 6 AM and 10 PM.");
+        return false;
+    }
+
+    // Validate Event Duration (Must be positive)
+    if (!eventDuration || eventDuration <= 0) {
+        alert("Event Duration must be a positive number.");
+        return false;
+    }
+
+    // Validate Event Venue (Required)
+    if (!eventVenue) {
+        alert("Event Venue is required.");
+        return false;
+    }
+
+    // Validate Teacher In-Charge (Required)
+    if (!teacherIncharge) {
+        alert("Teacher In-Charge is required.");
+        return false;
+    }
+
+    // Validate Student In-Charge (Required)
+    if (!studentIncharge) {
+        alert("Student In-Charge is required.");
+        return false;
+    }
+
+    return true; // ✅ Form is valid, allow submission
+}
+    </script>
 <script src="script.js"></script>
 </body>
 </html>
