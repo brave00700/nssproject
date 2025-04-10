@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $posterSize = $_FILES['poster']['size'];
         $posterType = mime_content_type($posterTmpPath);
         $allowedPosterTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        $maxPosterSize = 2 * 1024 * 1024; // 2MB
+        $maxPosterSize = 512 * 1024; // 512kb
 
         if ($posterSize <= $maxPosterSize && in_array($posterType, $allowedPosterTypes)) {
             $filePath = $uploadDir . time() . "_" . $posterName; // Prevent filename conflicts
