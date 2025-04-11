@@ -40,16 +40,18 @@ if(isset($_POST['login'])){
                 header("Location: po_profile.php");
                 exit();
             } else {
-                $message =  'Invalid credentials or role mismatch. Access restricted to Program Officers.';
+                echo "<script>alert('Invalid credentials or role mismatch. Access restricted to Program Officers.');</script>";
             }
         } else {
-            $message = 'Invalid Officer ID or Password';
+           
+            echo "<script>alert('Invalid Officer ID or Password');</script>";
         }
 
         $stmt->close();
         $conn->close();
     } else {
-        $message = 'Please enter both Officer ID and Password';
+        
+        echo "<script>alert('Please enter both Officer ID and Password');</script>";
     }
 }
 ?>

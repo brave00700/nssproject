@@ -38,16 +38,19 @@ if(isset($_POST['login'])){
                 header("Location: manage_applications.php");
                 exit();
             } else {
-                $message = 'Invalid credentials or role mismatch. Access restricted to Admins.';
+               
+                echo "<script>alert('Invalid credentials or role mismatch. Access restricted to Admins.');</script>";
             }
         } else {
-            $message = 'Invalid Admin ID or Password';
+            
+            echo "<script>alert('Invalid Admin ID or Password');</script>";
         }
 
         $stmt->close();
         $conn->close();
     } else {
-        $message = 'Please enter both Admin ID and Password';
+       
+        echo "<script>alert('Please enter both Admin ID and Password');</script>";
     }
 }
 ?>
