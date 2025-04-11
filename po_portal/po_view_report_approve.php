@@ -190,9 +190,8 @@ $conn->close();
         <label for="status">Status:</label>
         <select name="status" id="status" required>
             <option value="PENDING" <?= ($creditData['status'] == 'PENDING') ? 'selected' : '' ?>>Pending</option>
-            <option value="APPROVED" <?= ($creditData['status'] == 'APPROVED') ? 'selected' : '' ?>>Approved</option>
-            <option value="PO_APPROVED" <?= ($creditData['status'] == 'PO_APPROVED') ? 'selected' : '' ?>>PO Approved</option>
-            <option value="REJECTED" <?= ($creditData['status'] == 'REJECTED') ? 'selected' : '' ?>>Rejected</option>
+            <option value="APPROVED" <?= ($creditData['status'] == 'APPROVED') ? 'selected' : '' ?>>Approve</option>
+            
         </select>
         
         <button name="update" type="submit">Update</button>

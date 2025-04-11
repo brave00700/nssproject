@@ -313,7 +313,7 @@ $stmt->close();
     </div>
     <br>
     <button type="submit" formaction="po_view_report_approve.php" name="modify"  class="admit-buttons" >View Report and Approve</button>
-    <button type="submit" name="delete" class="delete-button">Delete Selected Application</button>
+
 </form>
 
 <script>

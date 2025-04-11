@@ -237,11 +237,7 @@ if (poster) {
     }
     
     // Optional: Validate file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    if (!allowedTypes.includes(poster.type)) {
-        alert("Only JPG, PNG, or GIF images are allowed.");
-        return false;
-    }
+   
 }
     // Validate Event Name (Required)
     if (!eventName) {
