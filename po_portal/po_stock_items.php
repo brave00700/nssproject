@@ -184,7 +184,7 @@ $conn->close();
                     <div class="update-form">
                         <label for="new_status">Change Approval Status To:</label>
                         <select name="new_status">
-                            <option value="APPROVED">APPROVED</option>
+                            
                             <option value="PENDING">PENDING</option>
                             <option value="PO_APPROVED">PO APPROVED</option>
                         </select>

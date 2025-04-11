@@ -24,7 +24,22 @@ $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
-
+// Handle status update request
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_status'])) {
+    if (!empty($_POST['selected_reports']) && isset($_POST['new_status'])) {
+        $new_status = $_POST['new_status'];
+        $selected_reports = $_POST['selected_reports'];
+        
+        // Update status in the database for the selected reports
+        $ids = implode(",", array_map('intval', $selected_reports));
+        $sql_update = "UPDATE work_reports SET wr_status = ? WHERE wr_id IN ($ids) ";
+        
+        $stmt_update = $conn->prepare($sql_update);
+        $stmt_update->bind_param("s", $new_status);
+        $stmt_update->execute();
+        $stmt_update->close();
+    }
+}
 // Fetch all work reports from the database (this will be filtered client-side)
 $work_reports = [];
 
@@ -115,9 +130,10 @@ $conn->close();
             <button type="button" onclick="filterTable()">Apply Filter</button>
             <button type="button" onclick="exportToCSV()">Generate CSV</button>
         </form>
-
-        <!-- Work Reports Table -->
-        <div class="table-container">
+        <form method="post">
+    <!-- Work Reports Table -->
+    <div class="table-container">
+        <?php if (!empty($work_reports)): ?>
             <table id="workReportsTable">
                 <thead>
                     <tr>
@@ -133,7 +149,7 @@ $conn->close();
                 <tbody>
                     <?php foreach ($work_reports as $row): ?>
                         <tr>
-                            <td><input type="checkbox" name="selected_reports[]" value="<?= $row['wr_id'] ?>"></td>
+                            <td><input type="checkbox" name="selected_reports[]" value="<?= htmlspecialchars($row['wr_id']) ?>"></td>
                             <td><?= htmlspecialchars($row['wr_id']) ?></td>
                             <td><?= htmlspecialchars($row['exec_id']) ?></td>
                             <td><a href="..<?= htmlspecialchars($row['wr_file']) ?>" download>Download</a></td>
@@ -144,10 +160,25 @@ $conn->close();
                     <?php endforeach; ?>
                 </tbody>
             </table>
+        <?php else: ?>
+            <p style="text-align: center;">No work reports found.</p>
+        <?php endif; ?>
+    </div>
+
+    <!-- Status Update Form -->
+    <div class="update-form">
+        <label for="new_status">Change Status To:</label>
+        <select name="new_status" id="new_status">
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+        </select>
+        <button type="submit" name="update_status">Update Status</button>
+    </div>
+</form>
+</div>
         </div>
     </div>
 </div>
-
 <script>
 // JavaScript for filtering table rows based on dropdown selections
 function filterTable() {

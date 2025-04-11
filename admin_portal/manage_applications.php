@@ -99,7 +99,7 @@ if(!$_SESSION['admin_id']){
                         }
 
                         $query = "SELECT * FROM applications";
-                        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search']) && !empty($_POST['search'])) {
+                        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search']) ) {
                             $search = $conn->real_escape_string($_POST['search']);
                             $query = "SELECT * FROM applications WHERE Register_no LIKE '%$search%'";
                         }
